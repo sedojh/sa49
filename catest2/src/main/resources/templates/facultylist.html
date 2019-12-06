@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<table>
+	<tr align="center">
+		<td>Admin ID</td>
+		<td>Name</td>
+		<td>Email</td>
+		<td>Mobile Number</td>
+	</tr>
+	<tr align="center">
+		<td th:text="${admin.adminId}">Admin Id</td>
+		<td th:text="${admin.firstName}+' '+${admin.middleName}+' '+${admin.surname}">Admin Name</td>
+		<td th:text="${admin.email}">Admin Email</td>
+		<td th:text="${admin.mobileNum}">Admin Mobile Number</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h1>List of all faculties</h1>
+
+<div>
+	<table>
+		<tr align="center">
+			<td>Department</td>
+			<td>Faculty ID</td>
+			<td>Faculty Name</td>
+			<td>Email</td>
+			<td>Mobile Number</td>
+		</tr>
+		<tr align="center" th:each="fac: ${facultyPage.content}">
+			<td th:text="${fac.department.departmentName}" ></td>
+			<td th:text="${fac.facultyId}" ></td>
+			<td th:text="${fac.firstName}+' '+${fac.middleName}+' '+${fac.surname}"></td>
+			<td th:text="${fac.email}" ></td>
+			<td th:text="${fac.mobileNum}" ></td>
+		</tr>
+    	<tr th:if="${facultyPage.totalPages > 0}" class="pagination">
+    		<td th:each="pageNumber : ${pageNumbers}">
+    			<a th:href="@{/admin/facultylist(size=${facultyPage.size}, page=${pageNumber})}"
+        		th:text=${pageNumber}
+        		th:class="${pageNumber==facultyPage.number + 1} ? active"></a>
+    		</td>
+    	</tr>
+    </table>
+</div>
+
+<p><a th:href="@{/admin/home}">Home</a></p>
+
+</body>
+</html>

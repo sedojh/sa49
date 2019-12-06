@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
-
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.context.request.WebRequest;
 
 import sg.edu.nus.catest2.mvcmodel.*;
 import sg.edu.nus.catest2.repo.*;
@@ -63,7 +64,7 @@ public class LoginController {
 				} else {
 					sessionobj.setSessionId(user.getAdminId());
 					sessionobj.setUserType("admin");
-					return "redirect:/admin/info";
+					return "redirect:/admin/home";
 				}
 			} else {
 				return "welcome";
@@ -71,4 +72,11 @@ public class LoginController {
 		}
 	}
 
+	@RequestMapping("/logout")
+	public String logout(@ModelAttribute("usersession") Session session, 
+			WebRequest request, SessionStatus status) {
+		status.setComplete();
+		request.removeAttribute("user", WebRequest.SCOPE_SESSION);
+		return "redirect:/login/welcome";
+	}
 }

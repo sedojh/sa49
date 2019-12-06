@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<table>
+	<tr align="center">
+		<td>Admin ID</td>
+		<td>Name</td>
+		<td>Email</td>
+		<td>Mobile Number</td>
+	</tr>
+	<tr align="center">
+		<td th:text="${admin.adminId}">Admin Id</td>
+		<td th:text="${admin.firstName}+' '+${admin.middleName}+' '+${admin.surname}">Admin Name</td>
+		<td th:text="${admin.email}">Admin Email</td>
+		<td th:text="${admin.mobileNum}">Admin Mobile Number</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h1>List of all course applications</h1>
+
+<div th:if="${sort == 'all'}">
+	<table>
+		<tr align="center">
+			<td>Application ID</td>
+			<td>Status</td>
+			<td>Department</td>
+			<td>Course ID</td>
+			<td>Course Code</td>
+			<td>Student ID</td>
+			<td>Student Name</td>
+		</tr>
+		<tr align="center" th:each="ca: ${courseApplicationPage.content}">
+			<td th:text="${ca.applicationId}" ></td>
+			<td th:text="${ca.status}" ></td>
+			<td th:text="${ca.course.department.departmentName}" ></td>
+			<td th:text="${ca.course.courseId}" ></td>
+			<td th:text="${ca.course.courseCode}" ></td>
+			<td th:text="${ca.student.studentId}" ></td>
+			<td th:text="${ca.student.firstName}+' '+${ca.student.middleName}+' '+${ca.student.surname}" ></td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td><a th:href="@{/admin/courseapplicationlist(sort='approved',size=${courseApplicationPage.size}, page=${pageNumber})}">Show all approved</a></td>
+			<td><a th:href="@{/admin/courseapplicationlist(sort='pending',size=${courseApplicationPage.size}, page=${pageNumber})}">Show all pending</a></td>
+		</tr>
+	</table>
+		
+	<table>
+    	<tr th:if="${courseApplicationPage.totalPages > 0}" class="pagination">
+    		<td th:each="pageNumber : ${pageNumbers}">
+    			<a th:href="@{/admin/courseapplicationlist(sort='all',size=${courseApplicationPage.size}, page=${pageNumber})}"
+        		th:text=${pageNumber}
+        		th:class="${pageNumber==courseApplicationPage.number + 1} ? active"></a>
+    		</td>
+    	</tr>
+    </table>
+</div>
+
+<div th:if="${sort == 'pending'}">
+	<table>
+		<tr align="center">
+			<td>Application ID</td>
+			<td>Status</td>
+			<td>Department</td>
+			<td>Course ID</td>
+			<td>Course Code</td>
+			<td>Student ID</td>
+			<td>Student Name</td>
+		</tr>
+		<tr align="center" th:each="ca: ${courseApplicationPage.content}">
+			<td th:text="${ca.applicationId}" ></td>
+			<td th:text="${ca.status}" ></td>
+			<td th:text="${ca.course.department.departmentName}" ></td>
+			<td th:text="${ca.course.courseId}" ></td>
+			<td th:text="${ca.course.courseCode}" ></td>
+			<td th:text="${ca.student.studentId}" ></td>
+			<td th:text="${ca.student.firstName}+' '+${ca.student.middleName}+' '+${ca.student.surname}" ></td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td><a th:href="@{/admin/courseapplicationlist(sort='approved',size=${courseApplicationPage.size}, page=${pageNumber})}">Show all approved</a></td>
+			<td><a th:href="@{/admin/courseapplicationlist(sort='all',size=${courseApplicationPage.size}, page=${pageNumber})}">Show all</a></td>
+		</tr>
+	</table>
+		
+	<table>
+    	<tr th:if="${courseApplicationPage.totalPages > 0}" class="pagination">
+    		<td th:each="pageNumber : ${pageNumbers}">
+    			<a th:href="@{/admin/courseapplicationlist(sort='pending',size=${courseApplicationPage.size}, page=${pageNumber})}"
+        		th:text=${pageNumber}
+        		th:class="${pageNumber==courseApplicationPage.number + 1} ? active"></a>
+    		</td>
+    	</tr>
+    </table>
+</div>
+
+<div th:if="${sort == 'approved'}">
+	<table>
+		<tr align="center">
+			<td>Application ID</td>
+			<td>Status</td>
+			<td>Department</td>
+			<td>Course ID</td>
+			<td>Course Code</td>
+			<td>Student ID</td>
+			<td>Student Name</td>
+		</tr>
+		<tr align="center" th:each="ca: ${courseApplicationPage.content}">
+			<td th:text="${ca.applicationId}" ></td>
+			<td th:text="${ca.status}" ></td>
+			<td th:text="${ca.course.department.departmentName}" ></td>
+			<td th:text="${ca.course.courseId}" ></td>
+			<td th:text="${ca.course.courseCode}" ></td>
+			<td th:text="${ca.student.studentId}" ></td>
+			<td th:text="${ca.student.firstName}+' '+${ca.student.middleName}+' '+${ca.student.surname}" ></td>
+		</tr>
+	</table>
+	<table>
+		<tr>
+			<td><a th:href="@{/admin/courseapplicationlist(sort='pending',size=${courseApplicationPage.size}, page=${pageNumber})}">Show all pending</a></td>
+			<td><a th:href="@{/admin/courseapplicationlist(sort='all',size=${courseApplicationPage.size}, page=${pageNumber})}">Show all</a></td>
+		</tr>
+	</table>
+		
+	<table>
+    	<tr th:if="${courseApplicationPage.totalPages > 0}" class="pagination">
+    		<td th:each="pageNumber : ${pageNumbers}">
+    			<a th:href="@{/admin/courseapplicationlist(sort='approved',size=${courseApplicationPage.size}, page=${pageNumber})}"
+        		th:text=${pageNumber}
+        		th:class="${pageNumber==courseApplicationPage.number + 1} ? active"></a>
+    		</td>
+    	</tr>
+    </table>
+</div>
+
+<p><a th:href="@{/admin/home}">Home</a></p>
+
+</body>
+</html>

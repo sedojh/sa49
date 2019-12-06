@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<table>
+	<tr align="center">
+		<td>Admin ID</td>
+		<td>Name</td>
+		<td>Email</td>
+		<td>Mobile Number</td>
+	</tr>
+	<tr align="center">
+		<td th:text="${admin.adminId}">Admin Id</td>
+		<td th:text="${admin.firstName}+' '+${admin.middleName}+' '+${admin.surname}">Admin Name</td>
+		<td th:text="${admin.email}">Admin Email</td>
+		<td th:text="${admin.mobileNum}">Admin Mobile Number</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h1>List of all students</h1>
+
+<div>
+	<table>
+		<tr align="center">
+			<td>Student ID</td>
+			<td>Student Name</td>
+			<td>Age</td>
+			<td>Gender</td>
+			<td>Email</td>
+			<td>Mobile Number</td>
+		</tr>
+		<tr align="center" th:each="stu: ${studentPage.content}">
+			<td th:text="${stu.studentId}" ></td>
+			<td th:text="${stu.firstName}+' '+${stu.middleName}+' '+${stu.surname}"></td>
+			<td th:text="${stu.age}" ></td>
+			<td th:text="${stu.gender}" ></td>
+			<td th:text="${stu.email}" ></td>
+			<td th:text="${stu.mobileNum}" ></td>
+		</tr>
+    	<tr th:if="${studentPage.totalPages > 0}" class="pagination">
+    		<td th:each="pageNumber : ${pageNumbers}">
+    			<a th:href="@{/admin/studentlist(size=${studentPage.size}, page=${pageNumber})}"
+        		th:text=${pageNumber}
+        		th:class="${pageNumber==studentPage.number + 1} ? active"></a>
+    		</td>
+    	</tr>
+    </table>
+</div>
+
+<form th:action="@{/admin/studentlist}">
+<input type="text" th:name="name"/> 
+<input type="submit"/> 
+</form>
+
+<p><a th:href="@{/admin/home}">Home</a></p>
+
+</body>
+</html>

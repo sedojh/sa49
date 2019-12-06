@@ -104,6 +104,14 @@ public class Course {
 		this.department = department;
 	}
 
+	public Faculty getFaculty() {
+		return faculty;
+	}
+
+	public void setFaculty(Faculty faculty) {
+		this.faculty = faculty;
+	}
+
 	@Override
 	public String toString() {
 		return "Course [courseId=" + courseId + ", courseCode=" + courseCode + ", courseName=" + courseName
