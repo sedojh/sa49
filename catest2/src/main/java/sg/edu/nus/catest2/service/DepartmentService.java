@@ -13,8 +13,8 @@ public class DepartmentService {
 	@Autowired
 	DepartmentRepository drepo;
 
-	public Page<Department> findPaginatedDepartment(Pageable pageable) {
-		List<Department> departments = drepo.findAll();
+	public Page<Department> findPaginatedDepartment(Pageable pageable,List<Department> dlist) {
+		List<Department> departments = dlist;
 		int pageSize = pageable.getPageSize();
 		int currentPage = pageable.getPageNumber();
 		int startItem = currentPage * pageSize;

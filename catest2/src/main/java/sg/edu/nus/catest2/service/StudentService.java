@@ -1,5 +1,6 @@
 package sg.edu.nus.catest2.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,8 +20,8 @@ public class StudentService {
 	@Autowired
 	StudentRepository srepo;
 	
-	public Page<Student> findPaginatedStudent(Pageable pageable) {
-		List<Student> students = srepo.findAll();
+	public Page<Student> findPaginatedStudent(Pageable pageable, List<Student> studentlist) {
+		List<Student> students = studentlist;
 		int pageSize = pageable.getPageSize();
 		int currentPage = pageable.getPageNumber();
 		int startItem = currentPage * pageSize;
@@ -37,6 +38,26 @@ public class StudentService {
 				students.size());
 
 		return studentPage;
+	}
+	
+	public List<Student> searchStudentName(String name){
+		List<Student> students = srepo.findAll();
+		List<Student> filtered = new ArrayList<>();
+		for(Student s: students) {
+			if(s.getFirstName().toLowerCase().equals(name.toLowerCase())) {
+				filtered.add(s);
+			}
+			else if(s.getMiddleName().toLowerCase().equals(name.toLowerCase())) {
+				filtered.add(s);
+			}
+			else if(s.getSurname().toLowerCase().equals(name.toLowerCase())) {
+				filtered.add(s);
+			}
+			else {
+				continue;
+			}
+		}
+		return filtered;
 	}
 
 }

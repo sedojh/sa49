@@ -1,5 +1,6 @@
 package sg.edu.nus.catest2.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import sg.edu.nus.catest2.model.Faculty;
+import sg.edu.nus.catest2.model.Student;
 import sg.edu.nus.catest2.repo.FacultyRepository;
 
 @Service
@@ -18,8 +20,8 @@ public class FacultyService {
 	@Autowired
 	FacultyRepository frepo;
 	
-	public Page<Faculty> findPaginatedFaculty(Pageable pageable) {
-		List<Faculty> faculties = frepo.findAll();
+	public Page<Faculty> findPaginatedFaculty(Pageable pageable,List<Faculty> facultylist) {
+		List<Faculty> faculties = facultylist;
 		int pageSize = pageable.getPageSize();
 		int currentPage = pageable.getPageNumber();
 		int startItem = currentPage * pageSize;
@@ -36,6 +38,26 @@ public class FacultyService {
 				faculties.size());
 
 		return facultyPage;
+	}
+	
+	public List<Faculty> searchFacultyName(String name){
+		List<Faculty> faculties = frepo.findAll();
+		List<Faculty> filtered = new ArrayList<>();
+		for(Faculty f: faculties) {
+			if(f.getFirstName().toLowerCase().equals(name.toLowerCase())) {
+				filtered.add(f);
+			}
+			else if(f.getMiddleName().toLowerCase().equals(name.toLowerCase())) {
+				filtered.add(f);
+			}
+			else if(f.getSurname().toLowerCase().equals(name.toLowerCase())) {
+				filtered.add(f);
+			}
+			else {
+				continue;
+			}
+		}
+		return filtered;
 	}
 
 }

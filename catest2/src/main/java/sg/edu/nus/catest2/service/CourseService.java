@@ -19,8 +19,8 @@ public class CourseService {
 	@Autowired
 	CourseRepository crepo;
 	
-	public Page<Course> findPaginatedCourse(Pageable pageable) {
-		List<Course> courses = crepo.findAll();
+	public Page<Course> findPaginatedCourse(Pageable pageable,List<Course> courselist) {
+		List<Course> courses = courselist;
 		int pageSize = pageable.getPageSize();
 		int currentPage = pageable.getPageNumber();
 		int startItem = currentPage * pageSize;

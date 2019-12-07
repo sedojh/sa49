@@ -15,6 +15,7 @@ public class CourseApplication {
 	private Course course;
 	private String status;
 	
+
 	public CourseApplication() {
 		super();
 		// TODO Auto-generated constructor stub

@@ -27,7 +27,8 @@
 
 <h1>List of all faculties</h1>
 
-<div>
+<form th:action="@{/admin/facultylist}">
+<div th:if="${searched == 'null'}">
 	<table>
 		<tr align="center">
 			<td>Department</td>
@@ -52,6 +53,42 @@
     	</tr>
     </table>
 </div>
+
+<div th:unless="${searched == 'null'}">
+	<table th:if="${found == 'found'}">
+		<tr>
+			<td th:text="'You searched for: '+ ${searched}"></td>
+		</tr>
+		<tr align="center">
+			<td>Department</td>
+			<td>Faculty ID</td>
+			<td>Faculty Name</td>
+			<td>Email</td>
+			<td>Mobile Number</td>
+		</tr>
+		<tr align="center" th:each="fac: ${facultyPage.content}">
+			<td th:text="${fac.department.departmentName}" ></td>
+			<td th:text="${fac.facultyId}" ></td>
+			<td th:text="${fac.firstName}+' '+${fac.middleName}+' '+${fac.surname}"></td>
+			<td th:text="${fac.email}" ></td>
+			<td th:text="${fac.mobileNum}" ></td>
+		</tr>
+    	<tr th:if="${facultyPage.totalPages > 0}" class="pagination">
+    		<td th:each="pageNumber : ${pageNumbers}">
+    			<a th:href="@{/admin/facultylist(size=${facultyPage.size}, page=${pageNumber},name=${searched})}"
+        		th:text=${pageNumber}
+        		th:class="${pageNumber==facultyPage.number + 1} ? active"></a>
+    		</td>
+    	</tr>
+    </table>
+    <div th:unless="${found == 'found'}">
+    <h2 th:text="'No faculty found for: ' + ${searched}"></h2>
+    </div>
+</div>
+
+<input type="text" th:name="name" placeholder="Search name/department/email"/> 
+<input type="submit"/> 
+</form>
 
 <p><a th:href="@{/admin/home}">Home</a></p>
 

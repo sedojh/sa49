@@ -27,6 +27,7 @@
 
 <h1>List of all course applications</h1>
 
+<div th:if="${msg == 'found'}">
 <div th:if="${sort == 'all'}">
 	<table>
 		<tr align="center">
@@ -142,6 +143,11 @@
     		</td>
     	</tr>
     </table>
+</div>
+</div>
+
+<div th:unless="${msg == 'found'}">
+<p>No Course Applications found</p>
 </div>
 
 <p><a th:href="@{/admin/home}">Home</a></p>
