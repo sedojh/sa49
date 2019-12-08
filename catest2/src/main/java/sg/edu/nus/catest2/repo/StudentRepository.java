@@ -12,5 +12,7 @@ public interface StudentRepository extends JpaRepository<Student, Integer>{
 	@Query("select s from Student s where s.firstName like %?1% or s.middleName like %?1% "
 			+ "or s.surname like %?1% or s.address like %?1% or s.email like %?1%")
 	List<Student> searchStudent(String name);
+	
+	Student getStudentByStudentId(int studentId);
 
 }

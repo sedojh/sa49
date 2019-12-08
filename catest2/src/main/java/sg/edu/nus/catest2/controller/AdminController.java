@@ -325,6 +325,8 @@ public class AdminController {
 		                .collect(Collectors.toList());
 		            model.addAttribute("pageNumbers", pageNumbers);
 		        }
+		        String msg = "found";
+		        model.addAttribute("msg", msg);
 				
 			}
 	        return "courseapplicationlist";
@@ -349,6 +351,8 @@ public class AdminController {
 		                .collect(Collectors.toList());
 		            model.addAttribute("pageNumbers", pageNumbers);
 		        }
+		        String msg = "found";
+		        model.addAttribute("msg", msg);
 			}
 	        return "courseapplicationlist";
 		}
@@ -372,11 +376,111 @@ public class AdminController {
 		                .collect(Collectors.toList());
 		            model.addAttribute("pageNumbers", pageNumbers);
 		        }
+		        String msg = "found";
+		        model.addAttribute("msg", msg);
 			}
 	        return "courseapplicationlist";
 		}
 		
 	}
 	
+	@RequestMapping("/viewdepartment")
+	public String viewDepartment(Model model,@RequestParam(name = "viewdepartment") Optional<Integer> searchid) {
+		int search = searchid.orElse(0);
+		model.addAttribute("admin", admin);
+		if(search == 0) {
+			String msg = "null";
+			model.addAttribute("msg",msg);
+		}
+		else {
+			Department department = drepo.getDepartmentByDepartmentId(search);
+			model.addAttribute("department", department);
+			String msg = "found";
+			model.addAttribute("msg", msg);
+			List<Course> courses = crepo.getCoursesByDepartmentId(search);
+			model.addAttribute("courses", courses);
+			List<Faculty> faculties = frepo.getFacultiesByDepartmentId(search);
+			model.addAttribute("faculties", faculties);
+		}
+		return "viewdepartment";
+	}
+	
+	@RequestMapping("/viewstudent")
+	public String viewStudent(Model model,@RequestParam(name = "viewstudent") Optional<Integer> searchid) {
+		int search = searchid.orElse(0);
+		model.addAttribute("admin", admin);
+		if(search == 0) {
+			String msg = "null";
+			model.addAttribute("msg",msg);
+		}
+		else {
+			Student student = srepo.getStudentByStudentId(search);
+			model.addAttribute("student", student);
+			String msg = "found";
+			model.addAttribute("msg", msg);
+			List<CourseApplication> courseApplications = carepo.getCourseApplicationsByStudentId(search);
+			model.addAttribute("courseApplications", courseApplications);
+		}
+		return "viewstudent";
+	}
+	
+	@RequestMapping("/viewfaculty")
+	public String viewFaculty(Model model,@RequestParam(name = "viewfaculty") Optional<Integer> searchid) {
+		int search = searchid.orElse(0);
+		model.addAttribute("admin", admin);
+		if(search == 0) {
+			String msg = "null";
+			model.addAttribute("msg",msg);
+		}
+		else {
+			Faculty faculty = frepo.getByFacultyId(search);
+			model.addAttribute("faculty", faculty);
+			String msg = "found";
+			model.addAttribute("msg", msg);
+			List<Course> courses = crepo.getCoursesByFacultyId(search);
+			model.addAttribute("courses", courses);
+		}
+		return "viewfaculty";
+	}
+	
+	@RequestMapping("/viewcourse")
+	public String viewCourse(Model model,@RequestParam(name = "viewcourse") Optional<Integer> searchid) {
+		int search = searchid.orElse(0);
+		model.addAttribute("admin", admin);
+		if(search == 0) {
+			String msg = "null";
+			model.addAttribute("msg",msg);
+		}
+		else {
+			Course course = crepo.getCourseByCourseId(search);
+			model.addAttribute("course", course);
+			String msg = "found";
+			model.addAttribute("msg", msg);
+			List<CourseApplication> courseApplications = carepo.getCourseApplicationsByCourseId(search);
+			model.addAttribute("courseApplications", courseApplications);
+		}
+		return "viewcourse";
+	}
+	
+	@RequestMapping("/viewcourseapplication")
+	public String viewCourseApplication(Model model,@RequestParam(name = "viewcourseapplication") Optional<Integer> searchid) {
+		int search = searchid.orElse(0);
+		model.addAttribute("admin", admin);
+		if(search == 0) {
+			String msg = "null";
+			model.addAttribute("msg",msg);
+		}
+		else {
+			CourseApplication courseApplication = carepo.getCourseApplicationByApplicationId(search);
+			model.addAttribute("courseApplication", courseApplication);
+			String msg = "found";
+			model.addAttribute("msg", msg);
+
+		}
+		return "viewcourseapplication";
+	}
+	
 	
 }
+
+

@@ -40,7 +40,10 @@
 			<td>Address</td>
 		</tr>
 		<tr align="center" th:each="stu: ${studentPage.content}">
-			<td th:text="${stu.studentId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewstudent(viewstudent=${stu.studentId})}"
+        		th:text=${stu.studentId}></a>
+			</td>
 			<td th:text="${stu.firstName}+' '+${stu.middleName}+' '+${stu.surname}"></td>
 			<td th:text="${stu.age}" ></td>
 			<td th:text="${stu.gender}" ></td>
@@ -73,7 +76,10 @@
 			<td>Address</td>
 		</tr>
 		<tr align="center" th:each="stu: ${studentPage.content}">
-			<td th:text="${stu.studentId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewstudent(viewstudent=${stu.studentId})}"
+        		th:text=${stu.studentId}></a>
+			</td>
 			<td th:text="${stu.firstName}+' '+${stu.middleName}+' '+${stu.surname}"></td>
 			<td th:text="${stu.age}" ></td>
 			<td th:text="${stu.gender}" ></td>
@@ -92,6 +98,7 @@
     <div th:unless="${found == 'found'}">
     <h2 th:text="'No student found for: ' + ${searched}"></h2>
     </div>
+    <p><a th:href="@{/admin/studentlist}">Return to list of students</a></p>
 </div>
 
 

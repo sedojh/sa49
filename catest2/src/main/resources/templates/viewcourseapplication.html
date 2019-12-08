@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<table>
+	<tr>
+		<td>Admin ID</td>
+		<td>Name</td>
+		<td>Email</td>
+		<td>Mobile Number</td>
+	</tr>
+	<tr align="center">
+		<td th:text="${admin.adminId}">Admin Id</td>
+		<td th:text="${admin.firstName}+' '+${admin.middleName}+' '+${admin.surname}">Admin Name</td>
+		<td th:text="${admin.email}">Admin Email</td>
+		<td th:text="${admin.mobileNum}">Admin Mobile Number</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h1>Course Application Information</h1>
+
+<div th:if="${msg == 'found'}">
+	<table>
+		<tr align="center">
+			<td>Application ID</td>
+			<td>Status</td>
+			<td>Department ID</td>
+			<td>Department</td>
+			<td>Course ID</td>
+			<td>Course Code</td>
+			<td>Student ID</td>
+			<td>Student Name</td>
+		</tr>
+		<tr align="center">
+			<td th:text="${courseApplication.applicationId}" ></td>
+			<td th:text="${courseApplication.status}" ></td>
+			<td>
+				<a th:href="@{/admin/viewdepartment(viewdepartment=${courseApplication.course.department.departmentId})}"
+        		th:text=${courseApplication.course.department.departmentId}></a>
+			</td>
+			<td th:text="${courseApplication.course.department.departmentName}" ></td>
+			<td>
+				<a th:href="@{/admin/viewcourse(viewcourse=${courseApplication.course.courseId})}"
+        		th:text=${courseApplication.course.courseId}></a>
+			</td>
+			<td th:text="${courseApplication.course.courseCode}" ></td>
+			<td>
+				<a th:href="@{/admin/viewstudent(viewstudent=${courseApplication.student.studentId})}"
+        		th:text=${courseApplication.student.studentId}></a>
+			</td>
+			<td th:text="${courseApplication.student.firstName}+' '+${courseApplication.student.middleName}+' '+${courseApplication.student.surname}" ></td>
+		</tr>
+    </table>
+    
+</div>
+
+<div th:unless="${msg == 'found'}">
+    <h2 th:text="'Error in locating course application in database'"></h2>
+</div>
+
+<p><a th:href="@{/admin/home}">Home</a></p>
+<p><a th:href="@{/admin/courseapplicationlist}">Return to list of course applications</a></p>
+
+</body>
+</html>

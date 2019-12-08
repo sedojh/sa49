@@ -13,4 +13,6 @@ public interface DepartmentRepository extends JpaRepository<Department, Integer>
 	@Query("select d from Department d where d.departmentName like %?1%")
 	List<Department> searchDepartment(String name);
 	
+	Department getDepartmentByDepartmentId(int departmentId);
+	
 }

@@ -31,6 +31,7 @@
 <div th:if="${searched == 'null'}">
 	<table>
 		<tr align="center">
+			<td>Department ID</td>
 			<td>Department</td>
 			<td>Course ID</td>
 			<td>Course Code</td>
@@ -40,6 +41,7 @@
 			<td>Faculty Name</td>
 		</tr>
 		<tr align="center" th:each="cse: ${coursePage.content}">
+			<td th:text="${cse.department.departmentId}" ></td>
 			<td th:text="${cse.department.departmentName}" ></td>
 			<td th:text="${cse.courseId}" ></td>
 			<td th:text="${cse.courseCode}"></td>
@@ -64,6 +66,7 @@
 			<td th:text="'You searched for: '+ ${searched}"></td>
 		</tr>
 		<tr align="center">
+			<td>Department ID</td>
 			<td>Department</td>
 			<td>Course ID</td>
 			<td>Course Code</td>
@@ -73,6 +76,7 @@
 			<td>Faculty Name</td>
 		</tr>
 		<tr align="center" th:each="cse: ${coursePage.content}">
+			<td th:text="${cse.department.departmentId}" ></td>
 			<td th:text="${cse.department.departmentName}" ></td>
 			<td th:text="${cse.courseId}" ></td>
 			<td th:text="${cse.courseCode}"></td>
@@ -92,6 +96,7 @@
  	<div th:unless="${found == 'found'}">
     <h2 th:text="'No course found for: ' + ${searched}"></h2>
     </div>
+    <p><a th:href="@{/admin/courselist}">Return to list of courses</a></p>
 </div>
 
 <input type="text" th:name="name" placeholder="Search course name/code"/> 

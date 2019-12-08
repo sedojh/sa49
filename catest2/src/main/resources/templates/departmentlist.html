@@ -35,7 +35,10 @@
 			<td>Department Name</td>
 		</tr>
 		<tr align="center" th:each="dept: ${departmentPage.content}">
-			<td th:text="${dept.departmentId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewdepartment(viewdepartment=${dept.departmentId})}"
+        		th:text=${dept.departmentId}></a>
+			</td>
 			<td th:text="${dept.departmentName}"></td>
 		</tr>
     	<tr th:if="${departmentPage.totalPages > 0}" class="pagination">
@@ -58,7 +61,10 @@
 			<td>Department Name</td>
 		</tr>
 		<tr align="center" th:each="dept: ${departmentPage.content}">
-			<td th:text="${dept.departmentId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewdepartment(viewdepartment=${dept.departmentId})}"
+        		th:text=${dept.departmentId}></a>
+			</td>
 			<td th:text="${dept.departmentName}"></td>
 		</tr>
     	<tr th:if="${departmentPage.totalPages > 0}" class="pagination">
@@ -72,6 +78,7 @@
  	<div th:unless="${found == 'found'}">
     <h2 th:text="'No student found for: ' + ${searched}"></h2>
     </div>
+    <p><a th:href="@{/admin/departmentlist}">Return to list of departments</a></p>
 </div>
 
 <input type="text" th:name="name" placeholder="Search department name"/> 

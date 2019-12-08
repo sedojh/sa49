@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<table>
+	<tr>
+		<td>Admin ID</td>
+		<td>Name</td>
+		<td>Email</td>
+		<td>Mobile Number</td>
+	</tr>
+	<tr align="center">
+		<td th:text="${admin.adminId}">Admin Id</td>
+		<td th:text="${admin.firstName}+' '+${admin.middleName}+' '+${admin.surname}">Admin Name</td>
+		<td th:text="${admin.email}">Admin Email</td>
+		<td th:text="${admin.mobileNum}">Admin Mobile Number</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h1>Course Information</h1>
+
+<div th:if="${msg == 'found'}">
+	<table>
+		<tr align="center">
+			<td>Department ID</td>
+			<td>Department</td>
+			<td>Course ID</td>
+			<td>Course Code</td>
+			<td>Course Name</td>
+			<td>Course Size</td>
+			<td>Course Unit</td>
+			<td>Faculty ID</td>
+			<td>Faculty Name</td>
+		</tr>
+		<tr align="center">
+			<td>
+				<a th:href="@{/admin/viewcourseapplication(viewcourseapplication=${course.department.departmentId})}"
+        		th:text=${course.department.departmentId}></a>
+			</td>
+			<td th:text="${course.department.departmentName}" ></td>
+			<td th:text="${course.courseId}" ></td>
+			<td th:text="${course.courseCode}"></td>
+			<td th:text="${course.courseName}"></td>
+			<td th:text="${course.courseSize}"></td>
+			<td th:text="${course.courseUnit}"></td>
+			<td>
+				<a th:href="@{/admin/viewfaculty(viewfaculty=${course.faculty.facultyId})}"
+        		th:text=${course.faculty.facultyId}></a>
+			</td>
+			<td th:text="${course.faculty.firstName}+' '+${course.faculty.middleName}+' '+${course.faculty.surname}"></td>
+		</tr>
+    </table>
+    
+    <h2>Course Applications for this course</h2>
+    <table>
+		<tr align="center">
+			<td>Application ID</td>
+			<td>Status</td>
+			<td>Department</td>
+			<td>Student ID</td>
+			<td>Student Name</td>
+		</tr>
+		<tr align="center" th:each="ca: ${courseApplications}">
+			<td>
+				<a th:href="@{/admin/viewcourseapplication(viewcourseapplication=${ca.applicationId})}"
+        		th:text=${ca.applicationId}></a>
+			</td>
+			<td th:text="${ca.status}" ></td>
+			<td th:text="${ca.course.department.departmentName}" ></td>
+			<td th:text="${ca.student.studentId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewstudent(viewstudent=${ca.student.studentId})}"
+        		th:text=${ca.student.studentId}></a>
+			</td>
+			<td th:text="${ca.student.firstName}+' '+${ca.student.middleName}+' '+${ca.student.surname}" ></td>
+		</tr>
+    </table>
+</div>
+
+<div th:unless="${msg == 'found'}">
+    <h2 th:text="'Error in locating course in database'"></h2>
+</div>
+
+<p><a th:href="@{/admin/home}">Home</a></p>
+<p><a th:href="@{/admin/courselist}">Return to list of courses</a></p>
+
+</body>
+</html>
