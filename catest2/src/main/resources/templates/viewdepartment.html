@@ -38,6 +38,9 @@
 			<td th:text="${department.departmentName}"></td>
 		</tr>
     </table>
+<form th:action="@{/admin/delete(deleteType='department',id=${department.departmentId},)}" th:method="post">
+    <button type="submit" name="confirm" value="no">Delete department</button>
+</form>
     
     <h2>Courses in department</h2>
     <table>

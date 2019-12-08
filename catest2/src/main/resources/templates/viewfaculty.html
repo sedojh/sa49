@@ -50,7 +50,15 @@
 		</tr>
     </table>
     
+<form th:action="@{/admin/delete(deleteType='faculty',id=${faculty.facultyId},)}" th:method="post">
+    <button type="submit" name="confirm" value="no">Delete faculty</button>
+</form>
+    
     <h2>Courses Assigned</h2>
+    <div th:if="${searchcourse == 'null'}">
+    <h3>No courses assigned</h3>
+    </div>
+    <div th:if="${searchcourse == 'found'}">
     <table>
 		<tr align="center">
 			<td>Department</td>
@@ -72,7 +80,7 @@
 			<td th:text="${cse.courseUnit}"></td>
 		</tr>
     </table>
-    
+    </div>
 </div>
 
 <div th:unless="${msg == 'found'}">

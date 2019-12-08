@@ -40,12 +40,22 @@
 			<td>Student Name</td>
 		</tr>
 		<tr align="center" th:each="ca: ${courseApplicationPage.content}">
-			<td th:text="${ca.applicationId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewcourseapplication(viewcourseapplication=${ca.applicationId})}"
+        		th:text=${ca.applicationId}></a>
+			</td>
 			<td th:text="${ca.status}" ></td>
 			<td th:text="${ca.course.department.departmentName}" ></td>
-			<td th:text="${ca.course.courseId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewcourse(viewcourse=${ca.course.courseId})}"
+        		th:text=${ca.course.courseId}></a>
+			</td>
 			<td th:text="${ca.course.courseCode}" ></td>
 			<td th:text="${ca.student.studentId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewstudent(viewstudent=${ca.student.studentId})}"
+        		th:text=${ca.student.studentId}></a>
+			</td>
 			<td th:text="${ca.student.firstName}+' '+${ca.student.middleName}+' '+${ca.student.surname}" ></td>
 		</tr>
 	</table>
@@ -79,12 +89,22 @@
 			<td>Student Name</td>
 		</tr>
 		<tr align="center" th:each="ca: ${courseApplicationPage.content}">
-			<td th:text="${ca.applicationId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewcourseapplication(viewcourseapplication=${ca.applicationId})}"
+        		th:text=${ca.applicationId}></a>
+			</td>
 			<td th:text="${ca.status}" ></td>
 			<td th:text="${ca.course.department.departmentName}" ></td>
-			<td th:text="${ca.course.courseId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewcourse(viewcourse=${ca.course.courseId})}"
+        		th:text=${ca.course.courseId}></a>
+			</td>
 			<td th:text="${ca.course.courseCode}" ></td>
 			<td th:text="${ca.student.studentId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewstudent(viewstudent=${ca.student.studentId})}"
+        		th:text=${ca.student.studentId}></a>
+			</td>
 			<td th:text="${ca.student.firstName}+' '+${ca.student.middleName}+' '+${ca.student.surname}" ></td>
 		</tr>
 	</table>
@@ -118,12 +138,22 @@
 			<td>Student Name</td>
 		</tr>
 		<tr align="center" th:each="ca: ${courseApplicationPage.content}">
-			<td th:text="${ca.applicationId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewcourseapplication(viewcourseapplication=${ca.applicationId})}"
+        		th:text=${ca.applicationId}></a>
+			</td>
 			<td th:text="${ca.status}" ></td>
 			<td th:text="${ca.course.department.departmentName}" ></td>
-			<td th:text="${ca.course.courseId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewcourse(viewcourse=${ca.course.courseId})}"
+        		th:text=${ca.course.courseId}></a>
+			</td>
 			<td th:text="${ca.course.courseCode}" ></td>
 			<td th:text="${ca.student.studentId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewstudent(viewstudent=${ca.student.studentId})}"
+        		th:text=${ca.student.studentId}></a>
+			</td>
 			<td th:text="${ca.student.firstName}+' '+${ca.student.middleName}+' '+${ca.student.surname}" ></td>
 		</tr>
 	</table>

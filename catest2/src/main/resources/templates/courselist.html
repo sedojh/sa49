@@ -38,16 +38,27 @@
 			<td>Course Name</td>
 			<td>Course Size</td>
 			<td>Course Unit</td>
+			<td>Faculty ID</td>
 			<td>Faculty Name</td>
 		</tr>
 		<tr align="center" th:each="cse: ${coursePage.content}">
-			<td th:text="${cse.department.departmentId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewdepartment(viewdepartment=${cse.department.departmentId})}"
+        		th:text=${cse.department.departmentId}></a>
+			</td>
 			<td th:text="${cse.department.departmentName}" ></td>
-			<td th:text="${cse.courseId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewcourse(viewcourse=${cse.courseId})}"
+        		th:text=${cse.courseId}></a>
+			</td>
 			<td th:text="${cse.courseCode}"></td>
 			<td th:text="${cse.courseName}"></td>
 			<td th:text="${cse.courseSize}"></td>
 			<td th:text="${cse.courseUnit}"></td>
+			<td>
+				<a th:href="@{/admin/viewfaculty(viewfaculty=${cse.faculty.facultyId})}"
+        		th:text=${cse.faculty.facultyId}></a>
+			</td>
 			<td th:text="${cse.faculty.firstName}+' '+${cse.faculty.middleName}+' '+${cse.faculty.surname}"></td>
 		</tr>
     	<tr th:if="${coursePage.totalPages > 0}" class="pagination">
@@ -73,16 +84,27 @@
 			<td>Course Name</td>
 			<td>Course Size</td>
 			<td>Course Unit</td>
+			<td>Faculty ID</td>
 			<td>Faculty Name</td>
 		</tr>
 		<tr align="center" th:each="cse: ${coursePage.content}">
-			<td th:text="${cse.department.departmentId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewdepartment(viewdepartment=${cse.department.departmentId})}"
+        		th:text=${cse.department.departmentId}></a>
+			</td>
 			<td th:text="${cse.department.departmentName}" ></td>
-			<td th:text="${cse.courseId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewcourse(viewcourse=${cse.courseId})}"
+        		th:text=${cse.courseId}></a>
+			</td>
 			<td th:text="${cse.courseCode}"></td>
 			<td th:text="${cse.courseName}"></td>
 			<td th:text="${cse.courseSize}"></td>
 			<td th:text="${cse.courseUnit}"></td>
+			<td>
+				<a th:href="@{/admin/viewfaculty(viewfaculty=${cse.faculty.facultyId})}"
+        		th:text=${cse.faculty.facultyId}></a>
+			</td>
 			<td th:text="${cse.faculty.firstName}+' '+${cse.faculty.middleName}+' '+${cse.faculty.surname}"></td>
 		</tr>
     	<tr th:if="${coursePage.totalPages > 0}" class="pagination">

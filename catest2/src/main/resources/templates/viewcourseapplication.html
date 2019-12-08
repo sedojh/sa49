@@ -60,6 +60,10 @@
 		</tr>
     </table>
     
+<form th:action="@{/admin/delete(deleteType='courseApplication',id=${courseApplication.applicationId},)}" th:method="post">
+    <button type="submit" name="confirm" value="no">Delete course application</button>
+</form>
+    
 </div>
 
 <div th:unless="${msg == 'found'}">
