@@ -25,16 +25,18 @@
 <br/>
 <br/>
 
-<h1>Course Information</h1>
-
-<div th:if="${msg == 'found'}">
+<div>
+<form th:action="@{/admin/updatecourse(id=${course.courseId})}" th:method="post">
+	<h1>Course Information</h1>
 	<table>
 		<tr align="center">
 			<td>Department ID</td>
-			<td>Department</td>
+			<td>Department Name</td>
 			<td>Course ID</td>
 			<td>Course Code</td>
 			<td>Course Name</td>
+			<td>Course Start</td>
+			<td>Course End</td>
 			<td>Course Size</td>
 			<td>Course Unit</td>
 			<td>Faculty ID</td>
@@ -42,7 +44,7 @@
 		</tr>
 		<tr align="center">
 			<td>
-				<a th:href="@{/admin/viewcourse(viewcourse=${course.department.departmentId})}"
+				<a th:href="@{/admin/viewcourseapplication(viewcourseapplication=${course.department.departmentId})}"
         		th:text=${course.department.departmentId}></a>
 			</td>
 			<td th:text="${course.department.departmentName}" ></td>
@@ -57,51 +59,40 @@
 			</td>
 			<td th:text="${course.faculty.firstName}+' '+${course.faculty.middleName}+' '+${course.faculty.surname}"></td>
 		</tr>
-    </table>
-    
-<form th:action="@{/admin/delete(deleteType='course',id=${course.courseId},)}" th:method="post">
-    <button type="submit" name="confirm" value="no">Delete course</button>
-</form>
-<form th:action="@{/admin/updatecourse(id=${course.courseId},)}" th:method="post">
-    <button type="submit" name="confirm" value="no">Update course</button>
-</form>
-    
-    <h2>Course Applications for this course</h2>
-    <div th:if="${searchca == 'null'}">
-    <h3>No course applications</h3>
-    </div>
-    <div th:if="${searchca == 'found'}">
-    <table>
+	</table>
+	
+	<h1>Edit Information</h1>
+	<table>
 		<tr align="center">
-			<td>Application ID</td>
-			<td>Status</td>
-			<td>Department</td>
-			<td>Student ID</td>
-			<td>Student Name</td>
+			<td>Department ID</td>
+			<td>Course ID</td>
+			<td>Course Code</td>
+			<td>Course Name</td>
+			<td>Course Start</td>
+			<td>Course End</td>
+			<td>Course Size</td>
+			<td>Course Unit</td>
+			<td>Faculty ID</td>
 		</tr>
-		<tr align="center" th:each="ca: ${courseApplications}">
-			<td>
-				<a th:href="@{/admin/viewcourseapplication(viewcourseapplication=${ca.applicationId})}"
-        		th:text=${ca.applicationId}></a>
-			</td>
-			<td th:text="${ca.status}" ></td>
-			<td th:text="${ca.course.department.departmentName}" ></td>
-			<td>
-				<a th:href="@{/admin/viewstudent(viewstudent=${ca.student.studentId})}"
-        		th:text=${ca.student.studentId}></a>
-			</td>
-			<td th:text="${ca.student.firstName}+' '+${ca.student.middleName}+' '+${ca.student.surname}" ></td>
+		<tr align="center">
+			<td><input type="text" name="updatedid" th:value="${course.department.departmentId}" /></td>
+            <td th:text="${course.courseId}">Course ID</td>
+            <td><input type="text" name="updatecode" th:value="${course.courseCode}" /></td>
+            <td><input type="text" name="updatename" th:value="${course.courseName}" /></td>
+            <td th:text="${course.courseStart}">Course Start</td>
+            <td th:text="${course.courseEnd}">Course End</td>
+            <td><input type="text" name="updatesize" th:value="${course.courseSize}" /></td>
+            <td><input type="text" name="updateunit" th:value="${course.courseUnit}" /></td>
+            <td><input type="text" name="updatefid" th:value="${course.faculty.facultyId}" /></td>
 		</tr>
     </table>
-    </div>
-</div>
+    
+    <h2>Warning</h2>
+    <p>Confirm the changes before clicking update</p>
 
-<div th:unless="${msg == 'found'}">
-    <h2 th:text="'Error in locating course in database'"></h2>
-</div>
+	<button type="submit" name="confirm" value="yes">Update</button>
+</form>
 
 <p><a th:href="@{/admin/home}">Home</a></p>
 <p><a th:href="@{/admin/courselist}">Return to list of courses</a></p>
-
-</body>
-</html>
+</div>

@@ -239,6 +239,40 @@
 <p><a th:href="@{/admin/studentlist}">Return to list of students</a></p>
 </div>
 
+<div th:if="${type == 'grade'}">
+<form th:action="@{/admin/delete(deleteType='grade',id=${grade.gradeId})}" th:method="post">
+	<h1>Grade Information</h1>
+	<table>
+		<tr align="center">
+			<td>Grade ID</td>
+			<td>Grade</td>
+			<td>Course ID</td>
+			<td>Course Code</td>
+			<td>Course Name</td>
+			<td>Student ID</td>
+			<td>Student Name</td>
+		</tr>
+		<tr align="center">
+			<td th:text="${grade.gradeId}"></td>
+			<td th:text="${grade.grade}"></td>
+			<td th:text="${grade.course.courseId}"></td>
+			<td th:text="${grade.course.courseCode}"></td>
+			<td th:text="${grade.course.courseName}"></td>
+			<td th:text="${grade.student.studentId}"></td>
+			<td th:text="${grade.student.firstName}+' '+${grade.student.middleName}+' '+${grade.student.surname}"></td>
+		</tr>
+    </table>
+    
+    <h2>Warning</h2>
+    <p>Deleting the grade will permanently remove it from the database</p>
+
+	<button type="submit" name="confirm" value="yes">Confirm</button>
+</form>
+
+<p><a th:href="@{/admin/home}">Home</a></p>
+<p><a th:href="@{/admin/gradelist}">Return to list of grades</a></p>
+</div>
+
 
 
 </body>

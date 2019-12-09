@@ -49,6 +49,8 @@ public class AdminController {
 	FacultyService fserv;
 	@Autowired
 	CourseService cserv;
+	@Autowired
+	GradeService gserv;
 
 	private static Admin admin = new Admin();
 
@@ -253,6 +255,45 @@ public class AdminController {
 		}
 	}
 
+	@RequestMapping("/gradelist")
+	public String gradelist(Model model, @RequestParam(name = "page") Optional<Integer> page,
+			@RequestParam(name = "size") Optional<Integer> size, @RequestParam(name = "name") Optional<String> name) {
+		model.addAttribute("admin", admin);
+		int currentpage = page.orElse(1);
+		int pagesize = size.orElse(5);
+		String searchname = name.orElse("null");
+		if (searchname.equals("null")) {
+			List<Grade> grades = grepo.findAll();
+			model.addAttribute("grades", grades);
+			model.addAttribute("searched", "null");
+			Page<Grade> gradePage = gserv.findPaginatedGrade(PageRequest.of(currentpage - 1, pagesize), grades);
+			model.addAttribute("gradePage", gradePage);
+			int totalPages = gradePage.getTotalPages();
+			if (totalPages > 0) {
+				List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+				model.addAttribute("pageNumbers", pageNumbers);
+			}
+			return "gradelist";
+		} else {
+			List<Grade> grades = grepo.searchGrade(searchname);
+			if (grades.isEmpty()) {
+				model.addAttribute("found", "nil");
+			} else {
+				model.addAttribute("found", "found");
+			}
+			model.addAttribute("grades", grades);
+			model.addAttribute("searched", searchname);
+			Page<Grade> gradePage = gserv.findPaginatedGrade(PageRequest.of(currentpage - 1, pagesize), grades);
+			model.addAttribute("gradePage", gradePage);
+			int totalPages = gradePage.getTotalPages();
+			if (totalPages > 0) {
+				List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+				model.addAttribute("pageNumbers", pageNumbers);
+			}
+			return "gradelist";
+		}
+	}
+
 	@RequestMapping("/courseapplicationlist")
 	public String courseApplicationlist(Model model, @RequestParam(name = "page") Optional<Integer> page,
 			@RequestParam(name = "size") Optional<Integer> size, @RequestParam(name = "sort") Optional<String> sort) {
@@ -397,6 +438,22 @@ public class AdminController {
 			model.addAttribute("courses", courses);
 		}
 		return "viewfaculty";
+	}
+
+	@RequestMapping("/viewgrade")
+	public String viewGrade(Model model, @RequestParam(name = "viewgrade") Optional<Integer> searchid) {
+		int search = searchid.orElse(0);
+		model.addAttribute("admin", admin);
+		if (search == 0) {
+			String msg = "null";
+			model.addAttribute("msg", msg);
+		} else {
+			Grade grade = grepo.getGradeByGradeId(search);
+			model.addAttribute("grade", grade);
+			String msg = "found";
+			model.addAttribute("msg", msg);
+		}
+		return "viewgrade";
 	}
 
 	@RequestMapping("/viewcourse")
@@ -580,7 +637,107 @@ public class AdminController {
 			}
 			return "redirect:/admin/studentlist";
 		}
+
+		// for deleting grade
+		else if (delete.equals("grade")) {
+			Grade grade = grepo.getGradeByGradeId(id);
+			if (confirm.equals("no")) {
+				model.addAttribute("grade", grade);
+				model.addAttribute("type", "grade");
+				return "confirmdelete";
+			} else {
+				grepo.delete(grade);
+			}
+			return "redirect:/admin/gradelist";
+		}
 		return "redirect:/admin/home";
 	}
 
+	@RequestMapping("/updatedepartment")
+	public String updatedepartment(Model model, @RequestParam(name = "id") Optional<Integer> objectid,
+			@RequestParam(name = "confirm") Optional<String> cfm,
+			@RequestParam(name = "updatename") Optional<String> uname) {
+		model.addAttribute("admin", admin);
+		String confirm = cfm.orElse("no");
+		int id = objectid.orElse(0);
+
+		if (id == 0 || confirm.equals("cancel")) {
+			return "redirect:/admin/home";
+		}
+		// for updating department
+		Department department = drepo.getDepartmentByDepartmentId(id);
+		if (confirm.equals("no")) {
+			model.addAttribute("department", department);
+			return "confirmupdatedepartment";
+		} else {
+			String updatename = uname.orElse("null");
+			department.setDepartmentName(updatename);
+			drepo.save(department);
+			model.addAttribute("department", department);
+			model.addAttribute("msg", "found");
+			List<Course> courses = crepo.getCoursesByDepartmentId(department.getDepartmentId());
+			model.addAttribute("courses", courses);
+			List<Faculty> faculties = frepo.getFacultiesByDepartmentId(department.getDepartmentId());
+			model.addAttribute("faculties", faculties);
+			
+			return "viewdepartment";
+		}
+	}
+	
+	@RequestMapping("/updatecourse")
+	public String updatecourse(Model model, @RequestParam(name = "id") Optional<Integer> objectid,
+			@RequestParam(name = "confirm") Optional<String> cfm,
+			@RequestParam(name = "updatecode") Optional<String> ucode,
+			@RequestParam(name = "updatesize") Optional<Integer> usize,
+			@RequestParam(name = "updateunit") Optional<Integer> uunit,
+			@RequestParam(name = "updatedid") Optional<Integer> udid,
+			@RequestParam(name = "updatefid") Optional<Integer> ufid,
+			@RequestParam(name = "updatename") Optional<String> uname) {
+		model.addAttribute("admin", admin);
+		String confirm = cfm.orElse("no");
+		int id = objectid.orElse(0);
+
+		if (id == 0 || confirm.equals("cancel")) {
+			return "redirect:/admin/home";
+		}
+		// for updating course
+		Course course = crepo.getCourseByCourseId(id);
+		if (confirm.equals("no")) {
+			model.addAttribute("course", course);
+			return "confirmupdatecourse";
+		} else {
+			String updatecode = ucode.orElse("null");
+			int updatesize = usize.orElse(0);
+			int updateunit = uunit.orElse(0);
+			int updatedid = udid.orElse(0);
+			int updatefid = ufid.orElse(0);
+			String updatename = uname.orElse("null");
+			
+			if(updatesize == 0 || updateunit == 0 || updatedid == 0 || updatefid == 0||updatename.equals("null")) {
+				return "redirect:/admin/courselist";
+			}
+			course.setCourseCode(updatecode);
+			course.setCourseSize(updatesize);
+			course.setCourseUnit(updateunit);
+			course.setCourseName(updatename);
+			Department department = drepo.getDepartmentByDepartmentId(updatedid);
+			course.setDepartment(department);
+			Faculty faculty = frepo.getByFacultyId(updatefid);
+			course.setFaculty(faculty);
+			crepo.save(course);
+			model.addAttribute("course", course);
+			model.addAttribute("msg", "found");
+			List<CourseApplication> courseApplications = carepo.getCourseApplicationsByCourseId(course.getCourseId());
+			if (courseApplications.isEmpty()) {
+				model.addAttribute("searchca", "null");
+			} else {
+				model.addAttribute("searchca", "found");
+			}
+			model.addAttribute("courseApplications", courseApplications);
+			return "viewcourse";
+		}
+		
+	}
+	
+	
 }

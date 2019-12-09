@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+
+<table>
+<tr>
+<td th:text="${faculty.facultyId}"></td>
+<td th:text="${faculty.firstName}"></td>
+<td th:text="${faculty.middleName}"></td>
+<td th:text="${faculty.surname}"></td>
+</tr>
+</table>
+
+<table>
+		<tr align="center">
+			<td>Grade ID</td>
+			<td>Grade</td>
+			<td>Course ID</td>
+			<td>Course Code</td>
+			<td>Course Name</td>
+			<td>Student ID</td>
+			<td>Student Name</td>
+		</tr>
+		<tr align="center" th:each="grade: ${gradePage.content}">
+			<td th:text="${grade.gradeId}"></td>
+			<td th:text="${grade.grade}"></td>
+			<td th:text="${grade.course.courseId}"></td>
+			<td th:text="${grade.course.courseCode}"></td>
+			<td th:text="${grade.course.courseName}"></td>
+			<td th:text="${grade.student.studentId}"></td>
+			<td th:text="${grade.student.firstName}+' '+${grade.student.middleName}+' '+${grade.student.surname}"></td>
+		</tr>
+    	<tr th:if="${gradePage.totalPages > 0}" class="pagination">
+    		<td th:each="pageNumber : ${pageNumbers}">
+    			<a th:href="@{/faculty/showgrades(size=${gradePage.size}, page=${pageNumber})}"
+        		th:text=${pageNumber}
+        		th:class="${pageNumber==gradePage.number + 1} ? active"></a>
+    		</td>
+    	</tr>
+    </table>
+
+</body>
+</html>

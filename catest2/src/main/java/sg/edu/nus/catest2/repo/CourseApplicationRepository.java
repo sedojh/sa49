@@ -16,6 +16,10 @@ public interface CourseApplicationRepository extends JpaRepository<CourseApplica
 	@Query("select ca from CourseApplication ca where ca.course.courseId = :courseId")
 	List<CourseApplication> getCourseApplicationsByCourseId(@Param("courseId") int courseId);
 	
+	@Query("select ca from CourseApplication ca where ca.course.courseId = :courseId and ca.status = :status")
+	List<CourseApplication> getCourseApplicationsByCourseIdAndStatus(@Param("courseId") int courseId,
+			@Param("status") String status);
+	
 	CourseApplication getCourseApplicationByApplicationId(int applicationId);
 
 }

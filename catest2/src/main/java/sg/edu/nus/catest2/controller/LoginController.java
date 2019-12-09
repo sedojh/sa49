@@ -56,11 +56,11 @@ public class LoginController {
 				if (user.getAdminId() == 0 && user.getFacultyId() == 0) {
 					sessionobj.setSessionId(user.getStudentId());
 					sessionobj.setUserType("student");
-					return "redirect:/admin/info";
+					return "redirect:/student/home";
 				} else if (user.getAdminId() == 0 && user.getStudentId() == 0) {
 					sessionobj.setSessionId(user.getFacultyId());
 					sessionobj.setUserType("faculty");
-					return "redirect:/admin/info";
+					return "redirect:/faculty/home";
 				} else {
 					sessionobj.setSessionId(user.getAdminId());
 					sessionobj.setUserType("admin");
