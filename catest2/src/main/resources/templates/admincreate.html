@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<table>
+	<tr>
+		<td>Admin ID</td>
+		<td>Name</td>
+		<td>Email</td>
+		<td>Mobile Number</td>
+	</tr>
+	<tr align="center">
+		<td th:text="${admin.adminId}">Admin Id</td>
+		<td th:text="${admin.firstName}+' '+${admin.middleName}+' '+${admin.surname}">Admin Name</td>
+		<td th:text="${admin.email}">Admin Email</td>
+		<td th:text="${admin.mobileNum}">Admin Mobile Number</td>
+	</tr>
+</table>
+
+<form th:action="@{/admin/create}" th:method="post">
+<table>
+	<tr>
+		<th>Department</th>
+		<th>Course</th>
+		<th>Student</th>
+		<th>Faculty</th>
+	</tr>
+	<tr>
+		<td><button type="submit" name="createType" value="department">Create New</button></td>
+		<td><button type="submit" name="createType" value="course">Create New</button></td>
+		<td><button type="submit" name="createType" value="student">Create New</button></td>
+		<td><button type="submit" name="createType" value="faculty">Create New</button></td>
+	</tr>
+</table>
+
+</form>
+
+</body>
+</html>

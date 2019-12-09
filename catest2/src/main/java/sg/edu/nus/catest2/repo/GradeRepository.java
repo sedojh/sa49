@@ -23,5 +23,8 @@ public interface GradeRepository extends JpaRepository<Grade, Integer> {
 	@Query("select g from Grade g where g.course.courseName like %?1% or g.course.courseCode like %?1% or "
 			+ "g.student.firstName like %?1% or g.student.middleName like %?1% or g.student.surname like %?1% ")
 	List<Grade> searchGrade(String name);
+	
+	@Query("select g from Grade g where g.student.studentId = :studentId and g.course.courseId = :courseId")
+	Grade getGradeByStudentIdAndCourseId(@Param("studentId") int studentId,@Param("courseId") int courseId);
 
 }

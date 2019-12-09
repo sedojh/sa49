@@ -25,15 +25,13 @@
 <br/>
 <br/>
 
-<h1>Course Application Information</h1>
-
-<div th:if="${msg == 'found'}">
+<div>
+<form th:action="@{/admin/updatecourseapplication(id=${courseApplication.applicationId})}" th:method="post">
+	<h1>Course Application Information</h1>
 	<table>
 		<tr align="center">
 			<td>Application ID</td>
 			<td>Status</td>
-			<td>Department ID</td>
-			<td>Department</td>
 			<td>Course ID</td>
 			<td>Course Code</td>
 			<td>Student ID</td>
@@ -58,23 +56,30 @@
 			</td>
 			<td th:text="${courseApplication.student.firstName}+' '+${courseApplication.student.middleName}+' '+${courseApplication.student.surname}" ></td>
 		</tr>
+	</table>
+	
+	<h1>Edit Information</h1>
+	<table>
+		<tr align="center">
+			<td>Application ID</td>
+			<td>Status</td>
+			<td>Course ID</td>
+			<td>Student ID</td>
+		</tr>
+		<tr align="center">
+			<td th:text="${courseApplication.applicationId}">Course Application ID</td>
+			<td><input type="text" name="updatestatus" th:value="${courseApplication.status}" /></td>
+			<td><input type="text" name="updatecid" th:value="${courseApplication.course.courseId}" /></td>
+			<td><input type="text" name="updatesid" th:value="${courseApplication.student.studentId}" /></td>
+		</tr>
     </table>
     
-<form th:action="@{/admin/delete(deleteType='courseApplication',id=${courseApplication.applicationId})}" th:method="post">
-    <button type="submit" name="confirm" value="no">Delete course application</button>
-</form>
-<form th:action="@{/admin/updatecourseapplication(id=${courseApplication.applicationId})}" th:method="post">
-    <button type="submit" name="confirm" value="no">Update course application</button>
-</form>
-    
-</div>
+    <h2>Warning</h2>
+    <p>Confirm the changes before clicking update</p>
 
-<div th:unless="${msg == 'found'}">
-    <h2 th:text="'Error in locating course application in database'"></h2>
-</div>
+	<button type="submit" name="confirm" value="yes">Update</button>
+</form>
 
 <p><a th:href="@{/admin/home}">Home</a></p>
 <p><a th:href="@{/admin/courseapplicationlist}">Return to list of course applications</a></p>
-
-</body>
-</html>
+</div>

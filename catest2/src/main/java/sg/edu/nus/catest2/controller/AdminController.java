@@ -679,11 +679,11 @@ public class AdminController {
 			model.addAttribute("courses", courses);
 			List<Faculty> faculties = frepo.getFacultiesByDepartmentId(department.getDepartmentId());
 			model.addAttribute("faculties", faculties);
-			
+
 			return "viewdepartment";
 		}
 	}
-	
+
 	@RequestMapping("/updatecourse")
 	public String updatecourse(Model model, @RequestParam(name = "id") Optional<Integer> objectid,
 			@RequestParam(name = "confirm") Optional<String> cfm,
@@ -712,8 +712,8 @@ public class AdminController {
 			int updatedid = udid.orElse(0);
 			int updatefid = ufid.orElse(0);
 			String updatename = uname.orElse("null");
-			
-			if(updatesize == 0 || updateunit == 0 || updatedid == 0 || updatefid == 0||updatename.equals("null")) {
+
+			if (updatesize == 0 || updateunit == 0 || updatedid == 0 || updatefid == 0 || updatename.equals("null")) {
 				return "redirect:/admin/courselist";
 			}
 			course.setCourseCode(updatecode);
@@ -736,8 +736,298 @@ public class AdminController {
 			model.addAttribute("courseApplications", courseApplications);
 			return "viewcourse";
 		}
-		
+
 	}
-	
-	
+
+	@RequestMapping("/updatestudent")
+	public String updatestudent(Model model, @RequestParam(name = "id") Optional<Integer> objectid,
+			@RequestParam(name = "confirm") Optional<String> cfm,
+			@RequestParam(name = "updatefname") Optional<String> ufname,
+			@RequestParam(name = "updatemname") Optional<String> umname,
+			@RequestParam(name = "updatesname") Optional<String> usname,
+			@RequestParam(name = "updategender") Optional<String> ugender,
+			@RequestParam(name = "updateaddress") Optional<String> uaddress,
+			@RequestParam(name = "updateage") Optional<Integer> uage,
+			@RequestParam(name = "updateemail") Optional<String> uemail,
+			@RequestParam(name = "updatemobile") Optional<Integer> umobile) {
+		model.addAttribute("admin", admin);
+		String confirm = cfm.orElse("no");
+		int id = objectid.orElse(0);
+
+		if (id == 0 || confirm.equals("cancel")) {
+			return "redirect:/admin/home";
+		}
+		// for updating student
+		Student student = srepo.getStudentByStudentId(id);
+		if (confirm.equals("no")) {
+			model.addAttribute("student", student);
+			return "confirmupdatestudent";
+		} else {
+			String updatefname = ufname.orElse("null");
+			String updatemname = umname.orElse("null");
+			String updatesname = usname.orElse("null");
+			String updategender = ugender.orElse("null");
+			String updateaddress = uaddress.orElse("null");
+			String updateemail = uemail.orElse("null");
+			int updateage = uage.orElse(0);
+			int updatemobile = umobile.orElse(0);
+
+			if (updateage == 0 || updatemobile == 0 || updatefname.equals("null") || updatemname.equals("null")
+					|| updatesname.equals("null") || updategender.equals("null") || updateaddress.equals("null")
+					|| updateemail.equals("null")) {
+				return "redirect:/admin/studentlist";
+			}
+			student.setFirstName(updatefname);
+			student.setMiddleName(updatemname);
+			student.setSurname(updatesname);
+			student.setGender(updategender);
+			student.setAge(updateage);
+			student.setAddress(updateaddress);
+			student.setEmail(updateemail);
+			srepo.save(student);
+			model.addAttribute("student", student);
+			model.addAttribute("msg", "found");
+			List<CourseApplication> courseApplications = carepo
+					.getCourseApplicationsByStudentId(student.getStudentId());
+			if (courseApplications.isEmpty()) {
+				model.addAttribute("searchca", "null");
+			} else {
+				model.addAttribute("searchca", "found");
+			}
+			model.addAttribute("courseApplications", courseApplications);
+			return "viewstudent";
+		}
+
+	}
+
+	@RequestMapping("/updatefaculty")
+	public String updatefaculty(Model model, @RequestParam(name = "id") Optional<Integer> objectid,
+			@RequestParam(name = "confirm") Optional<String> cfm,
+			@RequestParam(name = "updatefname") Optional<String> ufname,
+			@RequestParam(name = "updatemname") Optional<String> umname,
+			@RequestParam(name = "updatesname") Optional<String> usname,
+			@RequestParam(name = "updatedid") Optional<Integer> udid,
+			@RequestParam(name = "updateemail") Optional<String> uemail,
+			@RequestParam(name = "updatemobile") Optional<Integer> umobile) {
+		model.addAttribute("admin", admin);
+		String confirm = cfm.orElse("no");
+		int id = objectid.orElse(0);
+
+		if (id == 0 || confirm.equals("cancel")) {
+			return "redirect:/admin/home";
+		}
+		// for updating faculty
+		Faculty faculty = frepo.getByFacultyId(id);
+		if (confirm.equals("no")) {
+			model.addAttribute("faculty", faculty);
+			return "confirmupdatefaculty";
+		} else {
+			String updatefname = ufname.orElse("null");
+			String updatemname = umname.orElse("null");
+			String updatesname = usname.orElse("null");
+			String updateemail = uemail.orElse("null");
+			int updatemobile = umobile.orElse(0);
+			int updatedid = udid.orElse(0);
+
+			if (updatedid == 0 || updatemobile == 0 || updatefname.equals("null") || updatemname.equals("null")
+					|| updatesname.equals("null") || updateemail.equals("null")) {
+				return "redirect:/admin/studentlist";
+			}
+
+			faculty.setFirstName(updatefname);
+			faculty.setMiddleName(updatemname);
+			faculty.setSurname(updatesname);
+			faculty.setEmail(updateemail);
+			faculty.setMobileNum(updatemobile);
+			Department department = drepo.getDepartmentByDepartmentId(updatedid);
+			faculty.setDepartment(department);
+			frepo.save(faculty);
+			model.addAttribute("faculty", faculty);
+			model.addAttribute("msg", "found");
+			List<Course> courses = crepo.getCoursesByFacultyId(faculty.getFacultyId());
+			if (courses.isEmpty()) {
+				model.addAttribute("searchcourse", "null");
+			} else {
+				model.addAttribute("searchcourse", "found");
+			}
+			model.addAttribute("courses", courses);
+			return "viewfaculty";
+		}
+
+	}
+
+	@RequestMapping("/updatecourseapplication")
+	public String updatecourseapplication(Model model, @RequestParam(name = "id") Optional<Integer> objectid,
+			@RequestParam(name = "confirm") Optional<String> cfm,
+			@RequestParam(name = "updatestatus") Optional<String> ustatus,
+			@RequestParam(name = "updatecid") Optional<Integer> ucid,
+			@RequestParam(name = "updatesid") Optional<Integer> usid) {
+		model.addAttribute("admin", admin);
+		String confirm = cfm.orElse("no");
+		int id = objectid.orElse(0);
+
+		if (id == 0 || confirm.equals("cancel")) {
+			return "redirect:/admin/home";
+		}
+		// for updating course application
+		CourseApplication courseApplication = carepo.getCourseApplicationByApplicationId(id);
+		if (confirm.equals("no")) {
+			model.addAttribute("courseApplication", courseApplication);
+			return "confirmupdatecourseapplication";
+		} else {
+			String updatestatus = ustatus.orElse("null");
+			int updatecid = ucid.orElse(0);
+			int updatesid = usid.orElse(0);
+			if (updatecid == 0 || updatesid == 0 || updatestatus.equals("null")) {
+				return "redirect:/admin/courseapplicationlist";
+			}
+			courseApplication.setStatus(updatestatus);
+			Course course = crepo.getCourseByCourseId(updatecid);
+			courseApplication.setCourse(course);
+			Student student = srepo.getStudentByStudentId(updatesid);
+			courseApplication.setStudent(student);
+			carepo.save(courseApplication);
+			model.addAttribute("courseApplication", courseApplication);
+			model.addAttribute("msg", "found");
+			return "viewcourseapplication";
+		}
+
+	}
+
+	@RequestMapping("/updategrade")
+	public String updategrade(Model model, @RequestParam(name = "id") Optional<Integer> objectid,
+			@RequestParam(name = "confirm") Optional<String> cfm,
+			@RequestParam(name = "updategrade") Optional<String> ugrade,
+			@RequestParam(name = "updatecid") Optional<Integer> ucid,
+			@RequestParam(name = "updatesid") Optional<Integer> usid,
+			@RequestParam(name = "updatefid") Optional<Integer> ufid) {
+		model.addAttribute("admin", admin);
+		String confirm = cfm.orElse("no");
+		int id = objectid.orElse(0);
+		if (id == 0 || confirm.equals("cancel")) {
+			return "redirect:/admin/home";
+		}
+		// for updating grade
+		Grade grade = grepo.getGradeByGradeId(id);
+		if (confirm.equals("no")) {
+			model.addAttribute("grade", grade);
+			return "confirmupdategrade";
+		} else {
+			String updategrade = ugrade.orElse("null");
+			int updatecid = ucid.orElse(0);
+			int updatesid = usid.orElse(0);
+			int updatefid = ufid.orElse(0);
+			if (updatecid == 0 || updatesid == 0 || updategrade.equals("null") || updatefid == 0) {
+				return "redirect:/admin/gradelist";
+			}
+			grade.setGrade(updategrade);
+			Course course = crepo.getCourseByCourseId(updatecid);
+			grade.setCourse(course);
+			Student student = srepo.getStudentByStudentId(updatesid);
+			grade.setStudent(student);
+			Faculty faculty = frepo.getByFacultyId(updatefid);
+			grade.setFaculty(faculty);
+			grepo.save(grade);
+			model.addAttribute("grade", grade);
+			model.addAttribute("msg", "found");
+			return "viewgrade";
+		}
+
+	}
+
+	@RequestMapping("/create")
+	public String create(Model model, @RequestParam("createType") Optional<String> type) {
+		model.addAttribute("admin", admin);
+		String createType = type.orElse("null");
+		if (createType.equals("null")) {
+			return "admincreate";
+		} else {
+			if (createType.equals("department")) {
+				int currentpage = 1;
+				int pagesize = 5;
+				List<Department> departments = drepo.findAll();
+				model.addAttribute("departments", departments);
+				Page<Department> departmentPage = dserv.findPaginatedDepartment(PageRequest.of(currentpage - 1, pagesize),
+						departments);
+				model.addAttribute("departmentPage", departmentPage);
+				int totalPages = departmentPage.getTotalPages();
+				if (totalPages > 0) {
+					List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+					model.addAttribute("pageNumbers", pageNumbers);
+				}
+				return "createdepartment";
+			} else if (createType.equals("course")) {
+				List<Course> courses = crepo.findAll();
+				model.addAttribute("courses", courses);
+				return "createcourse";
+			} else if (createType.equals("student")) {
+				List<Student> students = srepo.findAll();
+				model.addAttribute("students", students);
+				return "createstudent";
+			} else {
+				List<Faculty> faculties = frepo.findAll();
+				model.addAttribute("faculties", faculties);
+				return "createfaculty";
+			}
+		}
+	}
+
+	@RequestMapping("/createdepartment")
+	public String createDepartment(Model model, 
+			@RequestParam("id") Optional<Integer> id,
+			@RequestParam("name") Optional<String> name,
+			@RequestParam(name = "page") Optional<Integer> page,
+			@RequestParam(name = "size") Optional<Integer> size,
+			@RequestParam(name = "flag") String flag) {
+		model.addAttribute("admin", admin);
+		int departmentId = id.orElse(0);
+		String departmentName = name.orElse("null");
+		int currentpage = page.orElse(1);
+		int pagesize = size.orElse(5);
+
+		if (departmentId <= 0 || departmentName.equals("null") || departmentName.isBlank()) {
+			if(flag.equals("null")) {
+				model.addAttribute("error", "null");
+			}
+			else {
+				model.addAttribute("error", "error");
+			}
+			model.addAttribute("msg", "Department ID/Name is not valid");
+			List<Department> departments = drepo.findAll();
+			model.addAttribute("departments", departments);
+			Page<Department> departmentPage = dserv.findPaginatedDepartment(PageRequest.of(currentpage - 1, pagesize),
+					departments);
+			model.addAttribute("departmentPage", departmentPage);
+			int totalPages = departmentPage.getTotalPages();
+			if (totalPages > 0) {
+				List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+				model.addAttribute("pageNumbers", pageNumbers);
+			}
+			return "createdepartment";
+		}
+
+		else {
+			if (drepo.getDepartmentByDepartmentId(departmentId) == null) {
+				Department department = new Department();
+				department.setDepartmentId(departmentId);
+				department.setDepartmentName(departmentName);
+				drepo.save(department);
+				return "redirect:/admin/departmentlist";
+			} else {
+				model.addAttribute("error", "error");
+				model.addAttribute("msg", "ID already exists!");
+				List<Department> departments = drepo.findAll();
+				model.addAttribute("departments", departments);
+				Page<Department> departmentPage = dserv.findPaginatedDepartment(PageRequest.of(currentpage - 1, pagesize),
+						departments);
+				model.addAttribute("departmentPage", departmentPage);
+				int totalPages = departmentPage.getTotalPages();
+				if (totalPages > 0) {
+					List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+					model.addAttribute("pageNumbers", pageNumbers);
+				}
+				return "createdepartment";
+			}
+		}
+	}
 }

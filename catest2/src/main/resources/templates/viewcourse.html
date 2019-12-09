@@ -59,10 +59,10 @@
 		</tr>
     </table>
     
-<form th:action="@{/admin/delete(deleteType='course',id=${course.courseId},)}" th:method="post">
+<form th:action="@{/admin/delete(deleteType='course',id=${course.courseId})}" th:method="post">
     <button type="submit" name="confirm" value="no">Delete course</button>
 </form>
-<form th:action="@{/admin/updatecourse(id=${course.courseId},)}" th:method="post">
+<form th:action="@{/admin/updatecourse(id=${course.courseId})}" th:method="post">
     <button type="submit" name="confirm" value="no">Update course</button>
 </form>
     

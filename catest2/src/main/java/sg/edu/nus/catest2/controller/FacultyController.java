@@ -83,7 +83,7 @@ public class FacultyController {
 		List<Grade> grades = new ArrayList<>();
 		//for each courseapplication(which are approved), add them to the grades list with studentId
 		for(CourseApplication ca : courseApplications) {
-			grades.add(grepo.getGradeByStudentId(ca.getStudent().getStudentId()));
+			grades.add(grepo.getGradeByStudentIdAndCourseId(ca.getStudent().getStudentId(),ca.getCourse().getCourseId()));
 		}
 		//pass the grades list to the view by adding to the model
 		model.addAttribute("grades", grades);

@@ -25,9 +25,9 @@
 <br/>
 <br/>
 
-<h1>Student Information</h1>
-
-<div th:if="${msg == 'found'}">
+<div>
+<form th:action="@{/admin/updatestudent(id=${student.studentId})}" th:method="post">
+	<h1>Student Information</h1>
 	<table>
 		<tr align="center">
 			<td>Student ID</td>
@@ -47,48 +47,40 @@
 			<td th:text="${student.mobileNum}" ></td>
 			<td th:text="${student.address}" ></td>
 		</tr>
-    </table>
-    
-<form th:action="@{/admin/delete(deleteType='student',id=${student.studentId})}" th:method="post">
-    <button type="submit" name="confirm" value="no">Delete student</button>
-</form>
-<form th:action="@{/admin/updatestudent(id=${student.studentId})}" th:method="post">
-    <button type="submit" name="confirm" value="no">Update student</button>
-</form>
-    
-    <h2>Courses Applied</h2>
-    <div th:if="${searchca == 'null'}">
-    <h3>No courses applied</h3>
-    </div>
-    <div th:if="${searchca == 'found'}">
-    <table>
+	</table>
+	
+	<h1>Edit Information</h1>
+	<table>
 		<tr align="center">
-			<td>Application ID</td>
-			<td>Status</td>
-			<td>Department</td>
-			<td>Course ID</td>
-			<td>Course Code</td>
+			<td>Student ID</td>
+			<td>Student First Name</td>
+			<td>Student Middle Name</td>
+			<td>Student Surname</td>
+			<td>Age</td>
+			<td>Gender</td>
+			<td>Email</td>
+			<td>Mobile Number</td>
+			<td>Address</td>	
 		</tr>
-		<tr align="center" th:each="ca: ${courseApplications}">
-			<td>
-				<a th:href="@{/admin/viewcourseapplication(viewcourseapplication=${ca.applicationId})}"
-        		th:text=${ca.applicationId}></a>
-			</td>
-			<td th:text="${ca.status}" ></td>
-			<td th:text="${ca.course.department.departmentName}" ></td>
-			<td th:text="${ca.course.courseId}" ></td>
-			<td th:text="${ca.course.courseCode}" ></td>
+		<tr align="center">
+			<td th:text="${student.studentId}">Student ID</td>
+			<td><input type="text" name="updatefname" th:value="${student.firstName}" /></td>
+			<td><input type="text" name="updatemname" th:value="${student.middleName}" /></td>
+			<td><input type="text" name="updatesname" th:value="${student.surname}" /></td>
+			<td><input type="text" name="updateage" th:value="${student.age}" /></td>
+			<td><input type="text" name="updategender" th:value="${student.gender}" /></td>
+			<td><input type="text" name="updateemail" th:value="${student.email}" /></td>
+			<td><input type="text" name="updatemobile" th:value="${student.mobileNum}" /></td>
+			<td><input type="text" name="updateaddress" th:value="${student.address}" /></td>
 		</tr>
     </table>
-    </div>
-</div>
+    
+    <h2>Warning</h2>
+    <p>Confirm the changes before clicking update</p>
 
-<div th:unless="${msg == 'found'}">
-    <h2 th:text="'Error in locating student in database'"></h2>
-</div>
+	<button type="submit" name="confirm" value="yes">Update</button>
+</form>
 
 <p><a th:href="@{/admin/home}">Home</a></p>
 <p><a th:href="@{/admin/studentlist}">Return to list of students</a></p>
-
-</body>
-</html>
+</div>
