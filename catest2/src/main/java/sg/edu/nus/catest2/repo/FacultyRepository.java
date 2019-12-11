@@ -1,5 +1,6 @@
 package sg.edu.nus.catest2.repo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,6 +19,8 @@ public interface FacultyRepository extends JpaRepository<Faculty, Integer>{
 	
 	@Query("select f from Faculty f where f.department.departmentId = :departmentId")
 	List<Faculty> getFacultiesByDepartmentId(@Param("departmentId") int departmentId);
+
+	ArrayList<FacultyLeave> getFacultyLeaveByFacultyId(int fId);
 	
 	
 	

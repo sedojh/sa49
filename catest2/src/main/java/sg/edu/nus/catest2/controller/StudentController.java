@@ -437,6 +437,11 @@ public class StudentController {
 				 Student temp = stuservice.getStudentByStudentId(stuId);
 				 model.addAttribute("student", temp);
 			 }
+			 if(session.getUserType().equals("faculty")) {
+				 model.addAttribute("type", "faculty");
+				 Student temp = stuservice.getStudentByStudentId(stuId);
+				 model.addAttribute("student", temp);
+			 }
 			 else {
 				 model.addAttribute("type", "student");
 			 }

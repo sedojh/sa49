@@ -49,11 +49,7 @@
 		</tr>
     </table>
     
-<form th:action="@{/faculty/viewcourse}">
-<input type="text" th:name="facultyviewcourse"/> 
-<input type="submit"/> 
-</form>
-    
+
     <h2>List of Students for this course</h2>
     <div th:if="${searchca == 'null'}">
     <h3>No student in this course</h3>
@@ -77,11 +73,17 @@
 			<td><a th:href="@{/faculty/viewstudent(facultyviewstudent=${g.student.studentId})}" th:text=${g.student.studentId}></a></td>
 			<td><a th:href="@{/faculty/viewstudent(facultyviewstudent=${g.student.studentId})}" th:text="${g.student.firstName}+' '+${g.student.middleName}+' '+${g.student.surname}" ></a></td>
 			
-			<td><form th:action="@{/faculty/editgrade(gradeid=${g.gradeId}, grade=${g.grade})}" th:method="post"><button type="submit">Update Grade</button></form></td>
-<!-- 			<input type="hidden" th:field="*{gradeId}" name="gradeId" value="${g.gradeId}" th:name="*{gradeId}" th:attr="gradeId='${g.gradeId}'" th:value="${g.gradeId}"> -->
-<!-- 			<td><a th:href="@{/faculty/editgrade(gradeid=${g.gradeId}, grade=${g.grade})}">Update Grade</a></td> -->
-<!-- 			<td><a th:href="@{'/faculty/editgrade/'+${g.gradeId}+'/'+${g.grade}}">Update Grade</a></td> -->
-<!-- 	th:action="@{/faculty/editgrade(gradeid=${g.gradeId})}"  -->
+			<td>
+				<form th:action="@{/faculty/editgrade(gradeid=${g.gradeId}, grade=${g.grade})}" th:method="post">
+				<button type="submit">Update Grade</button>
+				</form>
+			</td>
+			<td>
+				<form th:action="@{/student/calculateGpa/}+${g.student.studentId}" th:method="post">
+				<button type="submit">View EduRec</button>
+				</form>
+			</td>
+
 		</tr>
 		
 		   	<tr th:if="${gradePage.totalPages > 0}" class="pagination">

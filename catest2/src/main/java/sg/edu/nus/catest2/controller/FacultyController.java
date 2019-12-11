@@ -74,17 +74,11 @@ public class FacultyController {
 		}
 
 		faculty = frepo.getByFacultyId(session.getSessionId());
-		//List<Course> courses = crepo.findAllById(faculty.getFacultyId());
-		//Optional<Faculty> faculty = frepo.findById(session.getSessionId());	
+		
 		model.addAttribute("faculty", faculty);
-//		ArrayList<Department> departments = new ArrayList<Department>();
+
 		ArrayList<Course> courses = (ArrayList<Course>) crepo.findCoursesByFacultyId(faculty.getFacultyId());
-		
-//		ArrayList<Course> a = (ArrayList<Course>) crepo.getCoursesByFacultyIdForFaculty(faculty.getFacultyId());
-//		for(Course b : a) {
-//			System.out.println(b);
-//		}
-		
+	
 		int currentpage = page.orElse(1);
 		int pagesize = size.orElse(5);
 		Page<Course> coursePage = cserv.findPaginatedCourse
@@ -97,15 +91,7 @@ public class FacultyController {
                 .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
-        
-        
-		
-//		model.addAttribute("courses", courses);
-//		for (Course c : courses) {
-//			departments.add(c.getDepartment());
-//		}
-//		model.addAttribute("departments", departments);  
-		return "facultyhome";
+	return "facultyhome";
 		
 	}
 	
@@ -129,36 +115,9 @@ public class FacultyController {
 
 	}
 	
-//	@GetMapping("/editgrade/{gradeid}/{grade}")
-//	public String editGrade(@PathVariable("gradeid") int gid,@PathVariable("grade") String grade ,BindingResult bindingResult) {
-//		if (bindingResult.hasErrors()) {
-//			return "facultyviewcourse";
-//		}else {
-//			
-//			return "redirect:/faculty/viewcourse/"+6;
-//		}
-//
-//	}
-	
-//	@GetMapping("/editgrade")
-//	public String editGrade(@RequestParam(name = "gradeid") int gid, @RequestParam(name="grade") String g) {
-//		Grade grade = new Grade();
-//		grade.setFaculty(faculty);
-//		grade.setGradeId(gid);
-//		grade.setGrade(g.toUpperCase());
-//		Grade gre = grepo.findByGradeId(gid);
-//		grade.setCourse(gre.getCourse());
-//		grade.setStudent(gre.getStudent());
-//		gserv.save(grade);
-//		return "redirect:/faculty/viewcourse?facultyviewcourse="+gre.getCourse().getCourseId();
-//	}
 	@PostMapping("/editgrade")
 	public String editGrade(Model model, @RequestParam(name = "gradeid") int gid, @RequestParam(name = "grade")String g) {
 
-//		model.addAttribute("faculty", faculty);
-//		model.addAttribute("gradePage", this.gradePage);
-//		model.addAttribute("course", this.course);
-//		System.out.println(course);
 		model.addAttribute("faculty", faculty);
 		Grade grade = new Grade();
 		grade.setFaculty(faculty);
@@ -174,7 +133,7 @@ public class FacultyController {
 	@RequestMapping("/updategrade")
 	public String updategrade(Model model, @RequestParam("id") int id,
 			@RequestParam("grade") String grade) {
-//		Grade grade2 = grepo.findByGradeId(gid);
+
 		Grade ugrade = grepo.findByGradeId(id);
 		ugrade.setGrade(grade);
 		grepo.save(ugrade);
@@ -252,23 +211,11 @@ public class FacultyController {
 				model.addAttribute("searchca", "found");
 			}
 			model.addAttribute("courseApplications", courseApplications);
-//			ArrayList<Student> students = new ArrayList<Student>();
-//			for (CourseApplication ca: courseApplications) {
-//				students.add(ca.getStudent());
-//			}
 			ArrayList<Grade> grades = new ArrayList<Grade>();
 			for (CourseApplication ca : courseApplications) {
 				grades.add(grepo.findByCourseIdStudentId(ca.getCourse().getCourseId(), ca.getStudent().getStudentId()));
 			}
-//			ArrayList<Course> courses = crepo.findCoursesByFacultyId(faculty.getFacultyId());
-//			for (Course c : courses) {
-//				for (Student s : students) {
-//					grades.add( grepo.findByCourseIdStudentId(c.getCourseId(), s.getStudentId()));
-//					System.out.println(c);
-//					System.out.println(s);
-//					System.out.println(grepo.findByCourseIdStudentId(c.getCourseId(), s.getStudentId()));
-//				}
-//			}
+
 
 			model.addAttribute("grades", grades);
 			
@@ -288,14 +235,6 @@ public class FacultyController {
 		} else {
 			Course course = crepo.getCourseByCourseIdAndFacultyId(search, faculty.getFacultyId());
 			model.addAttribute("course", course);
-//			Grade grade = new Grade() {};
-//			model.addAttribute("grade2",grade);
-//			if (course.equals(null)) {
-//				model.addAttribute("searchca", "null");
-//			} else {
-//				model.addAttribute("searchca", "found");
-//			}
-//			model.addAttribute("val", (Integer)course.getCourseId());
 			String msg = "found";
 			model.addAttribute("msg", msg);
 			List<CourseApplication> courseApplications = carepo.findByCourseIdAndFacultyId(search, faculty.getFacultyId());
@@ -330,6 +269,27 @@ public class FacultyController {
 			
 		}
 		return "facultyviewcourse";
+	}
+	
+	@GetMapping("/leaveList/{fId}")
+	public String facultyLeaveRecord(Model model,@PathVariable("fId") int fId) {
+		
+		System.out.println("Faculty Leave Record:");
+		ArrayList<FacultyLeave> fLeaveList=(ArrayList<FacultyLeave>) fserv.getFacultyLeaveByFacultyId(fId);
+		model.addAttribute("faculty", faculty);
+		model.addAttribute("fLeaveList",fLeaveList);
+					
+		return "facultyLeaveRec";
+	}
+	@GetMapping("/applyLeave/{fId}")
+	public String applyLeave(Model model,@PathVariable("fId") int fId) {
+		
+		System.out.println("Faculty Apply:");
+		ArrayList<FacultyLeave> fLeaveList=(ArrayList<FacultyLeave>) fserv.getFacultyLeaveByFacultyId(fId);
+		model.addAttribute("faculty", faculty);
+		model.addAttribute("fLeaveList",fLeaveList);
+					
+		return "facultyApplyLeavForm";
 	}
 
 }

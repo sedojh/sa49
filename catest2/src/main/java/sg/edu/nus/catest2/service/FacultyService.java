@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import sg.edu.nus.catest2.model.Faculty;
+import sg.edu.nus.catest2.model.FacultyLeave;
 import sg.edu.nus.catest2.model.Student;
 import sg.edu.nus.catest2.repo.FacultyRepository;
 
@@ -64,6 +65,11 @@ public class FacultyService {
 			}
 		}
 		return filtered;
+	}
+
+	public ArrayList<FacultyLeave> getFacultyLeaveByFacultyId(int fId) {
+		// TODO Auto-generated method stub
+		return frepo.getFacultyLeaveByFacultyId(fId);
 	}
 
 }
