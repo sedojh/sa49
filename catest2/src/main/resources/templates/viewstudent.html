@@ -55,6 +55,9 @@
 <form th:action="@{/admin/updatestudent(id=${student.studentId})}" th:method="post">
     <button type="submit" name="confirm" value="no">Update student</button>
 </form>
+<form th:action="@{/student/calculateGpa/}+${student.studentId}" th:method="post">
+    <button type="submit" name="confirm" value="no">View GPA</button>
+</form>
     
     <h2>Courses Applied</h2>
     <div th:if="${searchca == 'null'}">

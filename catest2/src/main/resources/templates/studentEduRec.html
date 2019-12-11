@@ -37,9 +37,12 @@
 			</tr>
 		
 			<tr>
-			<td>
-				<a th:href="@{/student/list}">Back</a>
-			</td>	
+			<td th:if="${type == 'student'}">
+				<a th:href="@{/student/home}">Back</a>
+			</td>
+			<td th:if="${type == 'admin'}">
+				<a th:href="@{/admin/studentlist}">Back to students list</a>
+			</td>
 			</tr>
 	</table>
 </body>

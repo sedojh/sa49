@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -19,6 +21,10 @@ import sg.edu.nus.catest2.repo.FacultyRepository;
 public class FacultyService {
 	@Autowired
 	FacultyRepository frepo;
+	
+	public void save(@Valid Faculty faculty) {
+		frepo.save(faculty);
+	}
 	
 	public Page<Faculty> findPaginatedFaculty(Pageable pageable,List<Faculty> facultylist) {
 		List<Faculty> faculties = facultylist;

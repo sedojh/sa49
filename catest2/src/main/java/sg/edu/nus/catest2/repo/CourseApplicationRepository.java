@@ -12,6 +12,7 @@ public interface CourseApplicationRepository extends JpaRepository<CourseApplica
 	
 	@Query("select ca from CourseApplication ca where ca.student.studentId = :studentId")
 	List<CourseApplication> getCourseApplicationsByStudentId(@Param("studentId") int studentId);
+
 	
 	@Query("select ca from CourseApplication ca where ca.course.courseId = :courseId")
 	List<CourseApplication> getCourseApplicationsByCourseId(@Param("courseId") int courseId);
@@ -35,5 +36,12 @@ public interface CourseApplicationRepository extends JpaRepository<CourseApplica
 
 		@Query("select ca from CourseApplication ca where ca.student.studentId = :studentId AND ca.status='Rejected'")
 		List<CourseApplication> getRejectCourseByStudentId(int studentId);
+		
+		//reo method
+		@Query(value = "select * from courseapplication where course_Id = ?1 and status='Approved'" , nativeQuery=true)
+		public List<CourseApplication> findByCourseId(int courseId);
+		
+		@Query(value ="select * from courseapplication ca , courses c where c.course_id = ca.course_id and ca.course_Id = ?1 and ca.status='Approved' and c.faculty_Id = ?2", nativeQuery=true)
+		public List<CourseApplication> findByCourseIdAndFacultyId(int courseId, int facultyId);  
 
 }

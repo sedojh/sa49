@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>View Grade</title>
+</head>
+<body>  
+<table>
+		<tr>
+		<td>Faculty Id</td>
+		<td>Name</td>
+		<td>Email</td>
+		<td>Mobile Number</td>
+		<td>Department</td>
+		</tr>
+		<tr>
+		<td th:text="${faculty.facultyId}"></td>
+		<td th:text="${faculty.firstName}+' '+${faculty.middleName}+' '+${faculty.surname}"></td>
+		<td th:text="${faculty.email}"></td>
+		<td th:text="${faculty.mobileNum}"></td>
+		<td th:text="${faculty.department.departmentName}"></td>
+		</tr>
+</table>
+<p><a th:href="@{/faculty/info}">Edit</a></p>
+
+<h2>View Grade of the Student<span th:text="' ' +${grade.student.firstName}+' '+${grade.student.middleName}+' '+${grade.student.surname}"></span></h2>
+<form th:action="@{/faculty/updategrade}" method="post">
+<table align="center">
+	<tr>
+	<td>Grade Id</td>
+	<td>Grade</td>
+	<td>Course Id</td>
+	<td>Course Code</td>
+	<td>Course Name</td>
+	<td>Student Id</td>
+	<td>Student Name</td>
+	<td></td>
+	</tr>
+		<tr align="center">
+			<td><input type="hidden" th:value="${grade.gradeId}" name="id"><span th:text="${grade.gradeId}"></span></td>
+<!-- 			<td><input type="text" name = "grade" th:value="${grade.grade}"></td> -->
+<td><select name ="grade">
+    <option value="A+">A+</option>
+    <option value="A">A</option>
+    <option value="A-">A-</option>
+    <option value="B+">B+</option>
+    <option value="B">B</option>
+    <option value="B-">B-</option>
+    <option value="C+">C+</option>
+    <option value="C">C</option>
+    <option value="D+">D+</option>
+    <option value="D">D</option>
+    <option value="F">F</option>
+    <option value="Null">Null</option>
+    
+</select></td>
+			<td>
+				<a th:href="@{/faculty/viewcourse(facultyviewcourse=${grade.course.courseId})}"
+        		th:text=${grade.course.courseId}></a>
+			</td>
+			<td><a th:href="@{/faculty/viewcourse(facultyviewcourse=${grade.course.courseId})}" th:text="${grade.course.courseCode}"></a></td>
+			<td><a th:href="@{/faculty/viewcourse(facultyviewcourse=${grade.course.courseId})}"  th:text="${grade.course.courseName}"></a></td>
+			<td>
+				<a th:href="@{/faculty/viewstudent(facultyviewstudent=${grade.student.studentId})}"
+        		th:text=${grade.student.studentId}></a>
+			</td>
+			<td><a th:href="@{/faculty/viewstudent(facultyviewstudent=${grade.student.studentId})}" th:text="${grade.student.firstName}+' '+${grade.student.middleName}+' '+${grade.student.surname}"></a></td>
+			<td><button type="submit">Save</button></td>
+	</tr>
+</table>
+
+
+</form>
+
+</body>
+</html>

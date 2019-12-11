@@ -385,9 +385,10 @@ public class StudentController {
 			return "redirect:/student/courseapplicationlist";
 		}
 		
-		@GetMapping("/calculateGpa/{stuId}")
+		@RequestMapping("/calculateGpa/{stuId}")
 		//public String StudentGpa(Model model,@PathVariable("stuId") int stuId) {
-		public String StudentGpa(Model model,@PathVariable("stuId") int stuId) {
+		public String StudentGpa(Model model,@PathVariable("stuId") int stuId,
+				@SessionAttribute("usersession") Session session) {
 			
 			ArrayList<Grade> gradelist=(ArrayList<Grade>) stuservice.getGradesByStudentId(stuId);
 			
@@ -401,21 +402,22 @@ public class StudentController {
 			 
 			 for(int i = 0; i<gradelist.size();i++) {
 				 
-				 courseunit=gradelist.get(i).getCourse().getCourseUnit();
-				 totalUnit+=courseunit;
-				 
-				 System.out.println("Course Unit"+courseunit);
-				 System.out.println("Gradelist"+gradelist.get(i).getGrade());
-				 
-				 for(int j=0;j<grade.length;j++) {
-					 if(gradelist.get(i).getGrade().equals(grade[j])) {
-						 System.out.println("Grade Point in j loop:"+gradept[j]);
-						 totalGradept+=courseunit*gradept[j];
-						 System.out.println("TotalGrade Point in j loop:"+totalGradept);
-						
+				 if(!gradelist.get(i).getGrade().equals("Null")) {
+					 courseunit=gradelist.get(i).getCourse().getCourseUnit();
+					 totalUnit+=courseunit;	
+					 System.out.println("Course Unit"+courseunit);
+					 System.out.println("Gradelist"+gradelist.get(i).getGrade());
+					 
+						 for(int j=0;j<grade.length;j++) {
+							 if(gradelist.get(i).getGrade().equals(grade[j])) {
+								 System.out.println("Grade Point in j loop:"+gradept[j]);
+								 totalGradept+=courseunit*gradept[j];
+								 System.out.println("TotalGrade Point in j loop:"+totalGradept);
+						}
+					}
 				 }
 				
-				}				 			 
+				 				 			 
 			 }
 			 System.out.println("CHECK GPA totalGradept"+totalGradept);
 			 System.out.println("CHECK totalUnit"+totalUnit);
@@ -430,8 +432,17 @@ public class StudentController {
 			 model.addAttribute("student",student);
 			 model.addAttribute("gradeLists",gradelist);
 			 
+			 if(session.getUserType().equals("admin")) {
+				 model.addAttribute("type", "admin");
+				 Student temp = stuservice.getStudentByStudentId(stuId);
+				 model.addAttribute("student", temp);
+			 }
+			 else {
+				 model.addAttribute("type", "student");
+			 }
 			 return "studentEduRec";
 		}
+		
 		@GetMapping("/eduRec/{stuId}")
 		public String StudentEduRecord(Model model,@PathVariable("stuId") int stuId) {
 			

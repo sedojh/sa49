@@ -26,5 +26,10 @@ public interface GradeRepository extends JpaRepository<Grade, Integer> {
 	
 	@Query("select g from Grade g where g.student.studentId = :studentId and g.course.courseId = :courseId")
 	Grade getGradeByStudentIdAndCourseId(@Param("studentId") int studentId,@Param("courseId") int courseId);
-
+	
+	//reo
+	@Query(value = "select * from grades where course_Id = ?1 and student_Id = ?2" , nativeQuery=true)
+	public Grade findByCourseIdStudentId(int courseId, int studentId);
+	
+	Grade findByGradeId(int gradeId);
 }

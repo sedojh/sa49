@@ -35,9 +35,10 @@
 				<button type="submit">Apply Course</button>
 			</div>
 			<div th:unless="${msg == 'apply'}">
-				<a th:href="@{/student/list}">Back</a>
+				<a th:href="@{/student/home}">Back</a>			
 			</div>
 		</fieldset>
+		<p><a th:href="@{/login/logout}">Logout</a></p>
 		
 	</form>	
 </body>

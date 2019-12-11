@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Faculty Info</title>
+</head>
+<body>
+<h2>Faculty Info</h2>
+<form th:object="${faculty}" th:action="@{/faculty/editfaculty}" method="post">
+<table align="center">
+	<tr align="center">
+		<td>Faculty ID</td>
+		<td>First Name</td>
+		<td>Middle Name</td>
+		<td>Surname</td>
+		<td>Email</td>
+		<td>Mobile Number</td>
+	</tr>
+	<tr align="center">
+		<td th:text="*{facultyId}">Faculty Id</td>
+		<td><fieldset><input type="text" th:field="*{firstName}"></fieldset><span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span></td>
+		<td><fieldset><input type="text" th:field="*{middleName}"></fieldset><span th:if="${#fields.hasErrors('middleName')}" th:errors="*{middleName}"></span></td>
+		<td><fieldset><input type="text" th:field="*{surname}"><span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span></fieldset></td>
+		<td><fieldset><input type="text" th:field="*{email}"><span th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span></fieldset></td>
+		<td><fieldset><input type="text" th:field="*{mobileNum}"></fieldset><span th:if="${#fields.hasErrors('mobileNum')}" th:errors="*{mobileNum}"></span></td>
+	</tr>
+</table>
+
+<button type="submit">Update Profile</button>
+</form>
+
+
+<p><a th:href="@{/faculty/home}">Home</a></p>
+
+<p><a th:href="@{/login/logout}">Logout</a></p>
+
+</body>
+</html>

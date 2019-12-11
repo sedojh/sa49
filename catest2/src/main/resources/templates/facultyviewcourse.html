@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>View Course</title>
+</head>
+<body>  
+<table>
+		<tr>
+		<td>Faculty Id</td>
+		<td>Name</td>
+		<td>Email</td>
+		<td>Mobile Number</td>
+		<td>Department</td>
+		</tr>
+		<tr>
+		<td th:text="${faculty.facultyId}"></td>
+		<td th:text="${faculty.firstName}+' '+${faculty.middleName}+' '+${faculty.surname}"></td>
+		<td th:text="${faculty.email}"></td>
+		<td th:text="${faculty.mobileNum}"></td>
+		<td th:text="${faculty.department.departmentName}"></td>
+		</tr>
+</table>
+<p><a th:href="@{/faculty/info}">Edit</a></p>
+
+<h1>Course Information</h1>
+<div th:if="${msg == 'found'}">
+	<table>
+		<tr align="center">
+			<td>Course ID</td>
+			<td>Course Code</td>
+			<td>Course Name</td>
+			<td>Course Size</td>
+			<td>Course Unit</td>
+			<td>Course Start</td>
+			<td>Course End</td>
+			<td>Department</td>
+		</tr>
+		<tr align="center" th:object="${course}">
+
+			<td th:text="${course.courseId}" ></td>
+			<td th:text="${course.courseCode}"></td>
+			<td th:text="${course.courseName}"></td>
+			<td th:text="${course.courseSize}"></td>
+			<td th:text="${course.courseUnit}"></td>
+			<td th:text="${course.courseStart}"></td>
+			<td th:text="${course.courseEnd}"></td>
+			<td th:text="${course.department.departmentName}" ></td>
+		</tr>
+    </table>
+    
+<form th:action="@{/faculty/viewcourse}">
+<input type="text" th:name="facultyviewcourse"/> 
+<input type="submit"/> 
+</form>
+    
+    <h2>List of Students for this course</h2>
+    <div th:if="${searchca == 'null'}">
+    <h3>No student in this course</h3>
+    </div>
+    <div th:if="${searchca == 'found'}">
+    
+
+    <table>
+		<tr align="center">
+			<td>Course ID</td>
+			<td>Grade</td>
+			<td>Student ID</td>
+			<td>Student Name</td>
+			<td></td>
+
+		</tr>
+
+		<tr align="center" th:each="g : ${gradePage.content}"  >
+			<td th:text="${g.course.courseId}"></td>
+			<td th:text="${g.grade}"></td>
+			<td><a th:href="@{/faculty/viewstudent(facultyviewstudent=${g.student.studentId})}" th:text=${g.student.studentId}></a></td>
+			<td><a th:href="@{/faculty/viewstudent(facultyviewstudent=${g.student.studentId})}" th:text="${g.student.firstName}+' '+${g.student.middleName}+' '+${g.student.surname}" ></a></td>
+			
+			<td><form th:action="@{/faculty/editgrade(gradeid=${g.gradeId}, grade=${g.grade})}" th:method="post"><button type="submit">Update Grade</button></form></td>
+<!-- 			<input type="hidden" th:field="*{gradeId}" name="gradeId" value="${g.gradeId}" th:name="*{gradeId}" th:attr="gradeId='${g.gradeId}'" th:value="${g.gradeId}"> -->
+<!-- 			<td><a th:href="@{/faculty/editgrade(gradeid=${g.gradeId}, grade=${g.grade})}">Update Grade</a></td> -->
+<!-- 			<td><a th:href="@{'/faculty/editgrade/'+${g.gradeId}+'/'+${g.grade}}">Update Grade</a></td> -->
+<!-- 	th:action="@{/faculty/editgrade(gradeid=${g.gradeId})}"  -->
+		</tr>
+		
+		   	<tr th:if="${gradePage.totalPages > 0}" class="pagination">
+    		<td th:each="pageNumber : ${pageNumbers}">
+    			<a th:href="@{/faculty/viewcourse(facultyviewcourse=${course.courseId}, size=${gradePage.size}, page=${pageNumber})}"
+        		th:text=${pageNumber}
+        		th:class="${pageNumber==gradePage.number + 1} ? active"></a>
+    		</td>
+
+    	</tr>
+    </table>
+  
+
+	</div>
+</div>
+<div th:unless="${msg == 'found'}">
+    <h2 th:text="'Error in locating course in database'"></h2>
+</div>
+
+<p><a th:href="@{/faculty/home}">Home</a></p>
+<p><a th:href="@{/login/logout}">Logout</a></p>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Student Detail</title>
+</head>
+<body>
+<table>
+		<tr>
+		<td>Faculty Id</td>
+		<td>Name</td>
+		<td>Email</td>
+		<td>Mobile Number</td>
+		<td>Department</td>
+		</tr>
+		<tr>
+		<td th:text="${faculty.facultyId}"></td>
+		<td th:text="${faculty.firstName}+' '+${faculty.middleName}+' '+${faculty.surname}"></td>
+		<td th:text="${faculty.email}"></td>
+		<td th:text="${faculty.mobileNum}"></td>
+		<td th:text="${faculty.department.departmentName}"></td>
+		</tr>
+</table>
+<p><a th:href="@{/faculty/info}">Edit</a></p>
+
+<h1>Student Information</h1>
+
+
+	<table>
+		<tr align="center">
+			<td>Student ID</td>
+			<td>Student Name</td>
+			<td>Age</td>
+			<td>Gender</td>
+			<td>Email</td>
+			<td>Mobile Number</td>
+			<td>Address</td>	
+		</tr>
+		<tr align="center">
+			<td th:text="${student.studentId}" ></td>
+			<td th:text="${student.firstName}+' '+${student.middleName}+' '+${student.surname}"></td>
+			<td th:text="${student.age}" ></td>
+			<td th:text="${student.gender}" ></td>
+			<td th:text="${student.email}" ></td>
+			<td th:text="${student.mobileNum}" ></td>
+			<td th:text="${student.address}" ></td>
+		</tr>
+    </table>
+    
+
+
+
+<p><a th:href="@{/faculty/home}">Home</a></p>
+<p><a th:href="@{/login/logout}">Logout</a></p>
+<!-- <p><a th:href="@{/faculty/viewcourse(facultyviewcourse=${session.course})}">Return to list of students</a></p> -->
+
+</body>
+</html>

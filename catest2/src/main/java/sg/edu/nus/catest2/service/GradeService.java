@@ -3,6 +3,8 @@ package sg.edu.nus.catest2.service;
 import java.util.Collections;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -36,6 +38,18 @@ public class GradeService {
 				grades.size());
 
 		return gradePage;
+	}
+	
+	//reo
+	
+	public void save(@Valid Grade grade) {
+		grepo.save(grade);
+	}
+	
+	public void findById(int gid) {
+		// TODO Auto-generated method stub
+		grepo.findById(gid);
+		
 	}
 
 }

@@ -1,11 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="ISO-8859-1">
 <title>FACULTY HOMEPAGE</title>
 </head>
 <body>
 <h1>FACULTY HOMEPAGE</h1>
-<a href="/login/welcome">Logout</a>
+<h2>Welcome, <span th:text="${faculty.firstName}+' '+${faculty.middleName}+' '+${faculty.surname}"></span></h2>
+
+<table>
+		<tr>
+		<td>Faculty Id</td>
+		<td>Name</td>
+		<td>Email</td>
+		<td>Mobile Number</td>
+		<td>Department</td>
+		</tr>
+		<tr>
+		<td th:text="${faculty.facultyId}"></td>
+		<td th:text="${faculty.firstName}+' '+${faculty.middleName}+' '+${faculty.surname}"></td>
+		<td th:text="${faculty.email}"></td>
+		<td th:text="${faculty.mobileNum}"></td>
+		<td th:text="${faculty.department.departmentName}"></td>
+		</tr>
+</table>
+<p><a th:href="@{/faculty/info}">Edit</a></p>
+
+
+<h3>Assigned Courses</h3>
+<div>
+	<table>
+		<tr align="center">
+			<td>Department</td>
+			<td>Course Code</td>
+			<td>Course Name</td>
+		</tr>
+		<tr align="center" th:each="c: ${coursePage.content}">
+			<td th:text="${c.Department.departmentName}" >Department Name</td>
+			<td><a th:href="@{/faculty/viewcourse(facultyviewcourse=${c.courseId})}" th:text="${c.courseCode}"></a></td>
+			<td><a th:href="@{/faculty/viewcourse(facultyviewcourse=${c.courseId})}" th:text="${c.courseName}"></a></td>
+		</tr>
+    	<tr th:if="${coursePage.totalPages > 0}" class="pagination">
+    		<td th:each="pageNumber : ${pageNumbers}">
+    			<a th:href="@{/faculty/home(size=${coursePage.size}, page=${pageNumber})}"
+        		th:text=${pageNumber}
+        		th:class="${pageNumber==coursePage.number + 1} ? active"></a>
+    		</td>
+    	</tr>
+    </table>
+    
+</div><br><br><br>
+<!-- <p><a th:href="@{/faculty/studentlist}">List of all students</a></p> -->
+
+<!-- <p><a th:href="@{/faculty/departmentlist}">List of all departments</a></p> -->
+<!-- <p><a th:href="@{/faculty/facultylist}">List of all faculties</a></p> -->
+<!-- <p><a th:href="@{/faculty/courselist}">List of all courses</a></p> -->
+<!-- <p><a th:href="@{/faculty/courseapplicationlist}">List of all course applications</a></p> -->
+<br/>
+<p><a th:href="@{/login/logout}">Logout</a></p>
 </body>
 </html>

@@ -888,6 +888,5 @@ public class AdminController {
 		return "viewcourseapplication";
 	}
 
-	//code viewfacultyleave
 
 }
