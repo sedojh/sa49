@@ -38,6 +38,8 @@
 			<td>Course Name</td>
 			<td>Course Size</td>
 			<td>Course Unit</td>
+			<td>Course Start</td>
+			<td>Course End</td>
 			<td>Faculty ID</td>
 			<td>Faculty Name</td>
 		</tr>
@@ -55,6 +57,8 @@
 			<td th:text="${cse.courseName}"></td>
 			<td th:text="${cse.courseSize}"></td>
 			<td th:text="${cse.courseUnit}"></td>
+			<td th:text="${cse.courseStart}"></td>
+			<td th:text="${cse.courseEnd}"></td>
 			<td>
 				<a th:href="@{/admin/viewfaculty(viewfaculty=${cse.faculty.facultyId})}"
         		th:text=${cse.faculty.facultyId}></a>
@@ -84,6 +88,8 @@
 			<td>Course Name</td>
 			<td>Course Size</td>
 			<td>Course Unit</td>
+			<td>Course Start</td>
+			<td>Course End</td>
 			<td>Faculty ID</td>
 			<td>Faculty Name</td>
 		</tr>
@@ -101,6 +107,8 @@
 			<td th:text="${cse.courseName}"></td>
 			<td th:text="${cse.courseSize}"></td>
 			<td th:text="${cse.courseUnit}"></td>
+			<td th:text="${cse.courseStart}"></td>
+			<td th:text="${cse.courseEnd}"></td>
 			<td>
 				<a th:href="@{/admin/viewfaculty(viewfaculty=${cse.faculty.facultyId})}"
         		th:text=${cse.faculty.facultyId}></a>

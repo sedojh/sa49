@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<table>
+	<tr>
+		<td>Admin ID</td>
+		<td>Name</td>
+		<td>Email</td>
+		<td>Mobile Number</td>
+	</tr>
+	<tr align="center">
+		<td th:text="${admin.adminId}">Admin Id</td>
+		<td th:text="${admin.firstName}+' '+${admin.middleName}+' '+${admin.surname}">Admin Name</td>
+		<td th:text="${admin.email}">Admin Email</td>
+		<td th:text="${admin.mobileNum}">Admin Mobile Number</td>
+	</tr>
+</table>
+
+
+<h1>List of all admins</h1>
+<table>
+		<tr align="center">
+			<td>Admin ID</td>
+			<td>Admin Name</td>
+			<td>Email</td>
+			<td>Mobile Number</td>
+		</tr>
+		<tr align="center" th:each="ad: ${adminPage.content}">
+			<td>
+				<a th:href="@{/admin/viewadmin(viewadmin=${ad.adminId})}"
+        		th:text=${ad.adminId}></a>
+			</td>
+			<td th:text="${ad.firstName}+' '+${ad.middleName}+' '+${ad.surname}"></td>
+			<td th:text="${ad.email}" ></td>
+			<td th:text="${ad.mobileNum}" ></td>
+		</tr>
+    	<tr th:if="${adminPage.totalPages > 0}" class="pagination">
+    		<td th:each="pageNumber : ${pageNumbers}">
+    			<a th:href="@{/admin/createadmin(size=${adminPage.size}, page=${pageNumber},flag='null')}"
+        		th:text=${pageNumber}
+        		th:class="${pageNumber==adminPage.number + 1} ? active"></a>
+    		</td>
+    	</tr>
+</table>
+
+<form th:action="@{/admin/createadmin}" th:method="post">
+<h2>New Admin Information</h2>
+<table>
+	<tr align="center">
+			<td>Admin ID</td>
+			<td>Admin First Name</td>
+			<td>Admin Middle Name</td>
+			<td>Admin Surname</td>
+			<td>Email</td>
+			<td>Mobile Number</td>
+		</tr>
+	<tr>
+		<td><input type="number" name="id"/></td>
+		<td><input type="text" name="fname"/></td>
+		<td><input type="text" name="mname"/></td>
+		<td><input type="text" name="sname"/></td>
+		<td><input type="text" name="email"/></td>
+		<td><input type="number" name="mobile"/></td>
+	</tr>
+	<tr>
+		<td><button type="submit" name="confirm" value="yes">Create Admin</button></td>
+	</tr>
+</table>
+<input type="hidden" name="flag" value="yes"/>
+<div th:if="${error == 'error'}">
+<h2 th:text="${msg}">Error Message</h2>
+</div>
+</form>
+<p><a th:href="@{/admin/home}">Home</a></p>
+</body>
+</html>

@@ -173,6 +173,7 @@
     
     <h2>Warning</h2>
     <p>Deleting the faculty if there are courses assigned will delete the courses and grades associated with the faculty</p>
+    <p> The faculty user account will be deleted as well</p>
 
 	<button type="submit" name="confirm" value="yes">Confirm</button>
 </form>
@@ -180,6 +181,35 @@
 <p><a th:href="@{/admin/home}">Home</a></p>
 <p><a th:href="@{/admin/facultylist}">Return to list of faculties</a></p>
 </div>
+
+<div th:if="${type == 'admin'}">
+<form th:action="@{/admin/delete(deleteType='admin',id=${admind.adminId})}" th:method="post">
+	<h1>Admin Information</h1>
+	<table>
+		<tr align="center">
+			<td>Admin ID</td>
+			<td>Admin Name</td>
+			<td>Email</td>
+			<td>Mobile Number</td>	
+		</tr>
+		<tr align="center">
+			<td th:text="${admind.adminId}" ></td>
+			<td th:text="${admind.firstName}+' '+${admind.middleName}+' '+${admind.surname}"></td>
+			<td th:text="${admind.email}" ></td>
+			<td th:text="${admind.mobileNum}" ></td>
+		</tr>
+    </table>
+    
+    <h2>Warning</h2>
+    <p> The admin user account will be deleted as well</p>
+
+	<button type="submit" name="confirm" value="yes">Confirm</button>
+</form>
+
+<p><a th:href="@{/admin/home}">Home</a></p>
+<p><a th:href="@{/admin/adminlist}">Return to list of admins</a></p>
+</div>
+
 
 <div th:if="${type == 'student'}">
 <form th:action="@{/admin/delete(deleteType='student',id=${student.studentId})}" th:method="post">
@@ -231,6 +261,7 @@
     
     <h2>Warning</h2>
     <p>Deleting the student will delete the course application and grades associated with the student</p>
+    <p>The student user account will be deleted as well</p>
 
 	<button type="submit" name="confirm" value="yes">Confirm</button>
 </form>

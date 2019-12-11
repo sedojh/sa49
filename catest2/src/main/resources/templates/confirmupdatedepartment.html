@@ -57,6 +57,10 @@
 	<button type="submit" name="confirm" value="yes">Update</button>
 </form>
 
+<div th:if="${error == 'yes'}">
+	<h2 th:text="${emsg}">Error Message</h2>
+</div>
+
 <p><a th:href="@{/admin/home}">Home</a></p>
 <p><a th:href="@{/admin/departmentlist}">Return to list of departments</a></p>
 </div>

@@ -51,6 +51,8 @@
 			<td th:text="${course.courseId}" ></td>
 			<td th:text="${course.courseCode}"></td>
 			<td th:text="${course.courseName}"></td>
+			<td th:text="${course.courseStart}"></td>
+			<td th:text="${course.courseEnd}"></td>
 			<td th:text="${course.courseSize}"></td>
 			<td th:text="${course.courseUnit}"></td>
 			<td>
@@ -75,23 +77,31 @@
 			<td>Faculty ID</td>
 		</tr>
 		<tr align="center">
-			<td><input type="text" name="updatedid" th:value="${course.department.departmentId}" /></td>
+			<td><input type="number" name="updatedid" th:value="${course.department.departmentId}" /></td>
             <td th:text="${course.courseId}">Course ID</td>
             <td><input type="text" name="updatecode" th:value="${course.courseCode}" /></td>
             <td><input type="text" name="updatename" th:value="${course.courseName}" /></td>
-            <td th:text="${course.courseStart}">Course Start</td>
-            <td th:text="${course.courseEnd}">Course End</td>
-            <td><input type="text" name="updatesize" th:value="${course.courseSize}" /></td>
-            <td><input type="text" name="updateunit" th:value="${course.courseUnit}" /></td>
-            <td><input type="text" name="updatefid" th:value="${course.faculty.facultyId}" /></td>
+            <td><input type="date" name="updatestart" th:value="${course.courseStart}" /></td>
+            <td><input type="date" name="updateend" th:value="${course.courseEnd}" /></td>
+            <td><input type="number" name="updatesize" th:value="${course.courseSize}" /></td>
+            <td><input type="number" name="updateunit" th:value="${course.courseUnit}" /></td>
+            <td><input type="number" name="updatefid" th:value="${course.faculty.facultyId}" /></td>
 		</tr>
     </table>
+    
+    <div th:if="${error == 'yes'}">
+    <h2 th:text="${emsg}">Error Message</h2>
+    </div>
     
     <h2>Warning</h2>
     <p>Confirm the changes before clicking update</p>
 
 	<button type="submit" name="confirm" value="yes">Update</button>
 </form>
+
+<div th:if="${error == 'yes'}">
+	<h2 th:text="${emsg}">Error Message</h2>
+</div>
 
 <p><a th:href="@{/admin/home}">Home</a></p>
 <p><a th:href="@{/admin/courselist}">Return to list of courses</a></p>

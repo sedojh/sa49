@@ -67,10 +67,10 @@
 			<td><input type="text" name="updatefname" th:value="${student.firstName}" /></td>
 			<td><input type="text" name="updatemname" th:value="${student.middleName}" /></td>
 			<td><input type="text" name="updatesname" th:value="${student.surname}" /></td>
-			<td><input type="text" name="updateage" th:value="${student.age}" /></td>
+			<td><input type="number" name="updateage" th:value="${student.age}" /></td>
 			<td><input type="text" name="updategender" th:value="${student.gender}" /></td>
 			<td><input type="text" name="updateemail" th:value="${student.email}" /></td>
-			<td><input type="text" name="updatemobile" th:value="${student.mobileNum}" /></td>
+			<td><input type="number" name="updatemobile" th:value="${student.mobileNum}" /></td>
 			<td><input type="text" name="updateaddress" th:value="${student.address}" /></td>
 		</tr>
     </table>
@@ -80,6 +80,10 @@
 
 	<button type="submit" name="confirm" value="yes">Update</button>
 </form>
+
+<div th:if="${error == 'yes'}">
+	<h2 th:text="${emsg}">Error Message</h2>
+</div>
 
 <p><a th:href="@{/admin/home}">Home</a></p>
 <p><a th:href="@{/admin/studentlist}">Return to list of students</a></p>

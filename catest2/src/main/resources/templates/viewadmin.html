@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<table>
+	<tr>
+		<td>Admin ID</td>
+		<td>Name</td>
+		<td>Email</td>
+		<td>Mobile Number</td>
+	</tr>
+	<tr align="center">
+		<td th:text="${admin.adminId}">Admin Id</td>
+		<td th:text="${admin.firstName}+' '+${admin.middleName}+' '+${admin.surname}">Admin Name</td>
+		<td th:text="${admin.email}">Admin Email</td>
+		<td th:text="${admin.mobileNum}">Admin Mobile Number</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h1>Admin Information</h1>
+
+<div th:if="${msg == 'found'}">
+	<table>
+		<tr align="center">
+			<td>Admin ID</td>
+			<td>Admin Name</td>
+			<td>Email</td>
+			<td>Mobile Number</td>	
+		</tr>
+		<tr align="center">
+			<td th:text="${admind.adminId}" ></td>
+			<td th:text="${admind.firstName}+' '+${admind.middleName}+' '+${admind.surname}"></td>
+			<td th:text="${admind.email}" ></td>
+			<td th:text="${admind.mobileNum}" ></td>
+		</tr>
+    </table>
+    
+<form th:action="@{/admin/delete(deleteType='admin',id=${admind.adminId})}" th:method="post">
+    <button type="submit" name="confirm" value="no">Delete admin</button>
+</form>
+<form th:action="@{/admin/updateadmin(id=${admind.adminId})}" th:method="post">
+    <button type="submit" name="confirm" value="no">Update admin</button>
+</form>
+    
+</div>
+
+<div th:unless="${msg == 'found'}">
+    <h2 th:text="'Error in locating admin in database'"></h2>
+</div>
+
+<p><a th:href="@{/admin/home}">Home</a></p>
+<p><a th:href="@{/admin/adminlist}">Return to list of faculties</a></p>
+
+</body>
+</html>

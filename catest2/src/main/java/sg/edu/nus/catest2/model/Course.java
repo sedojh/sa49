@@ -1,6 +1,6 @@
 package sg.edu.nus.catest2.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.*;
 
@@ -11,8 +11,8 @@ public class Course {
 	private int courseId;
 	private String courseCode;
 	private String courseName;
-	private LocalDateTime courseStart;
-	private LocalDateTime courseEnd;
+	private LocalDate courseStart;
+	private LocalDate courseEnd;
 	private int courseUnit;
 	private int courseSize;
 	@ManyToOne(fetch=FetchType.EAGER, optional=false)
@@ -26,8 +26,8 @@ public class Course {
 		super();
 	}
 
-	public Course(int courseId, String courseCode, String courseName, LocalDateTime courseStart,
-			LocalDateTime courseEnd, int courseUnit, int courseSize, Department department, Faculty faculty) {
+	public Course(int courseId, String courseCode, String courseName, LocalDate courseStart, LocalDate courseEnd,
+			int courseUnit, int courseSize, Department department, Faculty faculty) {
 		super();
 		this.courseId = courseId;
 		this.courseCode = courseCode;
@@ -38,6 +38,14 @@ public class Course {
 		this.courseSize = courseSize;
 		this.department = department;
 		this.faculty = faculty;
+	}
+
+	public void setCourseStart(LocalDate courseStart) {
+		this.courseStart = courseStart;
+	}
+
+	public void setCourseEnd(LocalDate courseEnd) {
+		this.courseEnd = courseEnd;
 	}
 
 	public int getCourseId() {
@@ -64,20 +72,12 @@ public class Course {
 		this.courseName = courseName;
 	}
 
-	public LocalDateTime getCourseStart() {
+	public LocalDate getCourseStart() {
 		return courseStart;
 	}
 
-	public void setCourseStart(LocalDateTime courseStart) {
-		this.courseStart = courseStart;
-	}
-
-	public LocalDateTime getCourseEnd() {
+	public LocalDate getCourseEnd() {
 		return courseEnd;
-	}
-
-	public void setCourseEnd(LocalDateTime courseEnd) {
-		this.courseEnd = courseEnd;
 	}
 
 	public int getCourseUnit() {

@@ -1,10 +1,13 @@
 package sg.edu.nus.catest2.model;
 
+import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvBindByPosition;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name="departments")
-public class Department {
+public class Department{
 	@Id
 	private int departmentId;
 	private String departmentName;

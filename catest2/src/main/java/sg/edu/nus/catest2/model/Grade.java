@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Table(name="grades")
 public class Grade {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int gradeId;
 	@ManyToOne(fetch=FetchType.EAGER, optional=false)
 	@JoinColumn(name = "studentId", nullable = false)
@@ -22,9 +23,8 @@ public class Grade {
 		super();
 	}
 
-	public Grade(int gradeId, Student student, Course course, Faculty faculty, String grade) {
+	public Grade(Student student, Course course, Faculty faculty, String grade) {
 		super();
-		this.gradeId = gradeId;
 		this.student = student;
 		this.course = course;
 		this.faculty = faculty;

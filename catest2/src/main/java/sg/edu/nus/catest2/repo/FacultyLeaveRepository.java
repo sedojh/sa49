@@ -11,5 +11,7 @@ import sg.edu.nus.catest2.model.*;
 public interface FacultyLeaveRepository extends JpaRepository<FacultyLeave, Integer> {	
 	@Query("select fl from FacultyLeave fl where fl.faculty.facultyId = :facultyId")
 	List<FacultyLeave> getFacultyLeaveByFacultyId(@Param("facultyId") int facultyId);
+	
+	FacultyLeave getFacultyLeaveByLeaveId(int leaveId);
 
 }

@@ -40,6 +40,17 @@ public class CourseApplicationService {
 		return courseApplications;
 	}
 	
+	public List<CourseApplication> getRejectedCourseApplications(){
+		List<CourseApplication> list = carepo.findAll();
+		List<CourseApplication> courseApplications = new ArrayList<CourseApplication>();
+		for(CourseApplication ca: list) {
+			if(ca.getStatus().equals("Rejected")) {
+				courseApplications.add(ca);
+			}
+		}
+		return courseApplications;
+	}
+	
 	public Page<CourseApplication> findPaginatedCourseApplication(Pageable pageable,
 			List<CourseApplication> courseApplications) {
 		int pageSize = pageable.getPageSize();

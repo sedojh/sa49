@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<table>
+	<tr>
+		<td>Admin ID</td>
+		<td>Name</td>
+		<td>Email</td>
+		<td>Mobile Number</td>
+	</tr>
+	<tr align="center">
+		<td th:text="${admin.adminId}">Admin Id</td>
+		<td th:text="${admin.firstName}+' '+${admin.middleName}+' '+${admin.surname}">Admin Name</td>
+		<td th:text="${admin.email}">Admin Email</td>
+		<td th:text="${admin.mobileNum}">Admin Mobile Number</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+<h1>Faculty Leave Information</h1>
+
+<div th:if="${msg == 'found'}">
+	<table>
+		<tr align="center">
+			<td>Department ID</td>
+			<td>Department Name</td>
+			<td>Faculty Leave ID</td>
+			<td>Faculty ID</td>
+			<td>Faculty Name</td>
+			<td>Leave Start</td>
+			<td>Leave End</td>	
+			<td>Status</td>
+		</tr>
+		<tr align="center">
+			<td>
+				<a th:href="@{/admin/viewdepartment(viewdepartment=${facultyLeave.faculty.department.departmentId})}"
+        		th:text=${facultyLeave.faculty.department.departmentId}></a>
+			</td>
+			<td th:text="${facultyLeave.faculty.department.departmentName}" ></td>
+			<td th:text="${facultyLeave.leaveId}" ></td>
+			<td th:text="${facultyLeave.faculty.facultyId}" ></td>
+			<td th:text="${facultyLeave.faculty.firstName}+' '+${facultyLeave.faculty.middleName}+' '+${facultyLeave.faculty.surname}"></td>
+			<td th:text="${facultyLeave.leaveStart}" ></td>
+			<td th:text="${facultyLeave.leaveEnd}" ></td>
+			<td th:text="${facultyLeave.status}" ></td>
+		</tr>
+    </table>
+    
+<form th:action="@{/admin/updatefacultyleave(id=${facultyLeave.leaveId})}" th:method="post">
+    <button type="submit" name="confirm" value="no">Update faculty leave</button>
+</form>
+
+</div>
+
+<div th:unless="${msg == 'found'}">
+    <h2 th:text="'Error in locating faculty leave in database'"></h2>
+</div>
+
+<p><a th:href="@{/admin/home}">Home</a></p>
+<p><a th:href="@{/admin/facultyleavelist}">Return to list of faculty leaves</a></p>
+
+</body>
+</html>

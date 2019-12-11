@@ -49,6 +49,7 @@
     		</td>
     	</tr>
     </table>
+   
 </div>
 
 <div th:unless="${searched == 'null'}">
@@ -83,6 +84,10 @@
 
 <input type="text" th:name="name" placeholder="Search department name"/> 
 <input type="submit"/> 
+</form>
+
+ <form th:action="@{/csvdepartments}" th:method="post">
+	<button type="submit" name="approval" value="yes">Download all departments as CSV</button>
 </form>
 
 <p><a th:href="@{/admin/home}">Home</a></p>

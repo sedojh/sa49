@@ -69,8 +69,8 @@
 		<tr align="center">
 			<td th:text="${courseApplication.applicationId}">Course Application ID</td>
 			<td><input type="text" name="updatestatus" th:value="${courseApplication.status}" /></td>
-			<td><input type="text" name="updatecid" th:value="${courseApplication.course.courseId}" /></td>
-			<td><input type="text" name="updatesid" th:value="${courseApplication.student.studentId}" /></td>
+			<td><input type="number" name="updatecid" th:value="${courseApplication.course.courseId}" /></td>
+			<td><input type="number" name="updatesid" th:value="${courseApplication.student.studentId}" /></td>
 		</tr>
     </table>
     
@@ -79,6 +79,10 @@
 
 	<button type="submit" name="confirm" value="yes">Update</button>
 </form>
+
+<div th:if="${error == 'yes'}">
+	<h2 th:text="${emsg}">Error Message</h2>
+</div>
 
 <p><a th:href="@{/admin/home}">Home</a></p>
 <p><a th:href="@{/admin/courseapplicationlist}">Return to list of course applications</a></p>

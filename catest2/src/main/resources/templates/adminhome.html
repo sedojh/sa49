@@ -46,6 +46,20 @@
 			<td th:text="${ca.course.courseCode}"></td>
 			<td th:text="${ca.student.studentId}"></td>
 			<td th:text="${ca.student.firstName}+' '+ ${ca.student.middleName}+' '+${ca.student.surname}"></td>
+			<td>
+				<form th:action="@{/admin/approvereject}" th:method="post">
+					<input type="hidden" name="id" th:value="${ca.applicationId}"/>
+					<input type="hidden" name="type" value="ca"/>
+					<button type="submit" name="approval" value="yes">Approve</button>
+				</form>
+			</td>
+			<td>
+				<form th:action="@{/admin/approvereject}" th:method="post">
+					<input type="hidden" name="id" th:value="${ca.applicationId}"/>
+					<input type="hidden" name="type" value="ca"/>
+					<button type="submit" name="approval" value="no">Reject</button>
+				</form>
+			</td>
 		</tr>
     	<tr th:if="${courseApplicationPage.totalPages > 0}" class="pagination">
     		<td th:each="pageNumber : ${pageNumbers}">
@@ -61,9 +75,12 @@
 <p>No Pending Course Applications</p>
 </div>
 
+<p><a th:href="@{/admin/userlist}">List of all users</a></p>
 <p><a th:href="@{/admin/departmentlist}">List of all departments</a></p>
 <p><a th:href="@{/admin/studentlist}">List of all students</a></p>
 <p><a th:href="@{/admin/facultylist}">List of all faculties</a></p>
+<p><a th:href="@{/admin/facultyleavelist}">List of all faculty leaves</a></p>
+<p><a th:href="@{/admin/adminlist}">List of all admins</a></p>
 <p><a th:href="@{/admin/courselist}">List of all courses</a></p>
 <p><a th:href="@{/admin/courseapplicationlist}">List of all course applications</a></p>
 <p><a th:href="@{/admin/gradelist}">List of all grades</a></p>

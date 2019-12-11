@@ -62,13 +62,13 @@
 			<td>Mobile Number</td>	
 		</tr>
 		<tr align="center">
-			<td><input type="text" name="updatedid" th:value="${faculty.department.departmentId}" /></td>
+			<td><input type="number" name="updatedid" th:value="${faculty.department.departmentId}" /></td>
 			<td th:text="${faculty.facultyId}">Faculty ID</td>
 			<td><input type="text" name="updatefname" th:value="${faculty.firstName}" /></td>
 			<td><input type="text" name="updatemname" th:value="${faculty.middleName}" /></td>
 			<td><input type="text" name="updatesname" th:value="${faculty.surname}" /></td>
 			<td><input type="text" name="updateemail" th:value="${faculty.email}" /></td>
-			<td><input type="text" name="updatemobile" th:value="${faculty.mobileNum}" /></td>
+			<td><input type="number" name="updatemobile" th:value="${faculty.mobileNum}" /></td>
 		</tr>
     </table>
     
@@ -77,6 +77,10 @@
 
 	<button type="submit" name="confirm" value="yes">Update</button>
 </form>
+
+<div th:if="${error == 'yes'}">
+	<h2 th:text="${emsg}">Error Message</h2>
+</div>
 
 <p><a th:href="@{/admin/home}">Home</a></p>
 <p><a th:href="@{/admin/facultylist}">Return to list of faculties</a></p>

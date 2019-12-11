@@ -37,6 +37,8 @@
 			<td>Course Name</td>
 			<td>Course Size</td>
 			<td>Course Unit</td>
+			<td>Course Start</td>
+			<td>Course End</td>
 			<td>Faculty ID</td>
 			<td>Faculty Name</td>
 		</tr>
@@ -51,6 +53,8 @@
 			<td th:text="${course.courseName}"></td>
 			<td th:text="${course.courseSize}"></td>
 			<td th:text="${course.courseUnit}"></td>
+			<td th:text="${course.courseStart}"></td>
+			<td th:text="${course.courseEnd}"></td>
 			<td>
 				<a th:href="@{/admin/viewfaculty(viewfaculty=${course.faculty.facultyId})}"
         		th:text=${course.faculty.facultyId}></a>

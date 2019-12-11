@@ -1,6 +1,6 @@
 package sg.edu.nus.catest2.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import javax.persistence.*;
 
@@ -12,8 +12,8 @@ public class FacultyLeave {
 	@ManyToOne(fetch=FetchType.EAGER, optional=false)
 	@JoinColumn(name = "facultyId", nullable = false)
 	private Faculty faculty;
-	private LocalDateTime leaveStart;
-	private LocalDateTime leaveEnd;
+	private LocalDate leaveStart;
+	private LocalDate leaveEnd;
 	private String status;
 	
 	public FacultyLeave() {
@@ -21,7 +21,7 @@ public class FacultyLeave {
 		// TODO Auto-generated constructor stub
 	}
 
-	public FacultyLeave(int leaveId, Faculty faculty, LocalDateTime leaveStart, LocalDateTime leaveEnd, String status) {
+	public FacultyLeave(int leaveId, Faculty faculty, LocalDate leaveStart, LocalDate leaveEnd, String status) {
 		super();
 		this.leaveId = leaveId;
 		this.faculty = faculty;
@@ -46,19 +46,19 @@ public class FacultyLeave {
 		this.faculty = faculty;
 	}
 
-	public LocalDateTime getLeaveStart() {
+	public LocalDate getLeaveStart() {
 		return leaveStart;
 	}
 
-	public void setLeaveStart(LocalDateTime leaveStart) {
+	public void setLeaveStart(LocalDate leaveStart) {
 		this.leaveStart = leaveStart;
 	}
 
-	public LocalDateTime getLeaveEnd() {
+	public LocalDate getLeaveEnd() {
 		return leaveEnd;
 	}
 
-	public void setLeaveEnd(LocalDateTime leaveEnd) {
+	public void setLeaveEnd(LocalDate leaveEnd) {
 		this.leaveEnd = leaveEnd;
 	}
 
