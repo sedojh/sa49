@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<table>
+	<tr>
+		<td>Admin ID</td>
+		<td>Name</td>
+		<td>Email</td>
+		<td>Mobile Number</td>
+	</tr>
+	<tr align="center">
+		<td th:text="${admin.adminId}">Admin Id</td>
+		<td th:text="${admin.firstName}+' '+${admin.middleName}+' '+${admin.surname}">Admin Name</td>
+		<td th:text="${admin.email}">Admin Email</td>
+		<td th:text="${admin.mobileNum}">Admin Mobile Number</td>
+	</tr>
+</table>
+
+<br/>
+<br/>
+<br/>
+<br/>
+
+<div th:if="${type == 'student'}"> 
+<form th:action="@{/admin/updateuser(id=${user.userId})}" th:method="post">
+	<h1>Student Information</h1>
+	<table>
+		<tr align="center">
+			<td>User ID</td>
+			<td>Username</td>
+			<td>Password</td>
+			<td>Student ID</td>
+			<td>Student Name</td>
+			<td>Age</td>
+			<td>Gender</td>
+			<td>Email</td>
+			<td>Mobile Number</td>
+			<td>Address</td>	
+		</tr>
+		<tr align="center">
+			<td th:text="${user.userId}" ></td>
+			<td th:text="${user.userName}" ></td>
+			<td th:text="${user.password}" ></td>
+			<td th:text="${student.studentId}" ></td>
+			<td th:text="${student.firstName}+' '+${student.middleName}+' '+${student.surname}"></td>
+			<td th:text="${student.age}" ></td>
+			<td th:text="${student.gender}" ></td>
+			<td th:text="${student.email}" ></td>
+			<td th:text="${student.mobileNum}" ></td>
+			<td th:text="${student.address}" ></td>
+		</tr>
+    </table>
+	
+	<h1>Edit Information</h1>
+	<table>
+		<tr align="center">
+			<td>Username</td>
+			<td>Password</td>	
+		</tr>
+		<tr align="center">
+			<td><input type="text" name="updateuname" th:value="${user.userName}" /></td>
+			<td><input type="text" name="updatepass" th:value="${user.password}" /></td>
+		</tr>
+    </table>
+    
+    <h2>Warning</h2>
+    <p>Confirm the changes before clicking update</p>
+
+	<button type="submit" name="confirm" value="yes">Update</button>
+</form>
+
+<div th:if="${error == 'yes'}">
+	<h2 th:text="${emsg}">Error Message</h2>
+</div>
+
+<p><a th:href="@{/admin/home}">Home</a></p>
+<p><a th:href="@{/admin/userlist}">Return to list of users</a></p>
+</div>
+
+<div th:if="${type == 'faculty'}"> 
+<form th:action="@{/admin/updateuser(id=${user.userId})}" th:method="post">
+	<h1>Faculty Information</h1>
+	<table>
+		<tr align="center">
+			<td>User ID</td>
+			<td>Username</td>
+			<td>Password</td>
+			<td>Department ID</td>
+			<td>Department Name</td>
+			<td>Faculty ID</td>
+			<td>Faculty Name</td>
+			<td>Email</td>
+			<td>Mobile Number</td>	
+		</tr>
+		<tr align="center">
+			<td th:text="${user.userId}" ></td>
+			<td th:text="${user.userName}" ></td>
+			<td th:text="${user.password}" ></td>
+			<td>
+				<a th:href="@{/admin/viewdepartment(viewdepartment=${faculty.department.departmentId})}"
+        		th:text=${faculty.department.departmentId}></a>
+			</td>
+			<td th:text="${faculty.department.departmentName}" ></td>
+			<td th:text="${faculty.facultyId}" ></td>
+			<td th:text="${faculty.firstName}+' '+${faculty.middleName}+' '+${faculty.surname}"></td>
+			<td th:text="${faculty.email}" ></td>
+			<td th:text="${faculty.mobileNum}" ></td>
+		</tr>
+    </table>
+	
+	<h1>Edit Information</h1>
+	<table>
+		<tr align="center">
+			<td>Username</td>
+			<td>Password</td>	
+		</tr>
+		<tr align="center">
+			<td><input type="text" name="updateuname" th:value="${user.userName}" /></td>
+			<td><input type="text" name="updatepass" th:value="${user.password}" /></td>
+		</tr>
+    </table>
+    
+    <h2>Warning</h2>
+    <p>Confirm the changes before clicking update</p>
+
+	<button type="submit" name="confirm" value="yes">Update</button>
+</form>
+
+<div th:if="${error == 'yes'}">
+	<h2 th:text="${emsg}">Error Message</h2>
+</div>
+
+<p><a th:href="@{/admin/home}">Home</a></p>
+<p><a th:href="@{/admin/userlist}">Return to list of users</a></p>
+</div>
+
+<div th:if="${type == 'admin'}"> 
+<form th:action="@{/admin/updateuser(id=${user.userId})}" th:method="post">
+	<h1>Student Information</h1>
+	<table>
+		<tr align="center">
+			<td>User ID</td>
+			<td>Username</td>
+			<td>Password</td>
+			<td>Admin ID</td>
+			<td>Admin Name</td>
+			<td>Email</td>
+			<td>Mobile Number</td>	
+		</tr>
+		<tr align="center">
+			<td th:text="${user.userId}" ></td>
+			<td th:text="${user.userName}" ></td>
+			<td th:text="${user.password}" ></td>
+			<td th:text="${admind.adminId}" ></td>
+			<td th:text="${admind.firstName}+' '+${admind.middleName}+' '+${admind.surname}"></td>
+			<td th:text="${admind.email}" ></td>
+			<td th:text="${admind.mobileNum}" ></td>
+		</tr>
+    </table>
+	
+	<h1>Edit Information</h1>
+	<table>
+		<tr align="center">
+			<td>Username</td>
+			<td>Password</td>	
+		</tr>
+		<tr align="center">
+			<td><input type="text" name="updateuname" th:value="${user.userName}" /></td>
+			<td><input type="text" name="updatepass" th:value="${user.password}" /></td>
+		</tr>
+    </table>
+    
+    <h2>Warning</h2>
+    <p>Confirm the changes before clicking update</p>
+
+	<button type="submit" name="confirm" value="yes">Update</button>
+</form>
+
+<div th:if="${error == 'yes'}">
+	<h2 th:text="${emsg}">Error Message</h2>
+</div>
+
+<p><a th:href="@{/admin/home}">Home</a></p>
+<p><a th:href="@{/admin/userlist}">Return to list of users</a></p>
+</div>

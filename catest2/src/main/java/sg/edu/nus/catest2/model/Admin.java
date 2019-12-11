@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Table(name="admins")
 public class Admin {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int adminId;
 	private String firstName;
 	private String middleName;
@@ -17,9 +18,8 @@ public class Admin {
 		super();
 	}
 
-	public Admin(int adminId, String firstName, String middleName, String surname, int mobileNum, String email) {
+	public Admin(String firstName, String middleName, String surname, int mobileNum, String email) {
 		super();
-		this.adminId = adminId;
 		this.firstName = firstName;
 		this.middleName = middleName;
 		this.surname = surname;

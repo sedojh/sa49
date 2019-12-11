@@ -228,7 +228,7 @@ public class AdminCreateController {
 	}
 
 	@RequestMapping("admin/createcourse")
-	public String createCourse(Model model, @RequestParam("id") Optional<Integer> id,
+	public String createCourse(Model model,
 			@SessionAttribute("usersession") Session session,
 			@RequestParam("code") Optional<String> code, @RequestParam("name") Optional<String> name,
 			@RequestParam("csize") Optional<Integer> csize, @RequestParam("unit") Optional<Integer> unit,
@@ -238,7 +238,6 @@ public class AdminCreateController {
 			@RequestParam(name = "flag") String flag) {
 		admin = arepo.getByAdminId(session.getSessionId());
 		model.addAttribute("admin", admin);
-		int courseId = id.orElse(0);
 		String courseCode = code.orElse("null");
 		String courseName = name.orElse("null");
 		int courseSize = csize.orElse(0);
@@ -250,15 +249,15 @@ public class AdminCreateController {
 		int currentpage = page.orElse(1);
 		int pagesize = size.orElse(5);
 
-		if (courseId <= 0 || courseCode.equals("null") || courseCode.isBlank() || courseName.equals("null")
+		if (courseCode.equals("null") || courseCode.isBlank() || courseName.equals("null")
 				|| courseName.isBlank() || courseSize <= 0 || courseUnit <= 0 || courseStart.equals("null")
 				|| courseStart.isBlank() || courseEnd.equals("null") || courseEnd.isBlank() || did <= 0 || fid <= 0) {
 			if (flag.equals("null")) {
 				model.addAttribute("error", "null");
 			} else {
 				model.addAttribute("error", "error");
+				model.addAttribute("msg", "Course attributes are not valid");
 			}
-			model.addAttribute("msg", "Course attributes are not valid");
 			List<Course> courses = crepo.findAll();
 			model.addAttribute("courses", courses);
 			Page<Course> coursePage = cserv.findPaginatedCourse(PageRequest.of(currentpage - 1, pagesize), courses);
@@ -272,9 +271,7 @@ public class AdminCreateController {
 		}
 
 		else {
-			if (crepo.getCourseByCourseId(courseId) == null) {
 				Course course = new Course();
-				course.setCourseId(courseId);
 				course.setCourseCode(courseCode);
 				course.setCourseName(courseName);
 				course.setCourseSize(courseSize);
@@ -300,31 +297,32 @@ public class AdminCreateController {
 				course.setCourseStart(dstart);
 				course.setCourseEnd(dend);
 				Department department = drepo.getDepartmentByDepartmentId(did);
-				course.setDepartment(department);
 				Faculty faculty = frepo.getByFacultyId(fid);
+				if(department == null || faculty == null) {
+					model.addAttribute("error", "error");
+					model.addAttribute("msg", "Invalid Department/Faculty ID!");
+					List<Course> courses = crepo.findAll();
+					model.addAttribute("courses", courses);
+					Page<Course> coursePage = cserv.findPaginatedCourse(PageRequest.of(currentpage - 1, pagesize), courses);
+					model.addAttribute("coursePage", coursePage);
+					int totalPages = coursePage.getTotalPages();
+					if (totalPages > 0) {
+						List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed()
+								.collect(Collectors.toList());
+						model.addAttribute("pageNumbers", pageNumbers);
+					}
+					return "createcourse";
+				}
+				course.setDepartment(department);
 				course.setFaculty(faculty);
 				crepo.save(course);
 				return "redirect:/admin/courselist";
-			} else {
-				model.addAttribute("error", "error");
-				model.addAttribute("msg", "ID already exists!");
-				List<Course> courses = crepo.findAll();
-				model.addAttribute("courses", courses);
-				Page<Course> coursePage = cserv.findPaginatedCourse(PageRequest.of(currentpage - 1, pagesize), courses);
-				model.addAttribute("coursePage", coursePage);
-				int totalPages = coursePage.getTotalPages();
-				if (totalPages > 0) {
-					List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed()
-							.collect(Collectors.toList());
-					model.addAttribute("pageNumbers", pageNumbers);
-				}
-				return "createcourse";
-			}
+			
 		}
 	}
 
 	@RequestMapping("admin/createstudent")
-	public String createStudent(Model model, @RequestParam("id") Optional<Integer> id,
+	public String createStudent(Model model,
 			@SessionAttribute("usersession") Session session,
 			@RequestParam("fname") Optional<String> fname, @RequestParam("mname") Optional<String> mname,
 			@RequestParam("sname") Optional<String> sname, @RequestParam("mobile") Optional<Integer> mobile,
@@ -335,7 +333,6 @@ public class AdminCreateController {
 		admin = arepo.getByAdminId(session.getSessionId());
 		model.addAttribute("admin", admin);
 
-		int studentId = id.orElse(0);
 		String studentfname = fname.orElse("null");
 		String studentmname = mname.orElse("null");
 		String studentsname = sname.orElse("null");
@@ -347,7 +344,7 @@ public class AdminCreateController {
 		int currentpage = page.orElse(1);
 		int pagesize = size.orElse(5);
 
-		if (studentId <= 0 || studentfname.equals("null") || studentfname.isBlank() || studentmname.equals("null")
+		if (studentfname.equals("null") || studentfname.isBlank() || studentmname.equals("null")
 				|| studentmname.isBlank() || studentmobile <= 0 || studentsname.equals("null") || studentsname.isBlank()
 				|| studentaddr.equals("null") || studentaddr.isBlank() || studentemail.isBlank()
 				|| studentemail.equals("null") || studentage <= 0) {
@@ -370,14 +367,28 @@ public class AdminCreateController {
 		}
 
 		else {
-			if (srepo.getStudentByStudentId(studentId) == null) {
 				Student student = new Student();
-				student.setStudentId(studentId);
 				student.setFirstName(studentfname);
 				student.setMiddleName(studentmname);
 				student.setSurname(studentsname);
 				student.setAge(studentage);
-				student.setGender(studentgender);
+				if(studentgender.equals("M") || studentgender.equals("F")) {
+					student.setGender(studentgender);
+				}
+				else {
+					model.addAttribute("error", "error");
+					model.addAttribute("msg", "Gender must be either 'M' or 'F'");
+					List<Student> students = srepo.findAll();
+					model.addAttribute("students", students);
+					Page<Student> studentPage = sserv.findPaginatedStudent(PageRequest.of(currentpage - 1, pagesize), students);
+					model.addAttribute("studentPage", studentPage);
+					int totalPages = studentPage.getTotalPages();
+					if (totalPages > 0) {
+						List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+						model.addAttribute("pageNumbers", pageNumbers);
+					}
+					return "createstudent";
+				}
 				student.setAddress(studentaddr);
 				student.setEmail(studentemail);
 				student.setMobileNum(studentmobile);
@@ -385,27 +396,12 @@ public class AdminCreateController {
 				model.addAttribute("student", student);
 				model.addAttribute("type", "student");
 				return "createuser";
-			} else {
-				model.addAttribute("error", "error");
-				model.addAttribute("msg", "ID already exists!");
-				List<Student> students = srepo.findAll();
-				model.addAttribute("students", students);
-				Page<Student> studentPage = sserv.findPaginatedStudent(PageRequest.of(currentpage - 1, pagesize),
-						students);
-				model.addAttribute("studentPage", studentPage);
-				int totalPages = studentPage.getTotalPages();
-				if (totalPages > 0) {
-					List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed()
-							.collect(Collectors.toList());
-					model.addAttribute("pageNumbers", pageNumbers);
-				}
-				return "createstudent";
-			}
+			
 		}
 	}
 
 	@RequestMapping("admin/createfaculty")
-	public String createFaculty(Model model, @RequestParam("id") Optional<Integer> id,
+	public String createFaculty(Model model,
 			@SessionAttribute("usersession") Session session,
 			@RequestParam("fname") Optional<String> fname, @RequestParam("mname") Optional<String> mname,
 			@RequestParam("sname") Optional<String> sname, @RequestParam("mobile") Optional<Integer> mobile,
@@ -415,7 +411,6 @@ public class AdminCreateController {
 		admin = arepo.getByAdminId(session.getSessionId());
 		model.addAttribute("admin", admin);
 
-		int facultyId = id.orElse(0);
 		String facultyfname = fname.orElse("null");
 		String facultymname = mname.orElse("null");
 		String facultysname = sname.orElse("null");
@@ -425,7 +420,7 @@ public class AdminCreateController {
 		int currentpage = page.orElse(1);
 		int pagesize = size.orElse(5);
 
-		if (facultyId <= 0 || facultyfname.equals("null") || facultyfname.isBlank() || facultymname.equals("null")
+		if (facultyfname.equals("null") || facultyfname.isBlank() || facultymname.equals("null")
 				|| facultymname.isBlank() || facultymobile <= 0 || facultysname.equals("null") || facultysname.isBlank()
 				|| facultyemail.isBlank() || facultyemail.equals("null") || deptid <= 0) {
 			if (flag.equals("null")) {
@@ -448,41 +443,39 @@ public class AdminCreateController {
 		}
 
 		else {
-			if (frepo.getByFacultyId(facultyId) == null) {
 				Faculty faculty = new Faculty();
-				faculty.setFacultyId(facultyId);
 				faculty.setFirstName(facultyfname);
 				faculty.setMiddleName(facultymname);
 				faculty.setSurname(facultysname);
 				faculty.setEmail(facultyemail);
 				faculty.setMobileNum(facultymobile);
 				Department department = drepo.getDepartmentByDepartmentId(deptid);
+				if(department == null) {
+					model.addAttribute("error", "error");
+					model.addAttribute("msg", "Department does not exist!");
+					List<Faculty> faculties = frepo.findAll();
+					model.addAttribute("faculties", faculties);
+					Page<Faculty> facultyPage = fserv.findPaginatedFaculty(PageRequest.of(currentpage - 1, pagesize),
+							faculties);
+					model.addAttribute("facultyPage", facultyPage);
+					int totalPages = facultyPage.getTotalPages();
+					if (totalPages > 0) {
+						List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+						model.addAttribute("pageNumbers", pageNumbers);
+					}
+					return "createfaculty";
+				}
 				faculty.setDepartment(department);
 				frepo.save(faculty);
 				model.addAttribute("faculty", faculty);
 				model.addAttribute("type", "faculty");
 				return "createuser";
-			} else {
-				model.addAttribute("error", "error");
-				model.addAttribute("msg", "ID already exists!");
-				List<Faculty> faculties = frepo.findAll();
-				model.addAttribute("faculties", faculties);
-				Page<Faculty> facultyPage = fserv.findPaginatedFaculty(PageRequest.of(currentpage - 1, pagesize),
-						faculties);
-				model.addAttribute("facultyPage", facultyPage);
-				int totalPages = facultyPage.getTotalPages();
-				if (totalPages > 0) {
-					List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed()
-							.collect(Collectors.toList());
-					model.addAttribute("pageNumbers", pageNumbers);
-				}
-				return "createfaculty";
-			}
+			
 		}
 	}
 
 	@RequestMapping("admin/createadmin")
-	public String createAdmin(Model model, @RequestParam("id") Optional<Integer> id,
+	public String createAdmin(Model model,
 			@SessionAttribute("usersession") Session session,
 			@RequestParam("fname") Optional<String> fname, @RequestParam("mname") Optional<String> mname,
 			@RequestParam("sname") Optional<String> sname, @RequestParam("mobile") Optional<Integer> mobile,
@@ -491,7 +484,6 @@ public class AdminCreateController {
 		admin = arepo.getByAdminId(session.getSessionId());
 		model.addAttribute("admin", admin);
 
-		int adminId = id.orElse(0);
 		String adminfname = fname.orElse("null");
 		String adminmname = mname.orElse("null");
 		String adminsname = sname.orElse("null");
@@ -500,7 +492,7 @@ public class AdminCreateController {
 		int currentpage = page.orElse(1);
 		int pagesize = size.orElse(5);
 
-		if (adminId <= 0 || adminfname.equals("null") || adminfname.isBlank() || adminmname.equals("null")
+		if (adminfname.equals("null") || adminfname.isBlank() || adminmname.equals("null")
 				|| adminmname.isBlank() || adminmobile <= 0 || adminsname.equals("null") || adminsname.isBlank()
 				|| adminemail.isBlank() || adminemail.equals("null")) {
 			if (flag.equals("null")) {
@@ -522,9 +514,7 @@ public class AdminCreateController {
 		}
 
 		else {
-			if (arepo.getByAdminId(adminId) == null) {
 				Admin admin = new Admin();
-				admin.setAdminId(adminId);
 				admin.setFirstName(adminfname);
 				admin.setMiddleName(adminmname);
 				admin.setSurname(adminsname);
@@ -534,21 +524,7 @@ public class AdminCreateController {
 				model.addAttribute("admind", admin);
 				model.addAttribute("type", "admin");
 				return "createuser";
-			} else {
-				model.addAttribute("error", "error");
-				model.addAttribute("msg", "ID already exists!");
-				List<Admin> admins = arepo.findAll();
-				model.addAttribute("admins", admins);
-				Page<Admin> adminPage = aserv.findPaginatedAdmin(PageRequest.of(currentpage - 1, pagesize), admins);
-				model.addAttribute("adminPage", adminPage);
-				int totalPages = adminPage.getTotalPages();
-				if (totalPages > 0) {
-					List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed()
-							.collect(Collectors.toList());
-					model.addAttribute("pageNumbers", pageNumbers);
-				}
-				return "createadmin";
-			}
+			
 		}
 	}
 

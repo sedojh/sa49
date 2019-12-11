@@ -19,6 +19,7 @@ import sg.edu.nus.catest2.model.Faculty;
 import sg.edu.nus.catest2.model.FacultyLeave;
 import sg.edu.nus.catest2.model.Grade;
 import sg.edu.nus.catest2.model.Student;
+import sg.edu.nus.catest2.model.User;
 import sg.edu.nus.catest2.mvcmodel.Session;
 import sg.edu.nus.catest2.repo.AdminRepository;
 import sg.edu.nus.catest2.repo.CourseApplicationRepository;
@@ -169,8 +170,14 @@ public class AdminUpdateController {
 			course.setCourseUnit(updateunit);
 			course.setCourseName(updatename);
 			Department department = drepo.getDepartmentByDepartmentId(updatedid);
-			course.setDepartment(department);
 			Faculty faculty = frepo.getByFacultyId(updatefid);
+			if(department == null || faculty == null) {
+				model.addAttribute("course", course);
+				model.addAttribute("error", "yes");
+				model.addAttribute("emsg", "Department/Faculty deos not exist!");
+				return "confirmupdatecourse";
+			}
+			course.setDepartment(department);
 			course.setFaculty(faculty);
 			crepo.save(course);
 			model.addAttribute("course", course);
@@ -233,6 +240,12 @@ public class AdminUpdateController {
 				facultyLeave.setLeaveEnd(dend);
 				facultyLeave.setStatus(updatestatus);
 				Faculty faculty = frepo.getByFacultyId(updatefid);
+				if(faculty == null) {
+					model.addAttribute("facultyLeave", facultyLeave);
+					model.addAttribute("error", "yes");
+					model.addAttribute("emsg", "Faculty does not exist!");
+					return "confirmupdatefacultyleave";
+				}
 				facultyLeave.setFaculty(faculty);
 				flrepo.save(facultyLeave);
 				model.addAttribute("facultyLeave", facultyLeave);
@@ -360,6 +373,12 @@ public class AdminUpdateController {
 			faculty.setEmail(updateemail);
 			faculty.setMobileNum(updatemobile);
 			Department department = drepo.getDepartmentByDepartmentId(updatedid);
+			if(department == null) {
+				model.addAttribute("faculty", faculty);
+				model.addAttribute("error", "yes");
+				model.addAttribute("emsg", "Department does not exist!");
+				return "confirmupdatefaculty";
+			}
 			faculty.setDepartment(department);
 			frepo.save(faculty);
 			model.addAttribute("faculty", faculty);
@@ -372,6 +391,113 @@ public class AdminUpdateController {
 			}
 			model.addAttribute("courses", courses);
 			return "viewfaculty";
+		}
+
+	}
+	
+	@RequestMapping("/admin/updateuser")
+	public String updateuser(Model model, @RequestParam(name = "id") Optional<Integer> objectid,
+			@SessionAttribute("usersession") Session session,
+			@RequestParam(name = "confirm") Optional<String> cfm,
+			@RequestParam(name = "updateuname") Optional<String> uname,
+			@RequestParam(name = "updatepass") Optional<String> upass) {
+		admin = arepo.getByAdminId(session.getSessionId());
+		model.addAttribute("admin", admin);
+		String confirm = cfm.orElse("no");
+		int id = objectid.orElse(0);
+
+		if (id == 0 || confirm.equals("cancel")) {
+			return "redirect:/admin/home";
+		}
+		// for updating user
+		User user = urepo.getUserByUserId(id);
+		if (confirm.equals("no")) {
+			model.addAttribute("user", user);
+			if(user.getAdminId() == 0 && user.getFacultyId() == 0) {
+				Student student = srepo.getStudentByStudentId(user.getStudentId());
+				model.addAttribute("student", student);
+				model.addAttribute("type", "student");
+			}
+			else if(user.getAdminId() == 0 && user.getStudentId() == 0) {
+				Faculty faculty = frepo.getByFacultyId(user.getFacultyId());
+				model.addAttribute("faculty", faculty);
+				model.addAttribute("type", "faculty");
+			}
+			else {
+				Admin admind = arepo.getByAdminId(user.getAdminId());
+				model.addAttribute("admind", admind);
+				model.addAttribute("type", "admin");
+			}
+			return "confirmupdateuser";
+		} else {
+			String updateuname = uname.orElse("null");
+			String updatepass = upass.orElse("null");
+
+			if (updateuname.equals("null") || updateuname.isBlank()||updateuname.isEmpty()
+					|| updatepass.equals("null") || updatepass.isBlank()||updateuname.isEmpty()) {
+				model.addAttribute("user", user);
+				model.addAttribute("error", "yes");
+				model.addAttribute("emsg", "Username/Password is not valid!");
+				if(user.getAdminId() == 0 && user.getFacultyId() == 0) {
+					Student student = srepo.getStudentByStudentId(user.getStudentId());
+					model.addAttribute("student", student);
+					model.addAttribute("type", "student");
+				}
+				else if(user.getAdminId() == 0 && user.getStudentId() == 0) {
+					Faculty faculty = frepo.getByFacultyId(user.getFacultyId());
+					model.addAttribute("faculty", faculty);
+					model.addAttribute("type", "faculty");
+				}
+				else {
+					Admin admind = arepo.getByAdminId(user.getAdminId());
+					model.addAttribute("admind", admind);
+					model.addAttribute("type", "admin");
+				}
+				return "confirmupdateuser";
+			}
+			User temp = urepo.findByUserName(updateuname);
+			if(temp != null) {
+				model.addAttribute("user", user);
+				model.addAttribute("error", "yes");
+				model.addAttribute("emsg", "Username already exists!");
+				if(user.getAdminId() == 0 && user.getFacultyId() == 0) {
+					Student student = srepo.getStudentByStudentId(user.getStudentId());
+					model.addAttribute("student", student);
+					model.addAttribute("type", "student");
+				}
+				else if(user.getAdminId() == 0 && user.getStudentId() == 0) {
+					Faculty faculty = frepo.getByFacultyId(user.getFacultyId());
+					model.addAttribute("faculty", faculty);
+					model.addAttribute("type", "faculty");
+				}
+				else {
+					Admin admind = arepo.getByAdminId(user.getAdminId());
+					model.addAttribute("admind", admind);
+					model.addAttribute("type", "admin");
+				}
+				return "confirmupdateuser";
+			}
+			user.setUserName(updateuname);
+			user.setPassword(updatepass);
+			urepo.save(user);
+			model.addAttribute("user", user);
+			model.addAttribute("msg", "found");
+			if(user.getAdminId() == 0 && user.getFacultyId() == 0) {
+				Student student = srepo.getStudentByStudentId(user.getStudentId());
+				model.addAttribute("student", student);
+				model.addAttribute("type", "student");
+			}
+			else if(user.getAdminId() == 0 && user.getStudentId() == 0) {
+				Faculty faculty = frepo.getByFacultyId(user.getFacultyId());
+				model.addAttribute("faculty", faculty);
+				model.addAttribute("type", "faculty");
+			}
+			else {
+				Admin admind = arepo.getByAdminId(user.getAdminId());
+				model.addAttribute("admind", admind);
+				model.addAttribute("type", "admin");
+			}
+			return "viewuser";
 		}
 
 	}
@@ -459,8 +585,14 @@ public class AdminUpdateController {
 			if (updatestatus.equals("Approved") || updatestatus.equals("Pending") || updatestatus.equals("Rejected")) {
 				courseApplication.setStatus(updatestatus);
 				Course course = crepo.getCourseByCourseId(updatecid);
-				courseApplication.setCourse(course);
 				Student student = srepo.getStudentByStudentId(updatesid);
+				if(student == null || course == null) {
+					model.addAttribute("courseApplication", courseApplication);
+					model.addAttribute("error", "yes");
+					model.addAttribute("emsg", "Student/Course does not exist!");
+					return "confirmupdatecourseapplication";
+				}
+				courseApplication.setCourse(course);
 				courseApplication.setStudent(student);
 				carepo.save(courseApplication);
 				model.addAttribute("courseApplication", courseApplication);
@@ -508,12 +640,29 @@ public class AdminUpdateController {
 				model.addAttribute("emsg", "Course/Student/Faculty ID is not valid!");
 				return "confirmupdategrade";
 			}
-			grade.setGrade(updategrade);
+			if(updategrade.equals("A+") || updategrade.equals("A")||updategrade.equals("A-")
+					|| updategrade.equals("B+")||updategrade.equals("B")||updategrade.equals("B-")
+					|| updategrade.equals("C+")||updategrade.equals("C")||updategrade.equals("D+")
+					|| updategrade.equals("D") || updategrade.equals("F")||updategrade.equals("Null")) {
+				grade.setGrade(updategrade);
+			}
+			else {
+				model.addAttribute("grade", grade);
+				model.addAttribute("error", "yes");
+				model.addAttribute("emsg", "Grades can only be: A+,A,A-,B+,B,B-,C+,C,D+,D,F,Null");
+				return "confirmupdategrade";
+			}
 			Course course = crepo.getCourseByCourseId(updatecid);
-			grade.setCourse(course);
 			Student student = srepo.getStudentByStudentId(updatesid);
-			grade.setStudent(student);
 			Faculty faculty = frepo.getByFacultyId(updatefid);
+			if(course == null || student == null || faculty == null) {
+				model.addAttribute("grade", grade);
+				model.addAttribute("error", "yes");
+				model.addAttribute("emsg", "Course/Student/Faculty does not exist!");
+				return "confirmupdategrade";
+			}
+			grade.setCourse(course);
+			grade.setStudent(student);
 			grade.setFaculty(faculty);
 			grepo.save(grade);
 			model.addAttribute("grade", grade);
@@ -523,5 +672,4 @@ public class AdminUpdateController {
 
 	}
 
-	//add updatefacultyleave
 }

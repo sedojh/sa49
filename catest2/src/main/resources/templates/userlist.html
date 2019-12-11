@@ -37,7 +37,10 @@
 			<td>Password</td>
 		</tr>
 		<tr align="center" th:each="u: ${userPage.content}">
-			<td th:text="${u.userId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewuser(viewuser=${u.userId})}"
+        		th:text="${u.userId}"></a>
+        	</td>
 			<td th:if="${u.adminId != 0}">
 				<a th:href="@{/admin/viewadmin(viewadmin=${u.adminId})}"
         		th:text="${'Admin: Id = ' + u.adminId}"></a>
@@ -82,7 +85,10 @@
 			<td>Password</td>
 		</tr>
 		<tr align="center" th:each="u: ${userPage.content}">
-			<td th:text="${u.userId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewuser(viewuser=${u.userId})}"
+        		th:text="${u.userId}"></a>
+        	</td>
 			<td>
 				<a th:href="@{/admin/viewstudent(viewstudent=${u.studentId})}"
         		th:text="${'Student: Id = ' + u.studentId}"></a>
@@ -119,7 +125,10 @@
 			<td>Password</td>
 		</tr>
 		<tr align="center" th:each="u: ${userPage.content}">
-			<td th:text="${u.userId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewuser(viewuser=${u.userId})}"
+        		th:text="${u.userId}"></a>
+        	</td>
 			<td>
 				<a th:href="@{/admin/viewfaculty(viewfaculty=${u.facultyId})}"
         		th:text="${'Faculty: Id = ' + u.facultyId}"></a>
@@ -156,7 +165,10 @@
 			<td>Password</td>
 		</tr>
 		<tr align="center" th:each="u: ${userPage.content}">
-			<td th:text="${u.userId}" ></td>
+			<td>
+				<a th:href="@{/admin/viewuser(viewuser=${u.userId})}"
+        		th:text="${u.userId}"></a>
+        	</td>
 			<td>
 				<a th:href="@{/admin/viewadmin(viewadmin=${u.adminId})}"
         		th:text="${'Admin: Id = ' + u.adminId}"></a>

@@ -25,5 +25,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	User getByStudentId(int studentId);
 	
 	User getByAdminId(int adminId);
+	
+	User getUserByUserId(int userId);
 
 }

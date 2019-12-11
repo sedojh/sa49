@@ -833,6 +833,42 @@ public class AdminController {
 		}
 		return "viewcourse";
 	}
+	
+	@RequestMapping("/viewuser")
+	public String viewUser(Model model, @RequestParam(name = "viewuser") Optional<Integer> searchid) {
+		int search = searchid.orElse(0);
+		model.addAttribute("admin", admin);
+		if (search == 0) {
+			String msg = "null";
+			model.addAttribute("msg", msg);
+		} else {
+			User user = urepo.getUserByUserId(search);
+			String msg = "found";
+			model.addAttribute("msg", msg);
+			if(user.getFacultyId() == 0 && user.getAdminId() == 0) {
+				Student student = srepo.getStudentByStudentId(user.getStudentId());
+				model.addAttribute("user", user);
+				model.addAttribute("student", student);
+				model.addAttribute("type", "student");
+				return "viewuser";
+			}
+			else if(user.getAdminId() == 0 && user.getStudentId()==0) {
+				Faculty faculty = frepo.getByFacultyId(user.getFacultyId());
+				model.addAttribute("user", user);
+				model.addAttribute("faculty", faculty);
+				model.addAttribute("type", "faculty");
+				return "viewuser";
+			}
+			else {
+				Admin admind = arepo.getByAdminId(user.getAdminId());
+				model.addAttribute("user", user);
+				model.addAttribute("admind", admind);
+				model.addAttribute("type", "admin");
+				return "viewuser";
+			}
+		}
+		return "viewuser";
+	}
 
 	@RequestMapping("/viewcourseapplication")
 	public String viewCourseApplication(Model model,
