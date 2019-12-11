@@ -36,6 +36,10 @@ public class CSVController {
 	StudentRepository srepo;
 	@Autowired
 	UserRepository urepo;
+	@Autowired
+	GradeRepository grepo;
+	@Autowired
+	FacultyLeaveRepository flrepo;
 
 	@RequestMapping("/csvdepartments")
 	public void exportdepartments(HttpServletResponse response) throws Exception {
@@ -168,5 +172,43 @@ public class CSVController {
 		// write all users to csv file
 		List<User> users = urepo.findAll();
 		writer.write(users);
+	}
+	
+	@RequestMapping("/csvgrades")
+	public void exportgrades(HttpServletResponse response) throws Exception {
+
+		// set file name and content type
+		String filename = "grades.csv";
+
+		response.setContentType("text/csv");
+		response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
+
+		// create a csv writer
+		StatefulBeanToCsv<Grade> writer = new StatefulBeanToCsvBuilder<Grade>(response.getWriter())
+				.withQuotechar(CSVWriter.NO_QUOTE_CHARACTER).withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+				.withOrderedResults(true).build();
+
+		// write all users to csv file
+		List<Grade> grades = grepo.findAll();
+		writer.write(grades);
+	}
+	
+	@RequestMapping("/csvfacultyleaves")
+	public void exportfacultyleaves(HttpServletResponse response) throws Exception {
+
+		// set file name and content type
+		String filename = "facultyleaves.csv";
+
+		response.setContentType("text/csv");
+		response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + filename + "\"");
+
+		// create a csv writer
+		StatefulBeanToCsv<FacultyLeave> writer = new StatefulBeanToCsvBuilder<FacultyLeave>(response.getWriter())
+				.withQuotechar(CSVWriter.NO_QUOTE_CHARACTER).withSeparator(CSVWriter.DEFAULT_SEPARATOR)
+				.withOrderedResults(true).build();
+
+		// write all users to csv file
+		List<FacultyLeave> facultyLeaves = flrepo.findAll();
+		writer.write(facultyLeaves);
 	}
 }

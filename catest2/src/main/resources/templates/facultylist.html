@@ -96,7 +96,9 @@
 <input type="text" th:name="name" placeholder="Search name/department/email"/> 
 <input type="submit"/> 
 </form>
-
+ <form th:action="@{/csvfaculties}" th:method="post">
+	<button type="submit" name="approval" value="yes">Download all faculties as CSV</button>
+</form>
 <p><a th:href="@{/admin/home}">Home</a></p>
 
 </body>

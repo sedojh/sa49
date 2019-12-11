@@ -93,6 +93,10 @@
 <input type="submit"/> 
 </form>
 
+ <form th:action="@{/csvadmins}" th:method="post">
+	<button type="submit" name="approval" value="yes">Download all admins as CSV</button>
+</form>
+
 <p><a th:href="@{/admin/home}">Home</a></p>
 
 </body>

@@ -233,6 +233,10 @@
 <p>No Course Applications found</p>
 </div>
 
+ <form th:action="@{/csvcourseapplications}" th:method="post">
+	<button type="submit" name="approval" value="yes">Download all course applications as CSV</button>
+</form>
+
 <p><a th:href="@{/admin/home}">Home</a></p>
 
 </body>
