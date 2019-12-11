@@ -7,8 +7,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,7 +79,7 @@ public class AdminCreateController {
 	UserService userv;
 	@Autowired
 	AdminService aserv;
-	
+
 	private static Admin admin = new Admin();
 	
 	@RequestMapping("/admin/create")
@@ -372,23 +375,7 @@ public class AdminCreateController {
 				student.setMiddleName(studentmname);
 				student.setSurname(studentsname);
 				student.setAge(studentage);
-				if(studentgender.equals("M") || studentgender.equals("F")) {
-					student.setGender(studentgender);
-				}
-				else {
-					model.addAttribute("error", "error");
-					model.addAttribute("msg", "Gender must be either 'M' or 'F'");
-					List<Student> students = srepo.findAll();
-					model.addAttribute("students", students);
-					Page<Student> studentPage = sserv.findPaginatedStudent(PageRequest.of(currentpage - 1, pagesize), students);
-					model.addAttribute("studentPage", studentPage);
-					int totalPages = studentPage.getTotalPages();
-					if (totalPages > 0) {
-						List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
-						model.addAttribute("pageNumbers", pageNumbers);
-					}
-					return "createstudent";
-				}
+				student.setGender(studentgender);
 				student.setAddress(studentaddr);
 				student.setEmail(studentemail);
 				student.setMobileNum(studentmobile);

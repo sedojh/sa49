@@ -73,10 +73,24 @@
 		</tr>
 		<tr align="center">
 			<td th:text="${grade.gradeId}">Grade ID</td>
-			<td><input type="text" name="updategrade" th:value="${grade.grade}" /></td>
-			<td><input type="number" name="updatecid" th:value="${grade.course.courseId}" /></td>
-			<td><input type="number" name="updatesid" th:value="${grade.student.studentId}" /></td>
-			<td><input type="number" name="updatefid" th:value="${grade.faculty.facultyId}" /></td>
+			<td><select name="updategrade">
+  				<option value="A+">A+</option>
+  				<option value="A">A</option>
+  				<option value="A-">A-</option>
+  				<option value="B+">B+</option>
+  				<option value="B">B</option>
+  				<option value="B-">B-</option>
+  				<option value="C+">C+</option>
+  				<option value="C">C</option>
+  				<option value="D+">D+</option>
+  				<option value="D">D</option>
+  				<option value="F">F</option>
+  				<option value="Null">Null</option>
+				</select>
+			</td>
+			<td th:text="${grade.course.courseId}"></td>
+			<td th:text="${grade.student.studentId}"></td>
+			<td th:text="${grade.faculty.facultyId}"></td>
 		</tr>
     </table>
     

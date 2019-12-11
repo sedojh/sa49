@@ -613,10 +613,7 @@ public class AdminUpdateController {
 	public String updategrade(Model model, @RequestParam(name = "id") Optional<Integer> objectid,
 			@SessionAttribute("usersession") Session session,
 			@RequestParam(name = "confirm") Optional<String> cfm,
-			@RequestParam(name = "updategrade") Optional<String> ugrade,
-			@RequestParam(name = "updatecid") Optional<Integer> ucid,
-			@RequestParam(name = "updatesid") Optional<Integer> usid,
-			@RequestParam(name = "updatefid") Optional<Integer> ufid) {
+			@RequestParam(name = "updategrade") Optional<String> ugrade) {
 		admin = arepo.getByAdminId(session.getSessionId());
 		model.addAttribute("admin", admin);
 		String confirm = cfm.orElse("no");
@@ -631,39 +628,13 @@ public class AdminUpdateController {
 			return "confirmupdategrade";
 		} else {
 			String updategrade = ugrade.orElse("null");
-			int updatecid = ucid.orElse(0);
-			int updatesid = usid.orElse(0);
-			int updatefid = ufid.orElse(0);
-			if (updatecid == 0 || updatesid == 0 || updategrade.equals("null") || updatefid == 0) {
+			if (updategrade.equals("null")) {
 				model.addAttribute("grade", grade);
 				model.addAttribute("error", "yes");
-				model.addAttribute("emsg", "Course/Student/Faculty ID is not valid!");
+				model.addAttribute("emsg", "Grade must be filled up!");
 				return "confirmupdategrade";
 			}
-			if(updategrade.equals("A+") || updategrade.equals("A")||updategrade.equals("A-")
-					|| updategrade.equals("B+")||updategrade.equals("B")||updategrade.equals("B-")
-					|| updategrade.equals("C+")||updategrade.equals("C")||updategrade.equals("D+")
-					|| updategrade.equals("D") || updategrade.equals("F")||updategrade.equals("Null")) {
-				grade.setGrade(updategrade);
-			}
-			else {
-				model.addAttribute("grade", grade);
-				model.addAttribute("error", "yes");
-				model.addAttribute("emsg", "Grades can only be: A+,A,A-,B+,B,B-,C+,C,D+,D,F,Null");
-				return "confirmupdategrade";
-			}
-			Course course = crepo.getCourseByCourseId(updatecid);
-			Student student = srepo.getStudentByStudentId(updatesid);
-			Faculty faculty = frepo.getByFacultyId(updatefid);
-			if(course == null || student == null || faculty == null) {
-				model.addAttribute("grade", grade);
-				model.addAttribute("error", "yes");
-				model.addAttribute("emsg", "Course/Student/Faculty does not exist!");
-				return "confirmupdategrade";
-			}
-			grade.setCourse(course);
-			grade.setStudent(student);
-			grade.setFaculty(faculty);
+			grade.setGrade(updategrade);
 			grepo.save(grade);
 			model.addAttribute("grade", grade);
 			model.addAttribute("msg", "found");
