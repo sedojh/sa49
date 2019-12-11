@@ -6,6 +6,7 @@ import javax.persistence.*;
 @Table(name="courseapplication")
 public class CourseApplication {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int applicationId;
 	@ManyToOne(fetch=FetchType.EAGER, optional=false)
 	@JoinColumn(name = "studentId", nullable = false)

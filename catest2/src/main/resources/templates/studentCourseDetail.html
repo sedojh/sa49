@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>		
+	<h2>Course Details</h2>
+		
+	<form th:object="${courseDetail}" th:action="@{/student/appliedCourse/}+${courseId}" method="post">
+		
+		<fieldset>
+			Department NAME: <td th:text="${courseDetail.department.departmentName}" ></td>
+		</fieldset>
+		<fieldset>
+			CourseCode: <td th:text="${courseDetail.courseCode}" ></td>
+		</fieldset>
+		<fieldset>
+			Course Name: <td th:text="${courseDetail.courseName}" ></td>
+		</fieldset>
+		<fieldset>
+			Course StartDate: <td th:text="${courseDetail.courseStart}" ></td>
+		</fieldset>
+		<fieldset>
+			Course EndDate: <td th:text="${courseDetail.courseEnd}" ></td>
+		</fieldset>
+		<fieldset>
+			Course Unit: <td th:text="${courseDetail.courseUnit}" ></td>
+		</fieldset>
+		<fieldset>
+			Course Size: <td th:text="${courseDetail.courseSize}" ></td>
+		</fieldset>
+		<fieldset>
+			<div th:if="${msg == 'apply'}">
+				<button type="submit">Apply Course</button>
+			</div>
+			<div th:unless="${msg == 'apply'}">
+				<a th:href="@{/student/list}">Back</a>
+			</div>
+		</fieldset>
+		
+	</form>	
+</body>
+</html>

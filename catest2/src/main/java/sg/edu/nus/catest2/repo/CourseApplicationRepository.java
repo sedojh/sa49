@@ -21,5 +21,19 @@ public interface CourseApplicationRepository extends JpaRepository<CourseApplica
 			@Param("status") String status);
 	
 	CourseApplication getCourseApplicationByApplicationId(int applicationId);
+	
+	//List<CourseApplication> getApprovedCourseByStudentId(Student student);
+		@Query("select ca from CourseApplication ca where ca.student.studentId = :studentId AND ca.status='Approved'")
+		List<CourseApplication> getApprovedCourseByStudentId(@Param("studentId") int studentId);
+		
+		@Query("select ca from CourseApplication ca where ca.student.studentId = :studentId AND ca.status='Pending'")
+		List<CourseApplication> getPendingCourseByStudentId(int studentId);
+
+		@Query("SELECT ca FROM CourseApplication ca WHERE ca.course.courseId= :courseId AND ca.student.studentId= :stuId" )
+		CourseApplication findByCourseAndStudent(	@Param("courseId") int courseId, 
+													@Param("stuId") int stuId);
+
+		@Query("select ca from CourseApplication ca where ca.student.studentId = :studentId AND ca.status='Rejected'")
+		List<CourseApplication> getRejectCourseByStudentId(int studentId);
 
 }

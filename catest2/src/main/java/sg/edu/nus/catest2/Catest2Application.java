@@ -23,13 +23,14 @@ public class Catest2Application {
 	@Bean
 	public CommandLineRunner dept(FacultyRepository frepo , FacultyLeaveRepository flrepo,
 			DepartmentRepository drepo,CourseRepository crepo,StudentRepository srepo,
-			CourseApplicationRepository carepo,GradeRepository grepo) {
+			CourseApplicationRepository carepo,GradeRepository grepo,AdminRepository arepo,UserRepository urepo) {
 		return (args) -> {
 			
+			Admin admin = new Admin(1, "Edmund", "Jun Hao", "Ong", 91902484, "edmund@gmail.com");
+			arepo.save(admin);
+			User user = new User(0, 0, 1, "admin", "admin");
+			urepo.save(user);
 			/*
-			Department d1 = new Department(1, "Math");
-			drepo.save(d1);
-			
 			Student s1 = new Student("Edmund", "The Bomb", "Ong", 98765443, "Dover Road", "edmund@gmail.com", "M", 28);
 			Student s2 = new Student("Doris", "The Shitz", "Hui", 98765443, "Dover Road", "doris@gmail.com", "F", 25);
 			srepo.save(s1);

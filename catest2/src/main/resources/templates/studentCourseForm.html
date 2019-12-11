@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1> Student Information</h1>
+		<fieldset>
+			<table>
+				<tr>
+					<td th:text="${student.studentId}" ></td>
+					<td th:text="${student.firstName}+' '+${student.middleName}+' '+${student.surname}"></td>
+					<td th:text="${student.age}" ></td>
+					<td th:text="${student.gender}" ></td>
+					<td th:text="${student.email}" ></td>
+					<td th:text="${student.mobileNum}" ></td>
+					<td><a href="editStudent.html"
+						th:href="@{/student/edit/}+${student.studentId}"> Edit </a>
+					</td>
+					
+				</tr>
+			</table>
+		</fieldset>
+		<div th:fragment="listHeaderField">
+		
+			<h2>Available Courses Listing Table</h2>
+		</div>
+		
+				<table>
+				<div th:fragment="listbodyField">
+					
+						<tr align="center">
+							<fieldset>	<td>Department</td></fieldset>
+								<td>Course Code</td>
+								<td>Course Name</td>
+								<td>Course StartDate</td>
+								<td>Course End Date</td>
+								<td>Course Unit</td>
+								<td>Course Size</td>
+							
+							</tr>
+						
+						<tr align="center" th:each="ca: ${courseLists}">
+							<td th:text="${ca.department.departmentName}" ></td>
+							<td th:text="${ca.courseCode}" ></td>
+							<td th:text="${ca.courseName}" ></td>
+							<td th:text="${ca.courseStart}" ></td>
+							<td th:text="${ca.courseEnd}" ></td>
+							<td th:text="${ca.courseUnit}" ></td>
+							<td th:text="${ca.courseSize}" ></td>
+							
+							<td><a th:href="@{/student/courseDetails/}+${ca.courseId}"> Details </a>
+							
+							</td>	
+						</tr>
+						
+					</div>
+					<div th:fragment="listbuttonField">
+					<tr>
+						<td><a th:href="@{/student/courseapplicationlist/}"> Show Applied Courses </a>
+						</td>
+					</tr>
+				</div>
+				
+			</table>
+		
+</body>
+</html>

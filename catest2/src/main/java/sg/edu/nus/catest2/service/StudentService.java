@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -11,7 +13,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import sg.edu.nus.catest2.model.Grade;
 import sg.edu.nus.catest2.model.Student;
+import sg.edu.nus.catest2.repo.GradeRepository;
 import sg.edu.nus.catest2.repo.StudentRepository;
 
 @Service
@@ -19,6 +23,8 @@ public class StudentService {
 	
 	@Autowired
 	StudentRepository srepo;
+	@Autowired
+	GradeRepository grepo;
 	
 	public Page<Student> findPaginatedStudent(Pageable pageable, List<Student> studentlist) {
 		List<Student> students = studentlist;
@@ -58,6 +64,21 @@ public class StudentService {
 			}
 		}
 		return filtered;
+	}
+	
+	public void save(@Valid Student student) {
+		// TODO Auto-generated method stub
+		srepo.save(student);
+	}
+
+	public Student getStudentByStudentId(int studentId) {
+		// TODO Auto-generated method stub
+		return srepo.getStudentByStudentId(studentId);
+	}
+
+	public List<Grade> getGradesByStudentId(int stuId) {
+		// TODO Auto-generated method stub
+		return grepo.getGradesByStudentId(stuId);
 	}
 
 }

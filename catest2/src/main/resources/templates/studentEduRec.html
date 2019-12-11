@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Student EduRecord</title>
+</head>
+<body>
+	<h2>Student's EduRecord </h2>
+	<table>
+		<tr align="center">
+			<td>Student ID</td>
+			<td>Grade ID</td>
+			<td>Grade</td>
+			<td>Course ID</td>
+			<td>faculty ID</td>
+			<td>Course Unit</td>
+		</tr>
+		<tr align="center" th:each="grade: ${gradeLists}">
+			<td th:text="${grade.student.studentId}" ></td>
+			<td th:text="${grade.gradeId}" ></td>
+			<td th:text="${grade.grade}" ></td>
+			<td th:text="${grade.course.courseId}" ></td>
+			<td th:text="${grade.course.department.departmentName}" ></td>
+			<td th:text="${grade.course.courseUnit}" ></td>
+
+		</tr>
+		
+			<tr>
+			<td>
+				<a th:href="@{/student/calculateGpa/}+${student.studentId}">Calculate GPA</a>
+			</td>
+			</tr>
+		
+		
+			<tr >
+				<td>YourGPA</td><td th:text="${Gpa}" ></td>
+			</tr>
+		
+			<tr>
+			<td>
+				<a th:href="@{/student/list}">Back</a>
+			</td>	
+			</tr>
+	</table>
+</body>
+</html>

@@ -3,6 +3,7 @@ package sg.edu.nus.catest2.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -69,6 +70,51 @@ public class CourseApplicationService {
 				courseApplications.size());
 
 		return courseApplicationPage;
+	}
+	
+	public List<CourseApplication> getCourseApplicationsByStudentId(int studentId) {
+		// TODO Auto-generated method stub
+		return carepo.getCourseApplicationsByStudentId(studentId);
+	}
+
+	public List<CourseApplication> getApprovedCourseByStudentId(int studentId) {
+		// TODO Auto-generated method stub
+		return carepo.getApprovedCourseByStudentId(studentId);
+	}
+
+	public List<CourseApplication> getPendingCourseByStudentId(int studentId) {
+		// TODO Auto-generated method stub
+		return carepo.getPendingCourseByStudentId(studentId);
+	}
+
+	public List<CourseApplication> findAll() {
+		// TODO Auto-generated method stub
+		return carepo.findAll();
+	}
+
+	public CourseApplication findByCourseAndStudent(int courseId, int sessionId) {
+		// TODO Auto-generated method stub
+		return carepo.findByCourseAndStudent(courseId,sessionId);
+	}
+
+	public void save(CourseApplication ca) {
+		// TODO Auto-generated method stub
+		carepo.save(ca);
+	}
+
+	public Optional<CourseApplication> findById(int caId) {
+		// TODO Auto-generated method stub
+		return carepo.findById(caId);
+	}
+
+	public void deleteById(int caid) {
+		// TODO Auto-generated method stub
+		carepo.deleteById(caid);
+	}
+
+	public List<CourseApplication> getRejectCourseByStudentId(int studentId) {
+		// TODO Auto-generated method stub
+		return carepo.getRejectCourseByStudentId(studentId);
 	}
 
 }
