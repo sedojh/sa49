@@ -85,7 +85,12 @@
 <p><a th:href="@{/admin/courselist}">List of all courses</a></p>
 <p><a th:href="@{/admin/courseapplicationlist}">List of all course applications</a></p>
 <p><a th:href="@{/admin/gradelist}">List of all grades</a></p>
-<p><a th:href="@{/admin/create}">Create New</a></p>
+
+<a th:href="@{/admin/create(createType='admin')}">Create new admin</a>
+<a th:href="@{/admin/create(createType='department')}">Create new department</a>
+<a th:href="@{/admin/create(createType='faculty')}">Create new faculty</a>
+<a th:href="@{/admin/create(createType='student')}">Create new student</a>
+<a th:href="@{/admin/create(createType='course')}">Create new course</a>
 <br/>
 <p><a th:href="@{/login/logout}">Logout</a></p>
 

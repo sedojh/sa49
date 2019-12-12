@@ -71,5 +71,10 @@ public class FacultyService {
 		// TODO Auto-generated method stub
 		return frepo.getFacultyLeaveByFacultyId(fId);
 	}
+	
+	public Faculty getFacultyByFacultyId(int fId) {
+		// TODO Auto-generated method stub
+		return frepo.getByFacultyId(fId);
+	}
 
 }

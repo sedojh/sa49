@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Table(name="facultyleave")
 public class FacultyLeave {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int leaveId;
 	@ManyToOne(fetch=FetchType.EAGER, optional=false)
 	@JoinColumn(name = "facultyId", nullable = false)

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Faculty's Leave Record</title>
+</head>
+<body>
+	<h2>Faculty's Leave Record </h2>
+	<form method="post">
+	<table>
+		<tr align="center">
+				<td>Faculty ID</td>
+				<td>Leave Start Date</td>
+				<td>Leave End Date</td>
+				<td>Status</td>
+		</tr>
+		<tr align="center" th:each="fl: ${fLeaveList}">
+			<td th:text="${fl.faculty.facultyId}" ></td>
+			<td th:text="${fl.leaveStart}" ></td>
+			<td th:text="${fl.leaveEnd}" ></td>
+			<td th:text="${fl.status}" ></td>
+					
+			<td th:if="${fl.status == 'Pending'}">
+				<a th:href="@{/facultyleave/deleteLeave/}+${fl.leaveId}">Delete</a>
+			</td>
+		</tr>
+		
+			<tr>
+			<td>
+				<p><a th:href="@{/faculty/home}">Home</a></p>
+			</td>
+			
+				<td><a th:href="@{/facultyleave/leaveList(sort='approved')}">Approved Leave</a></td>
+				<td><a th:href="@{/facultyleave/leaveList(sort='rejected')}">Reject Leave</a></td>
+				<td><a th:href="@{/facultyleave/leaveList(sort='pending')}">Pending Leave</a></td>
+			
+			<td>
+				<a th:href="@{/facultyleave/applyLeaveForm}">Apply Leave</a>
+			</td>
+			
+			</tr>		
+				
+		</table>
+	</form>
+</body>
+</html>

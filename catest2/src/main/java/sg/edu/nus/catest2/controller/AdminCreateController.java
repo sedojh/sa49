@@ -88,7 +88,7 @@ public class AdminCreateController {
 		model.addAttribute("admin", admin);
 		String createType = type.orElse("null");
 		if (createType.equals("null")) {
-			return "admincreate";
+			return "admin/home";
 		} else {
 			if (createType.equals("department")) {
 				int currentpage = 1;

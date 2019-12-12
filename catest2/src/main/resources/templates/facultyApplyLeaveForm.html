@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<form th:object="${facultyLeave}" th:action="@{/facultyleave/applyLeave}" th:method="post">
+		<h2>Faculty Leave Apply Form</h2>
+		<table>
+			<tr align="center">
+				<td>Faculty ID</td>
+				<td>Leave Start Date</td>
+				<td>Leave End Date</td>
+				
+			</tr>
+			<tr>
+				<td th:text="${facultyId}"></td>				
+				<td><input type="date" name="start" /></td>
+				<td><input type="date" name="end" /></td>
+				
+			</tr>
+			<tr>
+				<td>
+				<button type="submit">Submit</button></td>
+			</tr>
+		</table>
+		
+	</form>
+	<div th:if="${error == 'error'}">
+				<td th:text="${msg}"></td>
+	</div>
+	<p><a th:href="@{/faculty/home}">Home</a></p>
+</body>
+</html>

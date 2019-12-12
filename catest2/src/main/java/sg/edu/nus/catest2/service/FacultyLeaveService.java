@@ -85,5 +85,35 @@ public class FacultyLeaveService {
 
 		return facultyLeavePage;
 	}
+	
+	public ArrayList<FacultyLeave> getFacultyLeaveByFacultyId(int fId) {
+		// TODO Auto-generated method stub
+		return (ArrayList<FacultyLeave>) flrepo.getFacultyLeaveByFacultyId(fId);
+	}
+
+	public void save(FacultyLeave fl) {
+		// TODO Auto-generated method stub
+		flrepo.save(fl);
+	}
+
+	public void deleteById(int flId) {
+		// TODO Auto-generated method stub
+		flrepo.deleteById(flId);
+	}
+
+	public ArrayList<FacultyLeave> getApprovedFacultyLeaveByFacultyId(int facultyId) {
+		// TODO Auto-generated method stub
+		return flrepo.getApprovedFacultyLeaveByFacultyId(facultyId);
+	}
+
+	public ArrayList<FacultyLeave> getPendingFacultyLeaveByFacultyId(int facultyId) {
+		// TODO Auto-generated method stub
+		return flrepo.getPendingFacultyLeaveByFacultyId(facultyId);
+	}
+
+	public ArrayList<FacultyLeave> getRejectedFacultyLeaveByFacultyId(int facultyId) {
+		// TODO Auto-generated method stub
+		return flrepo.getRejectedFacultyLeaveByFacultyId(facultyId);
+	}
 
 }
