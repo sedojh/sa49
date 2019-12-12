@@ -17,6 +17,7 @@
 		<td th:text="${admin.firstName}+' '+${admin.middleName}+' '+${admin.surname}">Admin Name</td>
 		<td th:text="${admin.email}">Admin Email</td>
 		<td th:text="${admin.mobileNum}">Admin Mobile Number</td>
+		<td><a th:href="@{/admin/edit/}+${admin.adminId}"> Edit </a>
 	</tr>
 </table>
 
