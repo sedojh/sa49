@@ -252,6 +252,10 @@
 			</table>
 		</div>
 	</div>
+	
+	<div th:unless="${msg == 'found'}">
+		<p>No Faculty Leave found</p>
+	</div>
 
 	<form th:action="@{/admin/facultyleavelist}" th:method="post">
 	<br/>
@@ -270,10 +274,6 @@
 		<button type="submit" name="button" value="yes">Search
 			Faculty Leave</button>
 	</form>
-
-	<div th:unless="${msg == 'found'}">
-		<p>No Faculty Leave found</p>
-	</div>
 
 	<div th:if="${emsg == 'yes'}">
 		<h2>End date cannot be earlier than start date</h2>
