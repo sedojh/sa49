@@ -1,5 +1,6 @@
 package sg.edu.nus.catest2.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -47,6 +48,18 @@ public class FacultyLeaveService {
 		List<FacultyLeave> facultyLeaves = new ArrayList<FacultyLeave>();
 		for(FacultyLeave fl: list) {
 			if(fl.getStatus().equals("Rejected")) {
+				facultyLeaves.add(fl);
+			}
+		}
+		return facultyLeaves;
+	}
+	
+	public List<FacultyLeave> getRangeFacultyLeaves(LocalDate start, LocalDate end){
+		List<FacultyLeave> list = getApprovedFacultyLeaves();
+		List<FacultyLeave> facultyLeaves = new ArrayList<FacultyLeave>();
+		for(FacultyLeave fl: list) {
+			if((fl.getLeaveStart().isAfter(start) && fl.getLeaveStart().isBefore(end))
+					|| (fl.getLeaveEnd().isAfter(start) && fl.getLeaveEnd().isBefore(end))) {
 				facultyLeaves.add(fl);
 			}
 		}

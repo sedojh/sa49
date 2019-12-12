@@ -594,33 +594,86 @@ public class AdminController {
 	
 	@RequestMapping("/facultyleavelist")
 	public String facultyleavelist(Model model, @RequestParam(name = "page") Optional<Integer> page,
-			@RequestParam(name = "size") Optional<Integer> size, @RequestParam(name = "sort") Optional<String> sort) {
+			@RequestParam(name = "size") Optional<Integer> size, 
+			@RequestParam(name = "sort") Optional<String> sort,
+			@RequestParam(name="start") Optional<String> start,
+			@RequestParam(name="end") Optional<String> end) {
 		model.addAttribute("admin", admin);
 
 		int currentpage = page.orElse(1);
 		int pagesize = size.orElse(5);
 		String sorting = sort.orElse("all");
+		String startd = start.orElse("null");
+		String endd = end.orElse("null");
 
 		if (sorting.equals("approved")) {
-			model.addAttribute("sort", sorting);
-			List<FacultyLeave> facultyLeaves = flserv.getApprovedFacultyLeaves();
-			if (facultyLeaves.isEmpty()) {
-				String msg = "null";
-				model.addAttribute("msg", msg);
-			} else {
-				model.addAttribute("facultyLeaves", facultyLeaves);
-				Page<FacultyLeave> facultyLeavePage = flserv
-						.findPaginatedFacultyLeave(PageRequest.of(currentpage - 1, pagesize), facultyLeaves);
-				model.addAttribute("facultyLeavePage", facultyLeavePage);
+			if(startd.equals("null") && endd.equals("null")) {
+				model.addAttribute("sort", sorting);
+				List<FacultyLeave> facultyLeaves = flserv.getApprovedFacultyLeaves();
+				if (facultyLeaves.isEmpty()) {
+					String msg = "null";
+					model.addAttribute("msg", msg);
+				} else {
+					model.addAttribute("facultyLeaves", facultyLeaves);
+					Page<FacultyLeave> facultyLeavePage = flserv
+							.findPaginatedFacultyLeave(PageRequest.of(currentpage - 1, pagesize), facultyLeaves);
+					model.addAttribute("facultyLeavePage", facultyLeavePage);
 
-				int totalPages = facultyLeavePage.getTotalPages();
-				if (totalPages > 0) {
-					List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed()
-							.collect(Collectors.toList());
-					model.addAttribute("pageNumbers", pageNumbers);
+					int totalPages = facultyLeavePage.getTotalPages();
+					if (totalPages > 0) {
+						List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed()
+								.collect(Collectors.toList());
+						model.addAttribute("pageNumbers", pageNumbers);
+					}
+					String msg = "found";
+					model.addAttribute("msg", msg);
 				}
-				String msg = "found";
-				model.addAttribute("msg", msg);
+			}
+			else {
+				model.addAttribute("sort", sorting);
+				LocalDate dstart = LocalDate.parse(startd);
+				LocalDate dend = LocalDate.parse(endd);
+				if(dend.isBefore(dstart)) {
+					List<FacultyLeave> facultyLeaves = flrepo.findAll();
+					Page<FacultyLeave> facultyLeavePage = flserv
+							.findPaginatedFacultyLeave(PageRequest.of(currentpage - 1, pagesize), facultyLeaves);
+					model.addAttribute("facultyLeavePage", facultyLeavePage);
+
+					int totalPages = facultyLeavePage.getTotalPages();
+					if (totalPages > 0) {
+						List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed()
+								.collect(Collectors.toList());
+						model.addAttribute("pageNumbers", pageNumbers);
+					}
+					model.addAttribute("facultyLeaves", facultyLeaves);
+					model.addAttribute("msg", "found");
+					model.addAttribute("sort", "all");
+					model.addAttribute("emsg", "yes");
+					return "facultyleavelist";
+				}
+				
+				List<FacultyLeave> facultyLeaves = flserv.getRangeFacultyLeaves(dstart, dend);
+				if (facultyLeaves.isEmpty()) {
+					String msg = "null";
+					model.addAttribute("msg", msg);
+				} else {
+					model.addAttribute("facultyLeaves", facultyLeaves);
+					Page<FacultyLeave> facultyLeavePage = flserv
+							.findPaginatedFacultyLeave(PageRequest.of(currentpage - 1, pagesize), facultyLeaves);
+					model.addAttribute("facultyLeavePage", facultyLeavePage);
+
+					int totalPages = facultyLeavePage.getTotalPages();
+					if (totalPages > 0) {
+						List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed()
+								.collect(Collectors.toList());
+						model.addAttribute("pageNumbers", pageNumbers);
+					}
+					String msg = "found";
+					model.addAttribute("msg", msg);
+					model.addAttribute("display", "yes");
+					model.addAttribute("start", startd);
+					model.addAttribute("end", endd);
+				}
 			}
 			return "facultyleavelist";
 		} else if (sorting.equals("pending")) {

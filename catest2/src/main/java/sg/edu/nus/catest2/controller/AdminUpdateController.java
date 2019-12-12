@@ -236,8 +236,8 @@ public class AdminUpdateController {
 					model.addAttribute("emsg", "Leave end date cannot be before leave start date!");
 					return "confirmupdatefacultyleave";
 				}
-				facultyLeave.setLeaveStart(dstart);
-				facultyLeave.setLeaveEnd(dend);
+				facultyLeave.setLeaveStart(dstart.plusDays(1));
+				facultyLeave.setLeaveEnd(dend.plusDays(1));
 				facultyLeave.setStatus(updatestatus);
 				Faculty faculty = frepo.getByFacultyId(updatefid);
 				if(faculty == null) {

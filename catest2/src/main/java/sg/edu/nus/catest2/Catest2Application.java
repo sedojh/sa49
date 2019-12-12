@@ -1,5 +1,7 @@
 package sg.edu.nus.catest2;
 
+import java.time.LocalDate;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -25,6 +27,30 @@ public class Catest2Application {
 			DepartmentRepository drepo,CourseRepository crepo,StudentRepository srepo,
 			CourseApplicationRepository carepo,GradeRepository grepo,AdminRepository arepo,UserRepository urepo) {
 		return (args) -> {
+			/*
+			Department department = new Department(99, "test");
+			drepo.save(department);
+			Faculty f = new Faculty("Hello", "World", "World", "wfefwe", 354354, department);
+			frepo.save(f);
+			*/
+			Faculty f = frepo.getByFacultyId(41);
+			String date1 = "1998-03-30";
+			String date2 = "1998-04-30";
+			String date3 = "1998-05-30";
+			String date4 = "1998-06-30";
+			LocalDate d1 = LocalDate.parse(date1);
+			LocalDate d2 = LocalDate.parse(date2);
+			LocalDate d3 = LocalDate.parse(date3);
+			LocalDate d4 = LocalDate.parse(date4);
+			FacultyLeave fl1 = new FacultyLeave(1, f, d1, d4, "Approved");
+			FacultyLeave fl2 = new FacultyLeave(2, f, d2, d3, "Approved");
+			FacultyLeave fl3 = new FacultyLeave(3, f, d1, d3, "Pending");
+			FacultyLeave fl4 = new FacultyLeave(4, f, d2, d4, "Rejected");
+			flrepo.save(fl1);
+			flrepo.save(fl2);
+			flrepo.save(fl3);
+			flrepo.save(fl4);
+			
 			/*
 			Admin admin = new Admin(1, "Edmund", "Jun Hao", "Ong", 91902484, "edmund@gmail.com");
 			arepo.save(admin);
