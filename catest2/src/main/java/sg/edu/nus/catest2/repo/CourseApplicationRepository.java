@@ -43,5 +43,8 @@ public interface CourseApplicationRepository extends JpaRepository<CourseApplica
 		
 		@Query(value ="select * from courseapplication ca , courses c where c.course_id = ca.course_id and ca.course_Id = ?1 and ca.status='Approved' and c.faculty_Id = ?2", nativeQuery=true)
 		public List<CourseApplication> findByCourseIdAndFacultyId(int courseId, int facultyId);  
+		
+		@Query("select ca from CourseApplication ca where (ca.course.courseName like %:input% or ca.course.courseCode like %:input%) and (ca.status='Approved')")
+		List<CourseApplication> searchCourseApplication(String input);
 
 }

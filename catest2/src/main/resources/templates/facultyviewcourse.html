@@ -49,12 +49,16 @@
 		</tr>
     </table>
     
-
+<form th:object="${course}" th:action="@{/faculty/searchstudent(course=${course.courseId})}" th:method="post" >
+<input type="text" th:name="searchstudent"/> 
+<button type="submit">Search</button> 
+</form>
+    
     <h2>List of Students for this course</h2>
-    <div th:if="${searchca == 'null'}">
+    <div th:if="${searchstudent == 'null'}">
     <h3>No student in this course</h3>
     </div>
-    <div th:if="${searchca == 'found'}">
+    <div th:if="${searchstudent == 'found'}">
     
 
     <table>
@@ -73,17 +77,11 @@
 			<td><a th:href="@{/faculty/viewstudent(facultyviewstudent=${g.student.studentId})}" th:text=${g.student.studentId}></a></td>
 			<td><a th:href="@{/faculty/viewstudent(facultyviewstudent=${g.student.studentId})}" th:text="${g.student.firstName}+' '+${g.student.middleName}+' '+${g.student.surname}" ></a></td>
 			
-			<td>
-				<form th:action="@{/faculty/editgrade(gradeid=${g.gradeId}, grade=${g.grade})}" th:method="post">
-				<button type="submit">Update Grade</button>
-				</form>
-			</td>
-			<td>
-				<form th:action="@{/student/calculateGpa/}+${g.student.studentId}" th:method="post">
-				<button type="submit">View EduRec</button>
-				</form>
-			</td>
-
+			<td><form th:action="@{/faculty/editgrade(gradeid=${g.gradeId}, grade=${g.grade})}" th:method="post"><button type="submit">Update Grade</button></form></td>
+<!-- 			<input type="hidden" th:field="*{gradeId}" name="gradeId" value="${g.gradeId}" th:name="*{gradeId}" th:attr="gradeId='${g.gradeId}'" th:value="${g.gradeId}"> -->
+<!-- 			<td><a th:href="@{/faculty/editgrade(gradeid=${g.gradeId}, grade=${g.grade})}">Update Grade</a></td> -->
+<!-- 			<td><a th:href="@{'/faculty/editgrade/'+${g.gradeId}+'/'+${g.grade}}">Update Grade</a></td> -->
+<!-- 	th:action="@{/faculty/editgrade(gradeid=${g.gradeId})}"  -->
 		</tr>
 		
 		   	<tr th:if="${gradePage.totalPages > 0}" class="pagination">
@@ -100,7 +98,7 @@
 	</div>
 </div>
 <div th:unless="${msg == 'found'}">
-    <h2 th:text="'Error in locating course in database'"></h2>
+    <h2 th:text="'Cannot find course in database'"></h2>
 </div>
 
 <p><a th:href="@{/faculty/home}">Home</a></p>
