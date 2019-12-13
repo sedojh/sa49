@@ -1,5 +1,6 @@
 package sg.edu.nus.catest2.controller;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import sg.edu.nus.catest2.repo.*;
 import sg.edu.nus.catest2.service.CourseApplicationService;
 import sg.edu.nus.catest2.service.CourseService;
+import sg.edu.nus.catest2.service.FacultyLeaveService;
 import sg.edu.nus.catest2.service.FacultyService;
 import sg.edu.nus.catest2.service.GradeService;
 import sg.edu.nus.catest2.service.StudentService;
@@ -60,9 +62,11 @@ public class FacultyController {
 	CourseApplicationService caserv;
 	
 	private static Faculty faculty;
+	private FacultyLeave facultyleave;
+	
 	private Page<Grade> gradePage;
 	private Course course;
-
+	
 
 	@GetMapping("/home")                                      //list of the courses assigned to the faculty
 	public String home(Model model,@SessionAttribute("usersession") Session session,
@@ -74,11 +78,11 @@ public class FacultyController {
 		}
 
 		faculty = frepo.getByFacultyId(session.getSessionId());
-		model.addAttribute("faculty", faculty);
-		ArrayList<Course> courses = (ArrayList<Course>) crepo.findCoursesByFacultyId(faculty.getFacultyId());
-		Course course = new Course();
-		model.addAttribute("course", course);
 		
+		model.addAttribute("faculty", faculty);
+
+		ArrayList<Course> courses = (ArrayList<Course>) crepo.findCoursesByFacultyId(faculty.getFacultyId());
+	
 		int currentpage = page.orElse(1);
 		int pagesize = size.orElse(5);
 		Page<Course> coursePage = cserv.findPaginatedCourse
@@ -91,7 +95,8 @@ public class FacultyController {
                 .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
-		return "facultyhome";
+	return "facultyhome";
+		
 	}
 	
 	@GetMapping("/info")
@@ -140,8 +145,8 @@ public class FacultyController {
 		model.addAttribute("faculty", faculty);
 		System.out.println(ugrade);
 		return "redirect:/faculty/viewcourse?facultyviewcourse=" + ugrade.getCourse().getCourseId();
-	}	
-
+	}
+	
 	@GetMapping("/studentlist")                          //list of students of the courses faculty teaches
 	public String allStudentListByFaculty(Model model,
 		@RequestParam(name = "page") Optional<Integer> page, 
@@ -211,6 +216,8 @@ public class FacultyController {
 			for (CourseApplication ca : courseApplications) {
 				grades.add(grepo.findByCourseIdStudentId(ca.getCourse().getCourseId(), ca.getStudent().getStudentId()));
 			}
+
+
 			model.addAttribute("grades", grades);
 			
 		}
@@ -233,9 +240,9 @@ public class FacultyController {
 			model.addAttribute("msg", msg);
 			List<CourseApplication> courseApplications = carepo.findByCourseIdAndFacultyId(search, faculty.getFacultyId());
 			if (courseApplications.isEmpty()) {
-				model.addAttribute("searchstudent", "null");
+				model.addAttribute("searchca", "null");
 			} else {
-				model.addAttribute("searchstudent", "found");
+				model.addAttribute("searchca", "found");
 			}
 			model.addAttribute("courseApplications", courseApplications);
 			ArrayList<Grade> grades = new ArrayList<Grade>();
@@ -248,42 +255,9 @@ public class FacultyController {
 			Page<Grade> gradePage = gserv.findPaginatedGrade
 					(PageRequest.of(currentpage - 1, pagesize),(grades));
 	        model.addAttribute("gradePage", gradePage);
-
-	        int totalPages = gradePage.getTotalPages();
-	        if (totalPages > 0) {
-	            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-	                .boxed()
-	                .collect(Collectors.toList());
-	            model.addAttribute("pageNumbers", pageNumbers);
-	        }
-			
-		}
-		return "facultyviewcourse";
-	}
-	
-	@RequestMapping("/searchstudent")
-	public String searchStudent(Model model, @RequestParam(name = "searchstudent") String searchinput, @RequestParam(name = "course") Integer courseId, @RequestParam(name = "page") Optional<Integer> page, 
-			@RequestParam(name = "size") Optional<Integer> size) {
-		model.addAttribute("faculty", faculty);
-		List<CourseApplication> casearch = carepo.searchCourseApplication(searchinput);
-		
-		if (casearch.isEmpty()) {
-			model.addAttribute("searchstudent", "null");
-			model.addAttribute("msg", "null");
-		}
-		else {
-			model.addAttribute("msg", "found");
-			model.addAttribute("searchstudent", "found");
-			ArrayList<Grade> grades = new ArrayList<Grade>();
-			for (CourseApplication ca : casearch) {
-				grades.add(grepo.findByCourseIdStudentId(ca.getCourse().getCourseId(), ca.getStudent().getStudentId()));
-			};
-			int currentpage = page.orElse(1);
-			int pagesize = size.orElse(5);
-			Page<Grade> gradePage = gserv.findPaginatedGrade
-					(PageRequest.of(currentpage - 1, pagesize),(grades));
-	        model.addAttribute("gradePage", gradePage);
-	        ;
+	        
+	        this.course = course;
+	        this.gradePage = gradePage;
 	        
 	        int totalPages = gradePage.getTotalPages();
 	        if (totalPages > 0) {
@@ -292,32 +266,11 @@ public class FacultyController {
 	                .collect(Collectors.toList());
 	            model.addAttribute("pageNumbers", pageNumbers);
 	        }
+			model.addAttribute("grades", grades);
+			
 		}
-		Course course = crepo.getCourseByCourseId(courseId);
-		model.addAttribute("course", course);
 		return "facultyviewcourse";
 	}
-
 	
-	@GetMapping("/leaveList/{fId}")
-	public String facultyLeaveRecord(Model model,@PathVariable("fId") int fId) {
-		
-		System.out.println("Faculty Leave Record:");
-		ArrayList<FacultyLeave> fLeaveList=(ArrayList<FacultyLeave>) fserv.getFacultyLeaveByFacultyId(fId);
-		model.addAttribute("faculty", faculty);
-		model.addAttribute("fLeaveList",fLeaveList);
-					
-		return "facultyLeaveRec";
-	}
-	@GetMapping("/applyLeave/{fId}")
-	public String applyLeave(Model model,@PathVariable("fId") int fId) {
-		
-		System.out.println("Faculty Apply:");
-		ArrayList<FacultyLeave> fLeaveList=(ArrayList<FacultyLeave>) fserv.getFacultyLeaveByFacultyId(fId);
-		model.addAttribute("faculty", faculty);
-		model.addAttribute("fLeaveList",fLeaveList);
-					
-		return "facultyApplyLeavForm";
-	}
-
+	
 }

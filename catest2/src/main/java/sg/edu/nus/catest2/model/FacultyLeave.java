@@ -22,9 +22,8 @@ public class FacultyLeave {
 		// TODO Auto-generated constructor stub
 	}
 
-	public FacultyLeave(int leaveId, Faculty faculty, LocalDate leaveStart, LocalDate leaveEnd, String status) {
+	public FacultyLeave(Faculty faculty, LocalDate leaveStart, LocalDate leaveEnd, String status) {
 		super();
-		this.leaveId = leaveId;
 		this.faculty = faculty;
 		this.leaveStart = leaveStart;
 		this.leaveEnd = leaveEnd;

@@ -22,9 +22,8 @@ public class CourseApplication {
 		// TODO Auto-generated constructor stub
 	}
 
-	public CourseApplication(int applicationId, Student student, Course course, String status) {
+	public CourseApplication(Student student, Course course, String status) {
 		super();
-		this.applicationId = applicationId;
 		this.student = student;
 		this.course = course;
 		this.status = status;

@@ -13,6 +13,6 @@ public interface AdminRepository extends JpaRepository<Admin, Integer> {
 	@Query("select a from Admin a where a.firstName like %?1% or a.middleName like %?1% "
 			+ "or a.surname like %?1% or a.email like %?1%")
 	List<Admin> searchAdmin(String name);
-
+	
 
 }
