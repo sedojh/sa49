@@ -123,8 +123,6 @@ public class AdminController {
 				CourseApplication courseApplication = carepo.getCourseApplicationByApplicationId(id);
 				courseApplication.setStatus("Rejected");
 				carepo.save(courseApplication);
-				Grade grade = grepo.findByCourseIdStudentId(courseApplication.getCourse().getCourseId(), courseApplication.getStudent().getStudentId());
-				grepo.delete(grade);
 				return "redirect:/admin/home";
 			}
 		}
