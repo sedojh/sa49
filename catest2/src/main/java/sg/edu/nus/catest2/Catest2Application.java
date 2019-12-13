@@ -109,8 +109,8 @@ public class Catest2Application {
 				s3.setStudentId(19);
 				
 				User user6 = new User(17, 0, 0, "student1", "student1");
-				User user7 = new User(18, 0, 0, "student1", "student1");
-				User user8 = new User(19, 0, 0, "student1", "student1");
+				User user7 = new User(18, 0, 0, "student2", "student2");
+				User user8 = new User(19, 0, 0, "student3", "student3");
 				urepo.save(user6);
 				urepo.save(user7);
 				urepo.save(user8);
